@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TJ NewsGen · Bulletin Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F0F2F5;--surface:#FFF;--surface2:#F5F7FA;--surface3:#EBEEf2;
+  --line:#DDE1E8;--line-soft:#E8EBF0;
+  --ink:#111827;--ink-dim:#4B5563;--ink-faint:#9CA3AF;
+  --red:#DC2626;--red-h:#B91C1C;--red-l:#FEF2F2;--red-b:#FECACA;
+  --amber:#D97706;--amber-l:#FFFBEB;--amber-b:#FDE68A;
+  --green:#059669;--green-l:#ECFDF5;--green-b:#A7F3D0;
+  --cyan:#0284C7;--cyan-l:#EFF6FF;--cyan-b:#BAE6FD;
+  --violet:#7C3AED;--violet-l:#F5F3FF;--violet-b:#DDD6FE;
+  --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+  --ui:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --tamil:'Nirmala UI','Noto Sans Tamil',Latha,'Segoe UI',sans-serif;
+  --r:8px;--sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --sh-md:0 4px 6px rgba(0,0,0,.06),0 2px 4px rgba(0,0,0,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px;display:flex;flex-direction:column}
+button{font-family:var(--ui);cursor:pointer}
+::selection{background:rgba(2,132,199,.15)}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;
+  background:var(--surface);border-bottom:1px solid var(--line);flex-shrink:0;box-shadow:var(--sh)}
+.brand{display:flex;align-items:center;gap:9px;margin-right:4px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--red);
+  box-shadow:0 0 8px rgba(220,38,38,.5);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.brand h1{font-size:15px;font-weight:700}
+.brand h1 span{color:var(--red)}
+.brand .sub{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink-faint);
+  padding:2px 7px;background:var(--surface2);border:1px solid var(--line);border-radius:4px}
+
+/* nav pills */
+.nav-pills{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--line);
+  border-radius:10px;padding:3px}
+.np{border:none;background:none;color:var(--ink-dim);font-size:12.5px;font-weight:600;
+  padding:6px 14px;border-radius:7px;transition:.15s;white-space:nowrap}
+.np:hover:not(.on){color:var(--ink);background:var(--surface3)}
+.np.on{background:var(--red);color:#fff;box-shadow:0 1px 4px rgba(220,38,38,.3)}
+.np.on.green-pill{background:var(--green);box-shadow:0 1px 4px rgba(5,150,105,.3)}
+.np.on.blue-pill{background:var(--cyan);box-shadow:0 1px 4px rgba(2,132,199,.3)}
+
+/* generate/trim toggle (only visible in newsgen page) */
+.mode-seg{display:flex;background:var(--surface2);border:1px solid var(--line);
+  border-radius:10px;padding:3px;margin-left:4px}
+.ms{border:none;background:none;color:var(--ink-dim);font-size:12px;font-weight:600;
+  padding:6px 14px;border-radius:7px;transition:.15s}
+.ms.on{background:var(--ink);color:#fff}
+.ms:not(.on):hover{color:var(--ink)}
+
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.status-pill{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.8px;padding:5px 10px;border-radius:20px;border:1px solid var(--line);
+  color:var(--ink-faint);background:var(--surface2)}
+.status-pill .led{width:6px;height:6px;border-radius:50%;background:var(--ink-faint)}
+.status-pill.ok{border-color:rgba(5,150,105,.3);color:var(--green);background:var(--green-l)}
+.status-pill.ok .led{background:var(--green);box-shadow:0 0 5px rgba(5,150,105,.5)}
+.status-pill.err{border-color:rgba(220,38,38,.3);color:var(--red);background:var(--red-l)}
+.status-pill.err .led{background:var(--red)}
+.icon-btn{width:32px;height:32px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--surface);color:var(--ink-dim);font-size:14px;display:flex;
+  align-items:center;justify-content:center;transition:.15s;box-shadow:var(--sh)}
+.icon-btn:hover{color:var(--ink);border-color:var(--ink-dim)}
+
+/* ── DRAWER ── */
+.drawer{display:none;background:var(--amber-l);border-bottom:1px solid var(--amber-b);
+  padding:10px 18px;gap:10px;align-items:center;flex-shrink:0}
+.drawer.open{display:flex}
+.drawer label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
+  color:var(--amber);white-space:nowrap;font-weight:600}
+.drawer input{flex:1;background:#fff;border:1px solid var(--amber-b);border-radius:var(--r);
+  color:var(--ink);padding:8px 12px;font-family:var(--mono);font-size:12px}
+.drawer input:focus{outline:none;border-color:var(--amber)}
+.drawer .save-btn{padding:8px 16px;border:none;border-radius:var(--r);
+  background:var(--amber);color:#fff;font-weight:600;font-size:13px}
+.drawer .hint{font-size:11px;color:var(--amber);white-space:nowrap}
+
+/* ── WORKSPACE ── */
+.workspace{flex:1;overflow:hidden;position:relative}
+.page{position:absolute;inset:0;display:none;overflow:hidden}
+.page.on{display:flex}
+
+/* ══════════════════════════════
+   NEWSGEN PAGE
+══════════════════════════════ */
+#pg-newsgen{flex-direction:row}
+.rail{width:370px;flex-shrink:0;border-right:1px solid var(--line);
+  background:var(--surface);display:flex;flex-direction:column;overflow:hidden}
+.rail-scroll{flex:1;overflow-y:auto;padding:16px}
+.step{margin-bottom:16px}
+.step-hd{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.step-hd .num{width:19px;height:19px;border-radius:50%;background:var(--red);color:#fff;
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-hd .lbl{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:1.8px;color:var(--ink-dim)}
+.seg-ctrl{display:flex;gap:5px;margin-bottom:10px}
+.sc{flex:1;padding:8px 4px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--surface2);color:var(--ink-dim);font-size:12px;font-weight:600;transition:.15s}
+.sc:hover{border-color:var(--ink-dim);color:var(--ink)}
+.sc.on{background:var(--red-l);border-color:var(--red-b);color:var(--red)}
+textarea,input[type=number],input[type=text]{width:100%;background:var(--surface2);
+  border:1px solid var(--line);border-radius:var(--r);color:var(--ink);
+  padding:10px 12px;font-size:14px;font-family:var(--tamil);
+  transition:border-color .15s;box-shadow:inset 0 1px 2px rgba(0,0,0,.04)}
+textarea:focus,input:focus{outline:none;border-color:var(--cyan);background:#fff}
+textarea{resize:vertical;min-height:110px;line-height:1.7}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 12px;border:1px solid var(--line);border-radius:20px;
+  background:var(--surface2);color:var(--ink-dim);font-size:12px;
+  font-weight:500;user-select:none;transition:.15s;cursor:pointer}
+.chip:hover{border-color:var(--ink-dim);color:var(--ink)}
+.chip.on{border-color:var(--amber-b);color:var(--amber);background:var(--amber-l)}
+.chip.f.on{border-color:var(--cyan-b);color:var(--cyan);background:var(--cyan-l)}
+.dur-row{display:flex;gap:8px;align-items:center}
+.dur-row input{width:76px;text-align:center;font-family:var(--mono)}
+.dur-q{display:flex;gap:5px}
+.dq{padding:7px 10px;border:1px solid var(--line);border-radius:7px;
+  background:var(--surface2);color:var(--ink-dim);font-family:var(--mono);font-size:11px;transition:.15s}
+.dq:hover{color:var(--cyan);border-color:var(--cyan)}
+.dur-est{font-family:var(--mono);font-size:10px;color:var(--ink-faint);margin-top:6px}
+.img-drop{position:relative;border:2px dashed var(--line);border-radius:var(--r);
+  background:var(--surface2);text-align:center;padding:20px 12px;
+  cursor:pointer;transition:.2s}
+.img-drop:hover{border-color:var(--cyan);background:var(--cyan-l)}
+.img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-drop .ico{font-size:26px;margin-bottom:6px}
+.img-drop .t{font-size:13px;color:var(--ink-dim);font-weight:500}
+.img-drop .s{font-size:11px;color:var(--ink-faint);margin-top:3px}
+#imgPreview{margin-top:10px;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--line);display:none}
+#imgPreview img{width:100%;display:block;max-height:160px;object-fit:cover}
+.src-note{font-size:11px;color:var(--ink-faint);margin-top:7px;line-height:1.5;
+  padding:7px 10px;background:var(--surface2);border-radius:6px;border-left:2px solid var(--line)}
+.rail-foot{padding:12px 16px;border-top:1px solid var(--line);background:var(--surface);flex-shrink:0}
+.btn-primary{width:100%;padding:12px;border:none;border-radius:10px;
+  background:var(--red);color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px;
+  transition:.15s;box-shadow:0 2px 8px rgba(220,38,38,.25)}
+.btn-primary:hover{background:var(--red-h);transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(220,38,38,.3)}
+.btn-primary:disabled{background:#9CA3AF;cursor:wait;transform:none;box-shadow:none}
+
+/* stage */
+.stage{flex:1;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column}
+.stage-head{display:flex;align-items:center;gap:10px;padding:10px 18px;
+  border-bottom:1px solid var(--line);background:var(--surface);box-shadow:var(--sh);flex-shrink:0}
+.stage-head .t{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:2px;color:var(--ink-dim)}
+.stage-acts{margin-left:auto;display:flex;gap:7px}
+.btn{padding:7px 12px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--surface);color:var(--ink-dim);font-size:12px;font-weight:600;
+  transition:.15s;display:inline-flex;align-items:center;gap:5px;box-shadow:var(--sh)}
+.btn:hover{color:var(--ink);border-color:var(--ink-dim)}
+.btn.red{border-color:var(--red-b);color:var(--red);background:var(--red-l)}
+.btn.red:hover{background:var(--red);color:#fff}
+.btn.grn{border-color:var(--green-b);color:var(--green);background:var(--green-l)}
+.stage-body{padding:18px;max-width:900px;width:100%}
+
+/* empty */
+.empty{margin:50px auto;max-width:520px;text-align:center}
+.empty .mark{font-family:var(--mono);font-size:10px;letter-spacing:3px;
+  color:var(--ink-faint);margin-bottom:18px}
+.flow-steps{display:flex}
+.fs{flex:1;padding:14px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--sh)}
+.fs:first-child{border-radius:10px 0 0 10px}
+.fs:last-child{border-radius:0 10px 10px 0}
+.fs+.fs{border-left:none}
+.fs .n{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;
+  color:var(--red);margin-bottom:5px;font-weight:600}
+.fs .d{font-size:12px;color:var(--ink-dim);line-height:1.5}
+.empty .note{margin-top:12px;font-size:11px;color:var(--ink-faint)}
+
+/* cards */
+.slugstrip{display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;
+  padding:12px 15px;margin-bottom:12px;box-shadow:var(--sh)}
+.slugstrip .slug{font-family:var(--mono);font-size:13px;font-weight:600}
+.slugstrip .btype{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;
+  color:var(--amber);border:1px solid var(--amber-b);border-radius:5px;
+  padding:2px 8px;background:var(--amber-l)}
+.slugstrip .dur{margin-left:auto;font-family:var(--mono);font-size:15px;
+  font-weight:700;color:var(--green)}
+.slugstrip .dur small{font-size:9px;color:var(--ink-faint);
+  letter-spacing:1.5px;display:block;text-align:right}
+.sec{background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:10px;margin-bottom:10px;overflow:hidden;box-shadow:var(--sh)}
+.sec-hd{display:flex;align-items:center;gap:8px;padding:8px 13px;
+  border-bottom:1px solid var(--line-soft);background:var(--surface2)}
+.rtag{font-family:var(--mono);font-size:9px;font-weight:600;
+  letter-spacing:1.3px;padding:3px 9px;border-radius:5px}
+.rt-ANCHOR{background:var(--amber-l);color:var(--amber);border:1px solid var(--amber-b)}
+.rt-VO{background:var(--cyan-l);color:var(--cyan);border:1px solid var(--cyan-b)}
+.rt-BYTE{background:var(--green-l);color:var(--green);border:1px solid var(--green-b)}
+.rt-MOS{background:var(--violet-l);color:var(--violet);border:1px solid var(--violet-b)}
+.rt-TICKER{background:#FFF7ED;color:#C2410C;border:1px solid #FED7AA}
+.rt-RDR,.rt-BREATHER{background:var(--violet-l);color:var(--violet);border:1px solid var(--violet-b)}
+.rt-PKG{background:var(--red-l);color:var(--red);border:1px solid var(--red-b)}
+.rt-META{background:var(--surface3);color:var(--ink-dim);border:1px solid var(--line)}
+.sec-hd .sdur{font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+.cpybtn{margin-left:auto;border:1px solid var(--line);background:var(--surface);
+  color:var(--ink-dim);border-radius:6px;padding:4px 11px;font-size:11px;transition:.15s}
+.cpybtn:hover{color:var(--cyan);border-color:var(--cyan)}
+.cpybtn.done{color:var(--green);border-color:var(--green-b);background:var(--green-l)}
+.sec-body{padding:13px 15px;font-family:var(--tamil);font-size:15px;
+  line-height:1.85;white-space:pre-wrap}
+.sec-body .cue{font-family:var(--mono);font-size:11px;color:var(--green);
+  display:block;margin-top:8px;padding:4px 8px;background:var(--green-l);border-radius:4px}
+.mos-block{padding:13px 15px}
+.mos-sent{font-family:var(--tamil);font-size:15px;font-weight:600;
+  line-height:1.7;margin-bottom:12px;padding-bottom:10px;
+  border-bottom:1px solid var(--line-soft)}
+.ticker-hd{font-family:var(--tamil);font-size:14px;font-weight:700;
+  padding:9px 12px;background:var(--amber-l);border-radius:6px;
+  border-left:3px solid var(--amber);margin-bottom:8px}
+.ticker-pts{list-style:none}
+.ticker-pts li{display:flex;gap:8px;padding:7px 0;
+  border-bottom:1px solid var(--line-soft);font-family:var(--tamil);
+  font-size:14px;line-height:1.6;color:var(--ink-dim)}
+.ticker-pts li:last-child{border-bottom:none}
+.ticker-pts li::before{content:'▶';color:var(--red);font-size:9px;
+  flex-shrink:0;margin-top:5px}
+.stat-row{display:flex;gap:10px;margin-bottom:14px}
+.stat{flex:1;background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;padding:12px;text-align:center;box-shadow:var(--sh)}
+.stat .v{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--green)}
+.stat .l{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;
+  color:var(--ink-faint);margin-top:4px}
+.removed{border-left:3px solid var(--violet);background:var(--violet-l);
+  border-radius:0 10px 10px 0;padding:10px 13px;font-size:12.5px;
+  color:var(--ink-dim);margin-top:10px;line-height:1.6}
+.spinner-wrap{padding:60px 0;text-align:center}
+.spinner{border:3px solid var(--line);border-top-color:var(--red);border-radius:50%;
+  width:32px;height:32px;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-txt{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim)}
+.error-box{margin:20px auto;max-width:540px;border:1px solid var(--red-b);
+  background:var(--red-l);border-radius:10px;padding:15px 17px;
+  font-size:13px;line-height:1.7;color:#991B1B}
+.error-box b{color:var(--red)}
+
+/* ══════════════════════════════
+   TRANSCRIBER PAGE — FULL WINDOW
+══════════════════════════════ */
+#pg-transcriber{background:var(--bg);overflow-y:auto;flex-direction:column;align-items:center}
+.t-wrap{width:100%;max-width:780px;padding:24px 20px 60px}
+.t-title{font-size:20px;font-weight:700;margin-bottom:4px}
+.t-sub{font-size:13px;color:var(--ink-dim);margin-bottom:22px}
+.tpanel{background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:22px;margin-bottom:16px;box-shadow:var(--sh)}
+.tpanel h2{font-family:var(--mono);font-size:10px;letter-spacing:1.8px;
+  font-weight:600;color:var(--ink-dim);text-transform:uppercase;margin-bottom:16px}
+.t-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.t-field{flex:1;min-width:140px}
+.t-field label{display:block;font-size:11.5px;color:var(--ink-dim);
+  margin-bottom:5px;font-weight:500}
+select{width:100%;background:var(--surface2);border:1px solid var(--line);
+  color:var(--ink);padding:9px 10px;border-radius:var(--r);
+  font-family:var(--ui);font-size:13.5px}
+select:focus{outline:none;border-color:var(--cyan)}
+.t-output-lang{background:var(--cyan-l);border:1px solid var(--cyan-b);
+  border-radius:var(--r);padding:3px 6px}
+.dz{border:2px dashed var(--line);border-radius:10px;padding:28px 16px;
+  text-align:center;cursor:pointer;transition:.2s;background:var(--surface2);
+  position:relative}
+.dz:hover,.dz.drag{border-color:var(--cyan);background:var(--cyan-l)}
+.dz input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.dz .ico{font-size:28px;margin-bottom:8px;color:var(--ink-faint)}
+.dz .mt{font-size:14px;color:var(--ink-dim);font-weight:500}
+.dz .st{font-size:11.5px;color:var(--ink-faint);margin-top:4px}
+.t-fname{font-family:var(--mono);font-size:11.5px;color:var(--green);
+  margin-top:8px;word-break:break-all;font-weight:500;min-height:16px}
+.t-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.t-run{flex:1;min-width:140px;background:var(--green);border:none;color:#fff;
+  padding:12px;border-radius:8px;font-family:var(--mono);font-size:13px;
+  letter-spacing:.8px;font-weight:600;transition:.15s;
+  box-shadow:0 2px 8px rgba(5,150,105,.25)}
+.t-run:hover:not(:disabled){background:#047857;transform:translateY(-1px)}
+.t-run:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.t-translate-btn{flex:1;min-width:140px;background:var(--cyan);border:none;color:#fff;
+  padding:12px;border-radius:8px;font-family:var(--mono);font-size:13px;
+  letter-spacing:.8px;font-weight:600;transition:.15s;
+  box-shadow:0 2px 8px rgba(2,132,199,.25);display:none}
+.t-translate-btn:hover:not(:disabled){background:#0369A1}
+.t-translate-btn:disabled{opacity:.4;cursor:not-allowed}
+.t-status{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);
+  min-height:16px;margin-top:10px}
+.t-status.active{color:var(--amber)}.t-status.done{color:var(--green)}.t-status.err{color:var(--red)}
+.t-bar{height:4px;background:var(--surface3);border-radius:2px;
+  margin-top:8px;display:none;overflow:hidden}
+.t-bar.show{display:block}
+.t-bar-fill{height:100%;width:0;background:var(--green);
+  transition:width .3s;border-radius:2px}
+/* transcript box with language indicator */
+.t-out-wrap{display:none;margin-top:14px}
+.t-out-wrap.show{display:block}
+.t-lang-badge{display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:1.2px;
+  padding:3px 10px;border-radius:20px;margin-bottom:8px;font-weight:600}
+.t-lang-badge.original{background:var(--surface2);color:var(--ink-dim);
+  border:1px solid var(--line)}
+.t-lang-badge.translated{background:var(--cyan-l);color:var(--cyan);
+  border:1px solid var(--cyan-b)}
+.t-box{background:var(--surface2);border:1px solid var(--line);border-radius:8px;
+  padding:16px;font-size:15px;line-height:1.8;white-space:pre-wrap;
+  max-height:320px;overflow-y:auto;font-family:var(--tamil)}
+.t-copy-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.t-copy-row button{padding:8px 14px;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--surface);color:var(--ink-dim);
+  font-size:12.5px;font-weight:500;transition:.15s}
+.t-copy-row button:hover{color:var(--cyan);border-color:var(--cyan);background:var(--cyan-l)}
+.t-copy-row .send-btn{border-color:var(--red-b);color:var(--red);background:var(--red-l)}
+.t-copy-row .send-btn:hover{background:var(--red);color:#fff}
+.t-note{font-size:12px;color:var(--ink-faint);text-align:center;margin-top:20px;
+  line-height:1.6;padding:12px;background:var(--surface);
+  border-radius:8px;border:1px solid var(--line)}
+/* whisper quality warning */
+.t-quality-note{background:var(--amber-l);border:1px solid var(--amber-b);
+  border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--amber);
+  margin-bottom:14px;line-height:1.6}
+.t-quality-note b{color:var(--amber);display:block;margin-bottom:4px}
+
+/* ── FOOTER ── */
+.footbar{height:30px;padding:0 18px;border-top:1px solid var(--line);
+  background:var(--surface);display:flex;align-items:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:1px;
+  color:var(--ink-faint);flex-shrink:0;gap:16px}
+.footbar .r{margin-left:auto}
+
+
+/* ── TRANSCRIBER ADDITIONS ── */
+.t-mode-tabs{display:flex;gap:6px;margin-bottom:16px}
+.tmt{flex:1;padding:10px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--surface);color:var(--ink-dim);font-size:13px;font-weight:600;transition:.15s}
+.tmt:hover:not(.on){color:var(--ink);border-color:var(--ink-dim)}
+.tmt.on{background:var(--cyan);color:#fff;border-color:var(--cyan);
+  box-shadow:0 2px 8px rgba(2,132,199,.25)}
+.mic-controls{display:flex;gap:10px;margin-bottom:10px}
+.mic-viz{display:none;align-items:center;gap:10px;padding:8px 0}
+.mic-viz.show{display:flex}
+.mic-bars{display:flex;gap:3px;align-items:flex-end;height:36px}
+.mic-bar{width:5px;background:var(--green);border-radius:2px;transition:height .08s;min-height:3px}
+/* output split */
+.out-split{display:flex;gap:12px;margin-bottom:14px}
+.out-half{flex:1;min-width:0}
+.out-half-label{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:1.3px;padding:3px 9px;border-radius:5px;display:inline-block;
+  margin-bottom:7px;background:var(--surface2);color:var(--ink-dim);border:1px solid var(--line)}
+.translated-lbl{background:var(--cyan-l);color:var(--cyan);border-color:var(--cyan-b)}
+/* on-air box */
+.onair-section{border-top:2px solid var(--cyan);padding-top:14px;margin-top:4px}
+.onair-label{font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:1.5px;color:var(--cyan);margin-bottom:7px}
+.onair-hint{font-size:10px;font-weight:400;color:var(--ink-faint);letter-spacing:0}
+.onair-box{width:100%;min-height:90px;font-family:var(--tamil);font-size:15px;
+  line-height:1.75;background:var(--cyan-l);border:1px solid var(--cyan-b);
+  border-radius:var(--r);padding:10px 12px;resize:vertical;margin-bottom:10px;
+  color:var(--ink)}
+.onair-box:focus{border-color:var(--cyan);background:#fff;outline:none}
+.copy-cg-btn{background:var(--cyan)!important;color:#fff!important;
+  border-color:var(--cyan)!important;font-weight:700!important}
+.copy-cg-btn:hover{background:#0369A1!important}
+/* progress bar */
+.t-prog{background:var(--surface3);border-radius:20px;height:6px;
+  overflow:hidden;margin:8px 0;display:none}
+.t-prog.show{display:block}
+.t-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));
+  border-radius:20px;transition:width .4s;width:0}
+/* live feed */
+.live-feed-box{background:var(--surface2);border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;margin-top:8px}
+.live-feed-header{display:flex;align-items:center;justify-content:space-between;
+  padding:7px 12px;background:var(--surface3);border-bottom:1px solid var(--line)}
+.live-feed-header .lbl{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-dim)}
+.live-feed-header .clr-btn{border:none;background:none;color:var(--ink-faint);font-size:11px;cursor:pointer}
+.live-feed-header .clr-btn:hover{color:var(--red)}
+.live-feed-scroll{overflow-y:auto;max-height:260px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.live-chunk{border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.live-chunk-orig{font-size:12px;color:var(--ink-dim);padding:5px 10px;background:var(--surface)}
+.live-chunk-tamil{font-family:var(--tamil);font-size:14px;color:var(--ink);
+  padding:8px 10px;background:var(--cyan-l);line-height:1.7;font-weight:500}
+.live-chunk-time{font-family:var(--mono);font-size:9px;color:var(--ink-faint);
+  padding:2px 10px 5px;background:var(--surface)}
+
+/* sel badge */
+#selBadge{position:fixed;bottom:38px;right:14px;z-index:99;display:none;
+  background:var(--ink);color:#fff;border-radius:7px;padding:6px 12px;
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  box-shadow:var(--sh-md);pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand">
+    <div class="dot"></div>
+    <h1>TJ <span>NewsGen</span></h1>
+    <div class="sub">BULLETIN ENGINE</div>
+  </div>
+  <div class="nav-pills">
+    <button class="np on" id="nav-newsgen" onclick="gotoPage('newsgen')">⏺ Script Generator</button>
+    <button class="np green-pill" id="nav-transcriber" onclick="gotoPage('transcriber')" style="background:none;color:var(--ink-dim)">🎙 Transcriber</button>
+  </div>
+  <div class="mode-seg" id="modeSeg">
+    <button class="ms on" id="ms-gen" onclick="setMode('generate')">Generate</button>
+    <button class="ms" id="ms-trim" onclick="setMode('trim')">Trim to Time</button>
+  </div>
+  <div class="topbar-right">
+    <div class="status-pill err" id="apiPill"><span class="led"></span><span id="apiTxt">KEY NEEDED</span></div>
+    <button class="icon-btn" onclick="toggleDrawer()" title="API key">⚙</button>
+  </div>
+</header>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <label>API KEY</label>
+  <input type="password" id="apiKey" placeholder="sk-ant-api03-... (console.anthropic.com → API Keys)">
+  <button class="save-btn" onclick="saveKey()">Save</button>
+  <span class="hint">Browser-only · never sent elsewhere</span>
+</div>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+
+  <!-- ══ NEWSGEN PAGE ══ -->
+  <div class="page on" id="pg-newsgen">
+    <aside class="rail">
+      <div class="rail-scroll">
+
+        <!-- GENERATE PANE -->
+        <div id="pane-gen">
+          <div class="step">
+            <div class="step-hd"><span class="num">1</span><span class="lbl">SOURCE</span></div>
+            <div class="seg-ctrl">
+              <button class="sc on" data-src="raw" onclick="setSrc('raw')">Raw script</button>
+              <button class="sc" data-src="url" onclick="setSrc('url')">Link / URL</button>
+              <button class="sc" data-src="img" onclick="setSrc('img')">Newspaper Image</button>
+            </div>
+            <div id="src-raw">
+              <textarea id="rawScript" placeholder="Reporter script / spot copy — Tamil or English"></textarea>
+            </div>
+            <div id="src-url" style="display:none">
+              <input type="text" id="newsUrl" placeholder="https://article-link...">
+              <div class="src-note">Article web search வழியா படிச்சு facts மட்டும் use ஆகும்.</div>
+            </div>
+            <div id="src-img" style="display:none">
+              <div class="img-drop">
+                <input type="file" id="paperImg" accept="image/*" onchange="loadImg(this)">
+                <div class="ico">📰</div>
+                <div class="t">Newspaper image select பண்ணுங்க</div>
+                <div class="s">Tamil/English clipping · press note · printed text photo</div>
+              </div>
+              <div id="imgPreview"><img id="imgPrevImg" src="" alt=""></div>
+              <div class="src-note" style="margin-top:8px">📌 Clear photo · good light · one article in frame = best accuracy</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-hd"><span class="num">2</span><span class="lbl">BULLETIN TYPE</span></div>
+            <div class="chips" id="btChips">
+              <div class="chip on" data-v="General News">General News</div>
+              <div class="chip" data-v="Top 50">Top 50</div>
+              <div class="chip" data-v="Prime News">Prime News</div>
+              <div class="chip" data-v="3-Minute Stories">3-Min Stories</div>
+              <div class="chip" data-v="Breaking News">Breaking</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-hd"><span class="num">3</span><span class="lbl">FORMAT STRUCTURE</span></div>
+            <div class="chips" id="fmtChips">
+              <div class="chip f on" data-v="VO">VO</div>
+              <div class="chip f" data-v="VO BREATH">VO Breath</div>
+              <div class="chip f" data-v="VO + BYTE">VO + Byte</div>
+              <div class="chip f" data-v="HL">HL</div>
+              <div class="chip f" data-v="Anchor Read (RDR)">RDR</div>
+              <div class="chip f" data-v="Package (PKG)">PKG</div>
+              <div class="chip f" data-v="MINI TALKS">Mini Talks</div>
+              <div class="chip f" data-v="ONE MINUTE">One Minute</div>
+              <div class="chip f" data-v="Breather">Breather</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-hd"><span class="num">4</span><span class="lbl">TARGET DURATION</span></div>
+            <div class="dur-row">
+              <input type="number" id="targetDur" value="40" min="8" max="300">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--ink-faint)">sec</span>
+              <div class="dur-q">
+                <button class="dq" onclick="setDur(20)">20</button>
+                <button class="dq" onclick="setDur(40)">40</button>
+                <button class="dq" onclick="setDur(60)">60</button>
+                <button class="dq" onclick="setDur(100)">100</button>
+              </div>
+            </div>
+            <div class="dur-est">≈ <span id="wEst">70</span> Tamil words · 1.75 w/s</div>
+          </div>
+
+          <div class="step">
+            <div class="step-hd"><span class="num">5</span><span class="lbl">INSTRUCTIONS (OPTIONAL)</span></div>
+            <textarea id="genInstr" style="min-height:56px" placeholder="Eg: Collector byte highlight, location first..."></textarea>
+          </div>
+        </div>
+
+        <!-- TRIM PANE -->
+        <div id="pane-trim" style="display:none">
+          <div class="step">
+            <div class="step-hd"><span class="num">1</span><span class="lbl">EXISTING TAMIL SCRIPT</span></div>
+            <textarea id="trimScript" style="min-height:200px" placeholder="Full script paste பண்ணுங்க..."></textarea>
+          </div>
+          <div class="step">
+            <div class="step-hd"><span class="num">2</span><span class="lbl">TRIM TO DURATION</span></div>
+            <div class="dur-row">
+              <input type="number" id="trimDur" value="30" min="8" max="300">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--ink-faint)">sec</span>
+              <div class="dur-q">
+                <button class="dq" onclick="setTrimDur(20)">20</button>
+                <button class="dq" onclick="setTrimDur(30)">30</button>
+                <button class="dq" onclick="setTrimDur(40)">40</button>
+              </div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-hd"><span class="num">3</span><span class="lbl">INSTRUCTIONS (OPTIONAL)</span></div>
+            <textarea id="trimInstr" style="min-height:56px" placeholder="Eg: statistics retain, quotes shorten..."></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="rail-foot">
+        <button class="btn-primary" id="goBtn" onclick="go()">⏺ &nbsp;GENERATE SCRIPT</button>
+      </div>
+    </aside>
+
+    <main class="stage">
+      <div class="stage-head">
+        <span class="t" id="stageTitle">RUNDOWN OUTPUT</span>
+        <div class="stage-acts" id="stageActs"></div>
+      </div>
+      <div class="stage-body" id="output">
+        <div class="empty">
+          <div class="mark">— STANDBY —</div>
+          <div class="flow-steps">
+            <div class="fs"><div class="n">STEP 1</div><div class="d">Raw script, link or newspaper image</div></div>
+            <div class="fs"><div class="n">STEP 2</div><div class="d">Bulletin type, format, duration</div></div>
+            <div class="fs"><div class="n">STEP 3</div><div class="d">Generate → copy blocks → paste in Blaze</div></div>
+          </div>
+          <div class="note">TamilJanam house style · Anchor → VO → MOS · Blaze-ready</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ══ TRANSCRIBER PAGE — FULL WINDOW ══ -->
+  <div class="page" id="pg-transcriber">
+    <div class="t-wrap">
+      <div class="t-title">🎙 Transcriber + Live Wire Tool</div>
+      <div class="t-sub">Reporter bytes · Press meets · Live ANI/agency feeds → Tamil on-air text. Runs on your device.</div>
+
+      <div class="t-mode-tabs">
+        <button class="tmt on" id="tmt-file" onclick="setTMode('file')">📁 File Upload</button>
+        <button class="tmt" id="tmt-mic" onclick="setTMode('mic')">🎤 Live Mic / Wire Feed</button>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="tpanel">
+        <h2>Settings</h2>
+        <div class="t-row">
+          <div class="t-field">
+            <label>Spoken language (in audio)</label>
+            <select id="tSpokenLang">
+              <option value="auto">Auto-detect</option>
+              <option value="ta">Tamil</option>
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="te">Telugu</option>
+              <option value="kn">Kannada</option>
+              <option value="ml">Malayalam</option>
+            </select>
+          </div>
+          <div class="t-field">
+            <label>Output language</label>
+            <select id="tOutputLang" onchange="handleOutputLangChange()">
+              <option value="same">Same as spoken</option>
+              <option value="ta-nllb">Tamil — free, on-device (NLLB)</option>
+              <option value="ta-claude">Tamil — Claude API</option>
+              <option value="en">English — Claude API</option>
+            </select>
+          </div>
+          <div class="t-field">
+            <label>Whisper model</label>
+            <select id="tModel">
+              <option value="Xenova/whisper-base">Base — fast ~150MB</option>
+              <option value="Xenova/whisper-small" selected>Small — accurate ~490MB</option>
+            </select>
+          </div>
+        </div>
+        <div id="tApiNote" style="display:none" class="src-note">🔑 Claude API key — ⚙ icon-ல் set பண்ணுங்க.</div>
+        <div id="tNllbNote" style="display:none" class="src-note">📦 NLLB: first use ~1.2GB download (one-time, cached). Free, no API key.</div>
+      </div>
+
+      <!-- ═══ FILE MODE ═══ -->
+      <div id="t-file-panel" class="tpanel">
+        <h2>Upload Audio File</h2>
+        <div class="t-quality-note"><b>⚠ Best results:</b> Speech-only audio, no background music/noise. Trim to speech before uploading.</div>
+        <div class="dz" id="dz">
+          <input type="file" id="tFile" accept="audio/*">
+          <div class="ico">🎙</div>
+          <div class="mt">Click to choose audio or drag here</div>
+          <div class="st">MP3 · WAV · M4A · OGG — reporter bytes, press meets, phone clips</div>
+        </div>
+        <div class="t-fname" id="tFname"></div>
+        <button class="t-run" id="tRunBtn" disabled>▶ &nbsp;TRANSCRIBE FILE</button>
+        <div class="t-prog" id="tProg"><div class="t-prog-fill" id="tProgFill"></div></div>
+        <div class="t-status" id="tStatus"></div>
+        <!-- FILE OUTPUT — immediately below button, no scroll needed -->
+        <div id="fileOutArea" style="display:none;margin-top:16px">
+          <div class="out-split">
+            <div class="out-half" id="fileOrigHalf">
+              <div class="out-half-label" id="tOrigBadge">TRANSCRIPT</div>
+              <div class="t-box" id="tOrigBox"></div>
+            </div>
+            <div class="out-half" id="fileTransHalf" style="display:none">
+              <div class="out-half-label translated-lbl">TAMIL TRANSLATION</div>
+              <div class="t-box" id="tTransBox"></div>
+            </div>
+          </div>
+          <div class="onair-section">
+            <div class="onair-label">✦ ON-AIR TEXT &nbsp;<span class="onair-hint">— இதை edit பண்ணி CG / Ticker-க்கு copy பண்ணுங்க</span></div>
+            <textarea id="onairText" class="onair-box" placeholder="Translated / transcribed text இங்கே வரும் — edit பண்ணி copy பண்ணுங்க..."></textarea>
+            <div class="t-copy-row">
+              <button onclick="copyOnair(this)" class="copy-cg-btn">📋 Copy for CG / Ticker</button>
+              <button id="tCopyOrig">Copy transcript</button>
+              <button id="tCopyTrans" style="display:none">Copy translation</button>
+              <button id="tDownload">⬇ Download .txt</button>
+              <button class="send-btn" id="tSend">⏩ Send to NewsGen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ MIC / LIVE WIRE MODE ═══ -->
+      <div id="t-mic-panel" class="tpanel" style="display:none">
+        <h2>Live Mic / Wire Feed Capture</h2>
+        <div class="src-note" style="margin-bottom:12px;border-left-color:var(--cyan)">
+          <b>Usage:</b> ANI/agency wire feed-ஐ speakers-ல் play பண்ணுங்க. Start அழுத்துங்க — mic capture பண்ணி 6 seconds-க்கு ஒரு தடவை transcribe + translate ஆகும்.<br><br>
+          <b>⚠ Mic needs localhost:</b> <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">python -m http.server 8000</code> → <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">http://localhost:8000/tj-newsgen-desktop.html</code>
+        </div>
+        <div class="mic-controls">
+          <button class="t-run" id="micStartBtn" onclick="startMic()">🎤 &nbsp;START CAPTURE</button>
+          <button class="t-run" id="micStopBtn" style="background:var(--red);display:none" onclick="stopMic()">⏹ &nbsp;STOP</button>
+        </div>
+        <div class="t-status" id="micStatus"></div>
+        <div class="mic-viz" id="micViz">
+          <div class="mic-bars" id="micBars"></div>
+          <span id="micVizLabel" style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">——</span>
+        </div>
+
+        <!-- ON-AIR BOX — always visible in mic mode, updates live -->
+        <div class="onair-section" id="micOnairSection" style="margin-top:14px">
+          <div class="onair-label">✦ ON-AIR TEXT &nbsp;<span class="onair-hint">— live update ஆகும், edit பண்ணி copy பண்ணுங்க</span></div>
+          <textarea id="micOnairText" class="onair-box" style="min-height:110px" placeholder="Captured Tamil text இங்கே live-ஆ வரும்..."></textarea>
+          <div class="t-copy-row">
+            <button onclick="copyMicOnair(this)" class="copy-cg-btn">📋 Copy for CG / Ticker</button>
+            <button onclick="clearMicOutput()" style="border-color:var(--red-b);color:var(--red)">🗑 Clear</button>
+            <button class="send-btn" id="micSend">⏩ Send to NewsGen</button>
+          </div>
+        </div>
+
+        <!-- LIVE FEED LOG — collapsible, shows all chunks -->
+        <details style="margin-top:14px">
+          <summary style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);padding:8px 0;user-select:none">
+            🔴 LIVE FEED LOG — click to expand all chunks
+          </summary>
+          <div class="live-feed-box show" id="liveFeedBox">
+            <div class="live-feed-header">
+              <span class="lbl">Chunks captured this session</span>
+              <button class="clr-btn" id="clearFeedBtn">Clear log</button>
+            </div>
+            <div class="live-feed-scroll" id="liveFeedScroll">
+              <div style="padding:16px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks will appear here as captured…</div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="t-note">
+        Whisper transcription runs on your device — audio never leaves your computer.<br>
+        NLLB translation is also on-device and free. Claude translate uses your API key.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footbar">
+  <span>TJ NEWSGEN v2.2 · DESK BUILD</span>
+  <span>CLAUDE SONNET · 1.75 W/S</span>
+  <span class="r">SELECT TEXT → WORD COUNT</span>
+</footer>
+<div id="selBadge"></div>
+
+<script>
+const WPS = 1.75;
+
+/* ══ TRAINED PROMPTS ══ */
+const SYS = `You are the senior output editor of TamilJanam, a Tamil TV news channel. You write broadcast-ready Tamil news scripts (NRCS rundown style) strictly in TamilJanam HOUSE STYLE.
+
+TAMILJANAM HOUSE STYLE (learned from real aired scripts — follow exactly):
+- Body length: 4-6 sentences regardless of raw source length. Ruthlessly compress.
+- LEAD: open with the outcome / latest development + place. (e.g. medal winners' welcome is the lead, not the tournament.)
+- Pure Tamil word preference over Sanskrit/English: கும்பாபிஷேகம் → குடமுழுக்கு; 19 வயதுக்குட்பட்டோர் → இளையோர்.
+- ALWAYS DROP: department names (இந்து சமய அறநிலைத்துறை etc.), procedural ritual details (முதல்/இரண்டாம் கால யாகசாலை), lists of states/dignitaries, sweets/garlands ceremony detail, "சமூக வலைதளங்களில் வைரல்" framing, repeated sentences, speculation and rhetorical questions (நடவடிக்கை எடுக்குமா?).
+- ALWAYS KEEP: place hierarchy (மாவட்டம் → ஊராட்சி → கிராமம்), exact numbers (பதக்கங்கள், தேதிகள்), names with designation.
+- Connectors between sentences: அதன்படி, / அதைத் தொடர்ந்து, / இதனையடுத்து, / இதில் பங்கேற்ற.
+- Party/org names abbreviated after context: தமிழக வெற்றி கழகம் → த.வெ.க.
+- Dates format: ஜூன் 27 முதல் ஜூன் 29-ஆம் தேதி வரை.
+- Controversy stories: state facts neutrally, close with "...அதிர்ச்சியையும் சர்ச்சையையும் ஏற்படுத்தி உள்ளது" style. Never speculate.
+- Sentence endings: நடைபெற்றது / அளிக்கப்பட்டது / செய்தனர் / ஏற்படுத்தி உள்ளது.
+- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors — "...என்றும்", "...எனவும்", "மற்றும்" — and close with என்றார் / என தெரிவித்தார் / என கூறினார். NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...எடுத்துள்ளது வரவேற்கத்தக்கது என்றும், கலப்பு திருமண திட்டத்தில்... சான்றிதழ் பெற அரசு நிர்பந்திக்க வேண்டும் என்றும், போதைப்பொருள் பரவல்... பாதித்துள்ளது என்றும் அவர் கூறினார்."
+
+HOUSE STYLE EXAMPLE 1 (RAW → AIRED):
+RAW (long, repetitive): திருவண்ணாமலை அடுத்த அடிஅண்ணாமலை கிராமத்தில் பழமை வாய்ந்த ஆதி அருணாச்சலேஸ்வரர் கோவில் கும்பாபிஷேகம் வெகு விமர்சையாக நடைபெற்றது... [details of HR&CE works, yagasalai first/second/third kala poojas, go pooja, sivachariyars veda mantras, kalasam, devotees repeated twice]
+AIRED: திருவண்ணாமலை அடுத்த அடிஅண்ணாமலை கிராமத்தில் ஆயிரம் ஆண்டுகள் பழமையான ஆதி அருணாச்சலேஸ்வரர் கோவிலில் திருப்பணிகள் நிறைவடைந்ததை அடுத்து குடமுழுக்கு விழா நடத்த தீர்மானிக்கப்பட்டது. அதன்படி, யாகசாலை பூஜைகள் நடைபெற்றது. அதைத் தொடர்ந்து, கோபுரக் கலசங்களில் புனிதநீர் ஊற்றப்பட்டு குடமுழுக்கு நடத்தப்பட்டது. இதில் பங்கேற்ற ஆயிரக்கணக்கான பக்தர்கள், அரோகரா முழக்கமிட்டு சாமி தரிசனம் செய்தனர்.
+MOS SLUG: திருவண்ணாமலை அருகே ஆதி அருணாச்சலேஸ்வரர் கோவில் குடமுழுக்கு விழா வெகுவிமரிசையாக நடைபெற்றது.
+
+HOUSE STYLE EXAMPLE 2 (RAW → AIRED):
+RAW: [TVK district secretary flagged off govt bus service, 25-year demand, minister recommendation, sweets distributed, earlier polio drops controversy video, "shock", will party act question]
+AIRED: தென்காசி மாவட்டம் கீழஆம்பூர் ஊராட்சிக்குட்பட்ட மஞ்சப்புள்ளி கிராமத்தில் புதிய பேருந்து சேவை தொடக்க விழா நடைபெற்றது. இதில், அமைச்சர் விஜய் தமிழன் பார்த்திபன் பரிந்துரையின் பேரில், தென்காசி தெற்கு மாவட்ட த.வெ.க. செயலாளர் விபின் சக்கரவர்த்தி பங்கேற்று, அரசுப்பேருந்து சேவையை தொடங்கி வைத்தார். சில நாட்களுக்கு முன்பு விருதுநகரில் த.வெ.க நிர்வாகி ஒருவர் குழந்தைகளுக்கு போலியோ சொட்டு மருந்து வழங்கியது சர்ச்சையை ஏற்படுத்திய நிலையில், தற்போது த.வெ.க நிர்வாகி அரசுப் பேருந்தை தொடங்கி வைத்திருப்பது அதிர்ச்சியையும் சர்ச்சையையும் ஏற்படுத்தி உள்ளது.
+MOS SLUG: தென்காசி மாவட்டத்தில் த.வெ.க. மாவட்டச் செயலாளர் அரசுப்பேருந்து சேவையை தொடங்கி வைத்த நிகழ்வு சர்ச்சையை ஏற்படுத்தி உள்ளது.
+
+
+TAMILJANAM BLAZE FORMAT TEMPLATES (structure your segments EXACTLY like this):
+- HL: one ANCHOR segment, 1-2 short lines, append (ப்ரீத்) at end. 15-45 sec.
+- VO BREATH: segment1 ANCHOR = ONE sentence lead; segment2 ANCHOR = 3-5 sentence read ending (ப்ரீத்); segment3 VO = detailed full script, one para per point separated by blank lines.
+- RDR: segment1 ANCHOR = 1-sentence breaking lead; segment2 ANCHOR = condensed 4-6 sentence read.
+- VO + BYTE: like VO BREATH plus BYTE segment with speaker + byte_in/byte_out cues; mark byte position in VO with (பைட்).
+- PKG: segment1 ANCHOR = 2-3 sentence intro ending "...அது பற்றிய ஒரு செய்தி தொகுப்பு."; segment2 VO = LONG multi-para VO covering all angles; end with reporter PTC line if source has reporter name.
+- ONE MINUTE: single VO segment, ~5 paras, ~105 words total (≈60 sec).
+- MINI TALKS: segment1 ANCHOR = intro ending "...மினிடாக்ஸ் பகுதியில் பார்க்கலாம்..."; segment2 VO = interview content with ----- separators between topic shifts; put 4-6 pulled QUOTES (in "quotes") into supers array for 50-50 cards.
+- BREATHER: ultra-short 8-12 sec single ANCHOR read.
+- supers array = Notes column content: 4-6 short Tamil lines + location line. NEVER put supers inside script text.
+
+TECHNICAL RULES:
+- Read pace: 1.75 Tamil words per second (Blaze-verified rate). Compute segment durations from word counts. Total must fit the target duration (±10%).
+- Format definitions:
+  * VO = anchor voice-over on visuals
+  * BYTE = soundbite; give BYTE IN (first words) and BYTE OUT (last words) cues plus who is speaking; do NOT invent quotes — only use quotes present in the source, else mark [BYTE: reporter-ஆல் confirm பண்ணவும்]
+  * RDR = anchor read on camera, no visuals
+  * PKG = full package: anchor lead + VO + BYTE slots + reporter sign-off (PTC)
+  * BREATHER = ultra-short 8–12 sec headline-style read between segments
+- Bulletin tone: "Top 50" = very tight single-thought items; "Prime News" = fuller context, sharper lead; "3-Minute Stories" = narrative arc with human angle; "Breaking News" = urgent present-tense; "General News" = standard.
+- slug: English NRCS slug in TamilJanam Blaze convention: [FORMAT] [LOCATION CODE] - [SUBJECT] (e.g. "VO BREATH AMT - LADY INJURED", "HL MDU BUS ACCIDENT"). Location codes: CHN=Chennai, MDU=Madurai, CBE=Coimbatore, TRY=Trichy, TNV=Tirunelveli, AMT=Ambattur, NKL=Namakkal, DGL=Dindigul, KRR=Karur, TVM=Thiruvannamalai, SVG=Sivagangai, TNK=Tenkasi. Unknown place: use first 3 consonants uppercase.
+- mos_slug: one complete Tamil sentence summarizing the story, TamilJanam MOS style (see examples above).
+- SUPERS: 2–4 on-screen graphic text lines in Tamil (max 8 words each).
+- TICKER: format as "HEADER||Point 1 (medium, ~15-20 words)||Point 2 (medium, ~15-20 words)" — header is a short bold title; each point is a complete meaningful sentence, not too short, content puriyura mathiri. Use || as separator.
+- ticker_header: header text only (no ||)
+- ticker_points: array of 2 point strings
+- Never fabricate facts, names, numbers, or quotes not in the source. If source lacks a detail, omit it.
+
+Respond ONLY with valid JSON, no markdown fences, no preamble:
+{"slug":"","mos_slug":"","bulletin_type":"","anchor_lead":"","segments":[{"type":"VO|BYTE|RDR|PKG|BREATHER","speaker":"","text":"","byte_in":"","byte_out":"","duration_sec":0}],"ticker":"HEADER||Point1||Point2","ticker_header":"","ticker_points":["",""],"total_duration_sec":0,"editor_note":""}`;
+const SYS_TRIM = `You are the senior output editor of TamilJanam Tamil news channel. Task: trim/condense a Tamil broadcast script to a target duration WITHOUT losing meaning (பொருள் மாறாமல்).
+
+RULES:
+- Read pace: 1.75 Tamil words/sec (Blaze rate) → target word count = seconds × 1.75.
+- Preserve: core facts, names, numbers, place, attribution. Cut: repetition, filler connectors, adjectives, secondary detail — in that priority order.
+- Keep spoken broadcast Tamil register. Sentences must stay grammatical and natural to read aloud.
+- Never add new information.
+- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors — "...என்றும்", "...எனவும்", "மற்றும்" — and close with என்றார் / என தெரிவித்தார் / என கூறினார். NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...எடுத்துள்ளது வரவேற்கத்தக்கது என்றும், கலப்பு திருமண திட்டத்தில்... சான்றிதழ் பெற அரசு நிர்பந்திக்க வேண்டும் என்றும், போதைப்பொருள் பரவல்... பாதித்துள்ளது என்றும் அவர் கூறினார்."
+
+Respond ONLY with valid JSON, no markdown fences:
+{"trimmed_script":"","original_words":0,"trimmed_words":0,"est_duration_sec":0,"removed_summary":"(Tamil-ல் — what was cut and why meaning is intact)"}`;
+
+/* ══ PAGE NAV ══ */
+function gotoPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  ['newsgen','transcriber'].forEach(n=>{
+    const btn=document.getElementById('nav-'+n);
+    btn.classList.toggle('on', n===id);
+    if(n==='newsgen') btn.style.background=n===id?'':''
+  });
+  document.getElementById('nav-newsgen').style.cssText = id==='newsgen'?'':'background:none;color:var(--ink-dim)';
+  document.getElementById('nav-transcriber').style.cssText = id==='transcriber'?'background:var(--green);color:#fff;box-shadow:0 1px 4px rgba(5,150,105,.3)':'background:none;color:var(--ink-dim)';
+  document.getElementById('modeSeg').style.display = id==='newsgen'?'flex':'none';
+}
+
+/* ══ KEY ══ */
+const getKey=()=>document.getElementById('apiKey').value.trim();
+function setApiStatus(){
+  const k=getKey(),p=document.getElementById('apiPill'),t=document.getElementById('apiTxt');
+  if(k&&k.startsWith('sk-ant')){p.className='status-pill ok';t.textContent='API READY';}
+  else if(k){p.className='status-pill err';t.textContent='KEY INVALID?';}
+  else{p.className='status-pill err';t.textContent='KEY NEEDED';}
+}
+function saveKey(){try{localStorage.setItem('tj_key',getKey());}catch(e){}setApiStatus();document.getElementById('drawer').classList.remove('open');}
+function toggleDrawer(){document.getElementById('drawer').classList.toggle('open');}
+window.addEventListener('DOMContentLoaded',()=>{
+  try{const k=localStorage.getItem('tj_key');if(k)document.getElementById('apiKey').value=k;}catch(e){}
+  setApiStatus();
+  if(!getKey())document.getElementById('drawer').classList.add('open');
+  document.getElementById('targetDur').addEventListener('input',e=>{
+    document.getElementById('wEst').textContent=Math.round(e.target.value*WPS);
+  });
+  document.getElementById('wEst').textContent=Math.round(40*WPS);
+});
+
+/* ══ MODE ══ */
+let mode='generate', src='raw', imgB64=null, lastOutput=null;
+function setMode(m){
+  mode=m;
+  document.getElementById('ms-gen').classList.toggle('on',m==='generate');
+  document.getElementById('ms-trim').classList.toggle('on',m==='trim');
+  document.getElementById('pane-gen').style.display=m==='generate'?'block':'none';
+  document.getElementById('pane-trim').style.display=m==='trim'?'block':'none';
+  document.getElementById('goBtn').innerHTML=m==='generate'?'⏺ &nbsp;GENERATE SCRIPT':'✂ &nbsp;TRIM SCRIPT';
+  document.getElementById('stageTitle').textContent=m==='generate'?'RUNDOWN OUTPUT':'TRIM OUTPUT';
+}
+function setSrc(s){
+  src=s;
+  document.querySelectorAll('[data-src]').forEach(b=>b.classList.toggle('on',b.dataset.src===s));
+  document.getElementById('src-raw').style.display=s==='raw'?'block':'none';
+  document.getElementById('src-url').style.display=s==='url'?'block':'none';
+  document.getElementById('src-img').style.display=s==='img'?'block':'none';
+}
+function setDur(v){document.getElementById('targetDur').value=v;document.getElementById('wEst').textContent=Math.round(v*WPS);}
+function setTrimDur(v){document.getElementById('trimDur').value=v;}
+['btChips','fmtChips'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{
+    if(!e.target.classList.contains('chip'))return;
+    document.querySelectorAll('#'+id+' .chip').forEach(c=>c.classList.remove('on'));
+    e.target.classList.add('on');
+  });
+});
+const pick=id=>document.querySelector('#'+id+' .chip.on').dataset.v;
+const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ══ IMAGE ══ */
+function loadImg(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=1568;let w=img.width,h=img.height;
+      if(Math.max(w,h)>MAX){const sc=MAX/Math.max(w,h);w=Math.round(w*sc);h=Math.round(h*sc);}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      imgB64=c.toDataURL('image/jpeg',.85).split(',')[1];
+      const pv=document.getElementById('imgPreview');
+      document.getElementById('imgPrevImg').src='data:image/jpeg;base64,'+imgB64;
+      pv.style.display='block';
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(f);
+}
+
+/* ══ API ══ */
+async function callClaude(system,userMsg,useSearch,attempt){
+  attempt=attempt||1;
+  const key=getKey();
+  if(!key)throw new Error('API key இல்லை — ⚙ → key paste → Save');
+  const body={model:'claude-sonnet-4-6',max_tokens:4000,system,messages:[{role:'user',content:userMsg}]};
+  if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,
+      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify(body)
+  });
+  const data=await r.json();
+  if(data.error){
+    const raw=JSON.stringify(data.error);
+    if(raw.includes('exceeded_limit')||raw.includes('rate_limit')){
+      let w='';const m=raw.match(/"resets_at":"([^"]+)"/);
+      if(m){try{w=' Reset: '+new Date(m[1]).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST.';}catch(e){}}
+      throw new Error('Usage limit — கொஞ்ச நேரம் கழிச்சு try.'+w);
+    }
+    if(raw.includes('credit')||raw.includes('billing'))throw new Error('Credit காலி — console.anthropic.com → Billing recharge.');
+    throw new Error(data.error.message||'API error');
+  }
+  if(data.stop_reason==='max_tokens')throw new Error('Response truncated — duration குறைச்சு try.');
+  const text=(data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n');
+  try{return parseJson(text);}catch(e){
+    if(attempt<2){
+      const note='\n\nIMPORTANT: ONE valid JSON object only, no markdown.';
+      const rm=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?{...b,text:b.text+note}:b):userMsg+note;
+      return callClaude(system,rm,useSearch,attempt+1);
+    }
+    throw new Error('JSON parse failed: '+e.message);
+  }
+}
+function parseJson(text){
+  let c=text.replace(/```json|```/g,'').trim();
+  const s=c.indexOf('{'),e=c.lastIndexOf('}');
+  if(s<0||e<0)throw new Error('No JSON');
+  c=c.slice(s,e+1);
+  try{return JSON.parse(c);}catch(e){
+    let f=c.replace(/,\s*([}\]])/g,'$1');
+    f=f.replace(/"(?:[^"\\]|\\.)*"/gs,m=>m.replace(/\n/g,'\\n').replace(/\t/g,'\\t'));
+    return JSON.parse(f);
+  }
+}
+
+/* simple text Claude call (for translation) */
+async function callClaudeText(prompt){
+  const key=getKey();
+  if(!key)throw new Error('API key needed for translation');
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,
+      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,
+      messages:[{role:'user',content:prompt}]})
+  });
+  const data=await r.json();
+  if(data.error)throw new Error(data.error.message||'Translation API error');
+  return (data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n').trim();
+}
+
+/* ══ UI HELPERS ══ */
+function showLoading(msg){
+  document.getElementById('stageActs').innerHTML='';
+  document.getElementById('output').innerHTML='<div class="spinner-wrap"><div class="spinner"></div><div class="load-txt">'+msg+'</div></div>';
+}
+function showError(e){
+  document.getElementById('output').innerHTML='<div class="error-box"><b>பிழை · </b>'+esc(e.message)+'</div>';
+}
+async function copyText(btn,text){
+  try{await navigator.clipboard.writeText(text);}catch(e){}
+  const old=btn.textContent;btn.textContent='✓ Copied';btn.classList.add('done');
+  setTimeout(()=>{btn.textContent=old;btn.classList.remove('done');},1400);
+}
+const fmtSec=s=>{s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+const wc=s=>(s||'').trim().split(/\s+/).filter(Boolean).length;
+
+/* ══ GO ══ */
+function go(){mode==='generate'?generate():trim();}
+
+async function generate(){
+  const btype=pick('btChips'),fmt=pick('fmtChips');
+  const dur=document.getElementById('targetDur').value;
+  const instr=document.getElementById('genInstr').value.trim();
+  let sourceBlock,useSearch=false,imageMode=false;
+  if(src==='raw'){
+    const raw=document.getElementById('rawScript').value.trim();
+    if(!raw){alert('Raw script paste பண்ணுங்க');return;}
+    sourceBlock='RAW SOURCE SCRIPT:\n"""\n'+raw+'\n"""';
+  }else if(src==='url'){
+    const url=document.getElementById('newsUrl').value.trim();
+    if(!url){alert('URL கொடுங்க');return;}
+    sourceBlock='SOURCE: Read via web search, use ONLY its facts: '+url;
+    useSearch=true;
+  }else{
+    if(!imgB64){alert('Newspaper image upload பண்ணுங்க');return;}
+    sourceBlock='SOURCE: Attached newspaper image. Read ONLY facts printed in it. Ignore ads and other columns.';
+    imageMode=true;
+  }
+  const userMsg=sourceBlock+'\n\nBULLETIN TYPE: '+btype+'\nFORMAT: '+fmt+
+    '\nTARGET DURATION: '+dur+' seconds (~'+Math.round(dur*WPS)+' Tamil words)'+
+    (instr?'\nINSTRUCTIONS: '+instr:'');
+  const btn=document.getElementById('goBtn');
+  btn.disabled=true;
+  showLoading(useSearch?'READING ARTICLE · WRITING SCRIPT':imageMode?'READING NEWSPAPER IMAGE · WRITING SCRIPT':'WRITING BROADCAST SCRIPT');
+  try{
+    const payload=imageMode?[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:imgB64}},{type:'text',text:userMsg}]:userMsg;
+    const out=await callClaude(SYS,payload,useSearch);
+    lastOutput=out;renderRundown(out);
+  }catch(e){showError(e);}
+  btn.disabled=false;
+}
+
+/* ══ RENDER ══ */
+function fullText(o){
+  let t='SLUG: '+o.slug+' ['+o.bulletin_type+'] DUR: '+fmtSec(o.total_duration_sec)+'\n';
+  if(o.mos_slug)t+='MOS: '+o.mos_slug+'\n';
+  t+='\n';
+  if(o.anchor_lead)t+='[ANCHOR]\n'+o.anchor_lead+'\n\n';
+  (o.segments||[]).forEach(s=>{
+    t+='['+s.type+(s.speaker?' — '+s.speaker:'')+']'+(s.duration_sec?' ('+fmtSec(s.duration_sec)+')':'')+'\n'+s.text+'\n';
+    if(s.byte_in)t+='IN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"\n';
+    t+='\n';
+  });
+  if(o.ticker)t+='TICKER: '+o.ticker+'\n';
+  return t;
+}
+function renderRundown(o){
+  document.getElementById('stageActs').innerHTML=
+    '<button class="btn" onclick="copyText(this,fullText(lastOutput))">⧉ Copy all</button>'+
+    '<button class="btn red" onclick="generate()">↻ Regen</button>';
+  let h='<div class="slugstrip"><span class="slug">'+esc(o.slug)+'</span>'+
+    '<span class="btype">'+esc(o.bulletin_type)+'</span>'+
+    '<span class="dur">'+fmtSec(o.total_duration_sec)+'<small>EST DUR</small></span></div>';
+  // 1 ANCHOR
+  if(o.anchor_lead)h+=secCard('ANCHOR','ANCHOR',esc(o.anchor_lead),Math.round(wc(o.anchor_lead)/WPS),o.anchor_lead);
+  // 2 SEGMENTS
+  (o.segments||[]).forEach(s=>{
+    const t=(s.type||'VO').split(/[\s(+]/)[0].toUpperCase();
+    let body=esc(s.text);
+    if(s.byte_in)body+='<span class="cue">IN: "'+esc(s.byte_in)+'" → OUT: "'+esc(s.byte_out)+'"</span>';
+    h+=secCard(t,t+(s.speaker?' · '+esc(s.speaker):''),body,s.duration_sec,s.text+(s.byte_in?'\nIN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"':''));
+  });
+  // 3 MOS
+  if(o.mos_slug){
+    h+='<div class="sec"><div class="sec-hd"><span class="rtag rt-MOS">MOS SLUG</span>'+
+      '<button class="cpybtn" onclick=\'copyText(this,'+JSON.stringify(o.mos_slug)+')\'>Copy</button></div>'+
+      '<div class="mos-block"><div class="mos-sent">'+esc(o.mos_slug)+'</div></div></div>';
+  }
+  // 4 TICKER
+  if(o.ticker){
+    let parts=[];let hdr=o.ticker;
+    if(o.ticker_header){hdr=o.ticker_header;parts=o.ticker_points||[];}
+    else if(o.ticker.includes('||')){const sp=o.ticker.split('||').map(x=>x.trim()).filter(Boolean);hdr=sp[0];parts=sp.slice(1);}
+    h+='<div class="sec"><div class="sec-hd"><span class="rtag rt-TICKER">TICKER</span>'+
+      '<button class="cpybtn" onclick=\'copyText(this,'+JSON.stringify(o.ticker)+')\'>Copy</button></div>'+
+      '<div class="mos-block"><div class="ticker-hd">'+esc(hdr)+'</div>'+
+      (parts.length?'<ul class="ticker-pts">'+parts.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>':'')+
+      '</div></div>';
+  }
+  if(o.editor_note)h+='<div class="removed">✎ '+esc(o.editor_note)+'</div>';
+  document.getElementById('output').innerHTML=h;
+}
+function secCard(tag,title,bodyHtml,durSec,copySrc){
+  return '<div class="sec"><div class="sec-hd"><span class="rtag rt-'+tag+'">'+title+'</span>'+
+    (durSec?'<span class="sdur">'+fmtSec(durSec)+'</span>':'')+
+    '<button class="cpybtn" onclick=\'copyText(this,'+JSON.stringify(copySrc)+')\'>Copy</button>'+
+    '</div><div class="sec-body">'+bodyHtml+'</div></div>';
+}
+
+/* ══ TRIM ══ */
+async function trim(){
+  const s=document.getElementById('trimScript').value.trim();
+  if(!s){alert('Script paste பண்ணுங்க');return;}
+  const dur=document.getElementById('trimDur').value;
+  const instr=document.getElementById('trimInstr').value.trim();
+  const um='SCRIPT:\n"""\n'+s+'\n"""\n\nTARGET: '+dur+' seconds (~'+Math.round(dur*WPS)+' words)'+(instr?'\nINSTRUCTIONS: '+instr:'');
+  const btn=document.getElementById('goBtn');btn.disabled=true;
+  showLoading('TRIMMING · MEANING PRESERVED');
+  try{
+    const o=await callClaude(SYS_TRIM,um,false);
+    document.getElementById('stageActs').innerHTML=
+      '<button class="btn" id="tCpyBtn">⧉ Copy trimmed</button>'+
+      '<button class="btn red" onclick="trim()">↻ Re-trim</button>';
+    document.getElementById('output').innerHTML=
+      '<div class="stat-row">'+
+        '<div class="stat"><div class="v">'+o.original_words+'</div><div class="l">ORIGINAL</div></div>'+
+        '<div class="stat"><div class="v">'+o.trimmed_words+'</div><div class="l">TRIMMED</div></div>'+
+        '<div class="stat"><div class="v">'+fmtSec(o.est_duration_sec)+'</div><div class="l">EST DUR</div></div>'+
+      '</div>'+
+      '<div class="sec"><div class="sec-hd"><span class="rtag rt-VO">TRIMMED SCRIPT</span></div>'+
+      '<div class="sec-body" id="trimOut">'+esc(o.trimmed_script)+'</div></div>'+
+      (o.removed_summary?'<div class="removed">✂ '+esc(o.removed_summary)+'</div>':'');
+    document.getElementById('tCpyBtn').onclick=function(){copyText(this,o.trimmed_script);};
+  }catch(e){showError(e);}
+  btn.disabled=false;
+}
+
+/* ══ SELECTION COUNTER ══ */
+document.addEventListener('selectionchange',()=>{
+  const t=(window.getSelection()||'').toString().trim();
+  const b=document.getElementById('selBadge');
+  if(!t){b.style.display='none';return;}
+  const w=t.split(/\s+/).filter(Boolean).length;
+  b.textContent=w+' words · '+Math.round(w/WPS)+' sec';
+  b.style.display='block';
+});
+
+
+/* ══════════════════════════════
+   TRANSCRIBER v2.6
+   FIX: drop Web Worker (importScripts fails on file://)
+   Use dynamic import() in main thread + yield between chunks
+   to avoid "page not responsive" freezes
+══════════════════════════════ */
+
+/* ── LAZY LOAD ── */
+let _whisper = null, _nllb = null, _loadedModel = null;
+const NLLB_LANG = {
+  en:'eng_Latn', hi:'hin_Deva', ta:'tam_Taml',
+  te:'tel_Telu', kn:'kan_Knda', ml:'mal_Mlym', auto:'eng_Latn'
+};
+
+async function getTransformers() {
+  // dynamic import works in main thread from any origin
+  const mod = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
+  mod.env.allowLocalModels = false;
+  return mod;
+}
+
+async function getWhisper(modelId, onProgress) {
+  if (_whisper && _loadedModel === modelId) return _whisper;
+  const { pipeline } = await getTransformers();
+  _whisper = await pipeline('automatic-speech-recognition', modelId, {
+    progress_callback: onProgress || (() => {})
+  });
+  _loadedModel = modelId;
+  return _whisper;
+}
+
+async function getNLLB(onProgress) {
+  if (_nllb) return _nllb;
+  const { pipeline } = await getTransformers();
+  _nllb = await pipeline('translation', 'Xenova/nllb-200-distilled-600M', {
+    progress_callback: onProgress || (() => {})
+  });
+  return _nllb;
+}
+
+/* yield to browser between heavy ops - prevents "page not responding" */
+const yieldToBrowser = () => new Promise(r => setTimeout(r, 0));
+
+async function doTranscribe(audioData, spokenLang) {
+  await yieldToBrowser();
+  const opts = { chunk_length_s: 20, stride_length_s: 3, task: 'transcribe' };
+  if (spokenLang !== 'auto') opts.language = spokenLang;
+  const r = await _whisper(audioData, opts);
+  await yieldToBrowser();
+  return r.text.trim();
+}
+
+async function doNLLB(text, spokenLang) {
+  await yieldToBrowser();
+  const src = NLLB_LANG[spokenLang] || NLLB_LANG['en'];
+  const out = await _nllb(text, { src_lang: src, tgt_lang: 'tam_Taml', max_new_tokens: 400 });
+  await yieldToBrowser();
+  return out[0].translation_text;
+}
+
+/* ── DECODE AUDIO (main thread, fast) ── */
+async function decodeToFloat32(source) {
+  const ab = source instanceof ArrayBuffer ? source : await source.arrayBuffer();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+  const decoded = await ctx.decodeAudioData(ab);
+  let data;
+  if (decoded.numberOfChannels > 1) {
+    const c0 = decoded.getChannelData(0), c1 = decoded.getChannelData(1);
+    data = new Float32Array(c0.length);
+    for (let i = 0; i < c0.length; i++) data[i] = (c0[i] + c1[i]) / 2;
+  } else {
+    data = decoded.getChannelData(0);
+  }
+  return data;
+}
+
+/* ── STATE ── */
+let tFile = null, tMode = 'file';
+let lastTranscript = '', lastTranslation = '';
+let micStream = null, micRecorder = null, micAudioChunks = [];
+let micInterval = null, micActive = false, micAnimFrame = null;
+let micTransFull = '', micTamilFull = '';
+const MIC_CHUNK_MS = 5000;
+
+/* ── MODE SWITCH ── */
+function setTMode(m) {
+  tMode = m;
+  document.getElementById('tmt-file').classList.toggle('on', m === 'file');
+  document.getElementById('tmt-mic').classList.toggle('on', m === 'mic');
+  document.getElementById('t-file-panel').style.display = m === 'file' ? 'block' : 'none';
+  document.getElementById('t-mic-panel').style.display = m === 'mic' ? 'block' : 'none';
+}
+
+function handleOutputLangChange() {
+  const ol = document.getElementById('tOutputLang').value;
+  document.getElementById('tApiNote').style.display = (ol === 'ta-claude' || ol === 'en') ? 'block' : 'none';
+  document.getElementById('tNllbNote').style.display = ol === 'ta-nllb' ? 'block' : 'none';
+}
+
+/* ── FILE DROP ── */
+const dz = document.getElementById('dz');
+const tFileInp = document.getElementById('tFile');
+dz.addEventListener('click', () => tFileInp.click());
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  if (e.dataTransfer.files.length) setTFile(e.dataTransfer.files[0]);
+});
+tFileInp.addEventListener('change', () => { if (tFileInp.files.length) setTFile(tFileInp.files[0]); });
+
+function setTFile(f) {
+  tFile = f;
+  document.getElementById('tFname').textContent = '📎 ' + f.name + ' (' + Math.round(f.size / 1024) + 'KB)';
+  document.getElementById('tRunBtn').disabled = false;
+  document.getElementById('fileOutArea').style.display = 'none';
+  setTS('', '');
+}
+
+function setTS(t, c) {
+  const el = document.getElementById('tStatus');
+  el.textContent = t;
+  el.className = 't-status ' + (c || '');
+}
+
+/* ── FILE TRANSCRIBE ── */
+document.getElementById('tRunBtn').addEventListener('click', async () => {
+  if (!tFile) return;
+  const btn = document.getElementById('tRunBtn');
+  btn.disabled = true;
+  document.getElementById('fileOutArea').style.display = 'none';
+  const prog = document.getElementById('tProg');
+  const fill = document.getElementById('tProgFill');
+  prog.classList.add('show'); fill.style.width = '5%';
+
+  const modelId = document.getElementById('tModel').value;
+  const spokenLang = document.getElementById('tSpokenLang').value;
+  const outputLang = document.getElementById('tOutputLang').value;
+
+  try {
+    setTS('Decoding audio…', 'active');
+    const audioData = await decodeToFloat32(tFile);
+    fill.style.width = '10%';
+
+    setTS('Loading Whisper model… (first time takes a minute)', 'active');
+    await getWhisper(modelId, p => {
+      if (p.status === 'progress' && p.progress)
+        fill.style.width = Math.min(50, 10 + p.progress * 0.4).toFixed(0) + '%';
+    });
+    fill.style.width = '52%';
+
+    setTS('Transcribing audio…', 'active');
+    const transcript = await doTranscribe(audioData, spokenLang);
+    lastTranscript = transcript;
+    fill.style.width = '65%';
+
+    // show transcript immediately
+    showFileOutput(transcript, null, outputLang, spokenLang);
+    setTS(outputLang !== 'same' ? 'Translating…' : '✓ Done', outputLang !== 'same' ? 'active' : 'done');
+
+    let translation = null;
+    if (outputLang === 'ta-nllb') {
+      setTS('Loading NLLB model… (first time ~1.2GB download)', 'active');
+      await getNLLB(p => {
+        if (p.status === 'progress' && p.progress)
+          fill.style.width = Math.min(90, 65 + p.progress * 0.25).toFixed(0) + '%';
+      });
+      setTS('Translating to Tamil…', 'active');
+      translation = await doNLLB(transcript, spokenLang);
+    } else if (outputLang === 'ta-claude') {
+      setTS('Translating via Claude API…', 'active');
+      translation = await callClaudeText('Translate to Tamil broadcast text. Output ONLY Tamil:\n\n' + transcript);
+    } else if (outputLang === 'en') {
+      setTS('Translating to English…', 'active');
+      translation = await callClaudeText('Translate to English. Output ONLY the translation:\n\n' + transcript);
+    }
+
+    if (translation) lastTranslation = translation;
+    showFileOutput(transcript, translation, outputLang, spokenLang);
+    fill.style.width = '100%';
+    setTimeout(() => prog.classList.remove('show'), 700);
+    setTS('✓ Done — On-Air Text ready below ↓', 'done');
+  } catch (err) {
+    setTS('Error: ' + err.message, 'err');
+    prog.classList.remove('show');
+  }
+  btn.disabled = false;
+});
+
+function showFileOutput(transcript, translation, outputLang, spokenLang) {
+  document.getElementById('tOrigBox').textContent = transcript;
+  const badge = document.getElementById('tOrigBadge');
+  badge.textContent = 'TRANSCRIPT' + (spokenLang && spokenLang !== 'auto' ? ' (' + spokenLang.toUpperCase() + ')' : '');
+  const transHalf = document.getElementById('fileTransHalf');
+  if (translation && outputLang !== 'same') {
+    document.getElementById('tTransBox').textContent = translation;
+    transHalf.style.display = 'block';
+    document.getElementById('onairText').value = translation;
+    document.getElementById('tCopyTrans').style.display = 'inline-block';
+  } else {
+    transHalf.style.display = 'none';
+    document.getElementById('onairText').value = transcript;
+    document.getElementById('tCopyTrans').style.display = 'none';
+  }
+  const area = document.getElementById('fileOutArea');
+  area.style.display = 'block';
+  area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ── MIC / LIVE WIRE ── */
+async function startMic() {
+  if (micActive) return;
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+  } catch (e) {
+    const ms = document.getElementById('micStatus');
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+    ms.textContent = isMobile
+      ? '📱 Mobile-ல் mic வேலை செய்யாது — File Upload tab-ல் audio file upload பண்ணுங்க. PC-ல் use பண்ண: python -m http.server 8000'
+      : '❌ Mic access denied — run: python -m http.server 8000 → http://localhost:8000/tj-newsgen-desktop.html';
+    ms.className = 't-status err';
+    return;
+  }
+
+  micActive = true; micTransFull = ''; micTamilFull = '';
+  document.getElementById('micStartBtn').style.display = 'none';
+  document.getElementById('micStopBtn').style.display = 'block';
+  document.getElementById('micOnairText').value = '';
+  document.getElementById('liveFeedScroll').innerHTML =
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as captured…</div>';
+
+  const ms = document.getElementById('micStatus');
+  ms.textContent = '🔴 Capturing — transcribing every 5 seconds…';
+  ms.className = 't-status active';
+  document.getElementById('micViz').classList.add('show');
+
+  /* audio visualizer */
+  const actx = new (window.AudioContext || window.webkitAudioContext)();
+  const analyser = actx.createAnalyser(); analyser.fftSize = 64;
+  actx.createMediaStreamSource(micStream).connect(analyser);
+  const bars = document.getElementById('micBars'); bars.innerHTML = '';
+  for (let i = 0; i < 10; i++) { const b = document.createElement('div'); b.className = 'mic-bar'; bars.appendChild(b); }
+  const barEls = [...bars.querySelectorAll('.mic-bar')];
+  const fftData = new Uint8Array(analyser.frequencyBinCount);
+  function animViz() {
+    micAnimFrame = requestAnimationFrame(animViz);
+    analyser.getByteFrequencyData(fftData);
+    barEls.forEach((b, i) => { b.style.height = Math.max(3, Math.round(fftData[i * 2] / 255 * 34)) + 'px'; });
+  }
+  animViz();
+
+  /* pre-load Whisper so first chunk is fast */
+  const modelId = document.getElementById('tModel').value;
+  const spokenLang = document.getElementById('tSpokenLang').value;
+  const outputLang = document.getElementById('tOutputLang').value;
+
+  try {
+    document.getElementById('micVizLabel').textContent = 'Loading Whisper…';
+    await getWhisper(modelId);
+    if (outputLang === 'ta-nllb') {
+      document.getElementById('micVizLabel').textContent = 'Loading NLLB…';
+      await getNLLB();
+    }
+    document.getElementById('micVizLabel').textContent = 'Ready — listening…';
+  } catch (e) {
+    document.getElementById('micStatus').textContent = 'Error loading model: ' + e.message;
+    document.getElementById('micStatus').className = 't-status err';
+    stopMic(); return;
+  }
+
+  /* recorder + chunk processor */
+  micAudioChunks = [];
+  micRecorder = new MediaRecorder(micStream);
+  micRecorder.ondataavailable = ev => { if (ev.data.size > 0) micAudioChunks.push(ev.data); };
+  micRecorder.start();
+
+  let processing = false; // prevent overlap
+
+  micInterval = setInterval(async () => {
+    if (!micActive || processing) return;
+    processing = true;
+
+    /* stop → collect → restart recorder */
+    micRecorder.stop();
+    await new Promise(r => setTimeout(r, 60));
+    const blob = new Blob(micAudioChunks, { type: 'audio/webm' });
+    micAudioChunks = [];
+
+    if (micActive) {
+      micRecorder = new MediaRecorder(micStream);
+      micRecorder.ondataavailable = ev => { if (ev.data.size > 0) micAudioChunks.push(ev.data); };
+      micRecorder.start();
+    }
+
+    /* process chunk */
+    try {
+      document.getElementById('micVizLabel').textContent = 'Transcribing…';
+      const audioData = await decodeToFloat32(blob);
+      const transcript = await doTranscribe(audioData, spokenLang);
+
+      if (transcript && transcript.length > 2) {
+        let addText = transcript;
+        if (outputLang === 'ta-nllb') {
+          document.getElementById('micVizLabel').textContent = 'Translating…';
+          addText = await doNLLB(transcript, spokenLang);
+        } else if (outputLang === 'ta-claude') {
+          document.getElementById('micVizLabel').textContent = 'Claude translate…';
+          try { addText = await callClaudeText('Translate to Tamil. Output ONLY Tamil:\n\n' + transcript); } catch (e) { addText = transcript; }
+        }
+
+        /* append to on-air box */
+        micTamilFull += (micTamilFull ? ' ' : '') + addText;
+        micTransFull += (micTransFull ? ' ' : '') + transcript;
+        document.getElementById('micOnairText').value = micTamilFull;
+
+        /* log chunk */
+        addToFeedLog(transcript, addText !== transcript ? addText : null);
+        document.getElementById('micVizLabel').textContent =
+          new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      } else {
+        document.getElementById('micVizLabel').textContent = '(silence)';
+      }
+    } catch (err) {
+      console.warn('chunk err:', err);
+      document.getElementById('micVizLabel').textContent = 'Error: ' + err.message.slice(0, 40);
+    }
+    processing = false;
+  }, MIC_CHUNK_MS);
+}
+
+function stopMic() {
+  micActive = false;
+  if (micInterval) { clearInterval(micInterval); micInterval = null; }
+  if (micRecorder && micRecorder.state !== 'inactive') micRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  if (micAnimFrame) { cancelAnimationFrame(micAnimFrame); micAnimFrame = null; }
+  document.getElementById('micStartBtn').style.display = 'block';
+  document.getElementById('micStopBtn').style.display = 'none';
+  const ms = document.getElementById('micStatus');
+  ms.textContent = '⏹ Stopped — On-Air Text ready above ↑';
+  ms.className = 't-status done';
+  document.getElementById('micViz').classList.remove('show');
+}
+
+function addToFeedLog(orig, trans) {
+  const feed = document.getElementById('liveFeedScroll');
+  const placeholder = feed.querySelector('div[style]');
+  if (placeholder) placeholder.remove();
+  const div = document.createElement('div'); div.className = 'live-chunk';
+  const time = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  div.innerHTML =
+    '<div class="live-chunk-orig">' + esc(orig) + '</div>' +
+    (trans ? '<div class="live-chunk-tamil">' + esc(trans) + '</div>' : '') +
+    '<div class="live-chunk-time">' + time + '</div>';
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function clearMicOutput() {
+  micTransFull = ''; micTamilFull = '';
+  document.getElementById('micOnairText').value = '';
+  document.getElementById('liveFeedScroll').innerHTML =
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Cleared. Chunks appear here…</div>';
+}
+
+setTimeout(() => {
+  const cb = document.getElementById('clearFeedBtn');
+  if (cb) cb.addEventListener('click', clearMicOutput);
+}, 100);
+
+/* ── ON-AIR COPY ── */
+function copyOnair(btn) {
+  navigator.clipboard.writeText(document.getElementById('onairText').value);
+  const old = btn.textContent; btn.textContent = '✓ Copied!';
+  setTimeout(() => btn.textContent = old, 1400);
+}
+function copyMicOnair(btn) {
+  navigator.clipboard.writeText(document.getElementById('micOnairText').value);
+  const old = btn.textContent; btn.textContent = '✓ Copied!';
+  setTimeout(() => btn.textContent = old, 1400);
+}
+
+/* ── COPY / DOWNLOAD / SEND ── */
+document.getElementById('tCopyOrig').addEventListener('click', function () {
+  navigator.clipboard.writeText(lastTranscript);
+  const o = this.textContent; this.textContent = '✓'; setTimeout(() => this.textContent = o, 1200);
+});
+document.getElementById('tCopyTrans').addEventListener('click', function () {
+  navigator.clipboard.writeText(lastTranslation);
+  const o = this.textContent; this.textContent = '✓'; setTimeout(() => this.textContent = o, 1200);
+});
+document.getElementById('tDownload').addEventListener('click', () => {
+  const content = lastTranslation
+    ? lastTranscript + '\n\n--- TAMIL ---\n' + lastTranslation
+    : lastTranscript;
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = (tFile ? tFile.name.replace(/\.[^.]+$/, '') : 'transcript') + '.txt';
+  a.click(); URL.revokeObjectURL(url);
+});
+
+const sendFn = () => {
+  const txt = micTamilFull || lastTranslation || lastTranscript;
+  if (!txt) return;
+  document.getElementById('rawScript').value = txt;
+  setSrc('raw'); gotoPage('newsgen'); setMode('generate');
+};
+document.getElementById('tSend').addEventListener('click', sendFn);
+const micSendEl = document.getElementById('micSend');
+if (micSendEl) micSendEl.addEventListener('click', sendFn);
+
+</script>
+</body>
+</html>

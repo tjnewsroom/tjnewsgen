@@ -1290,31 +1290,38 @@ function showFileOutput(transcript, translation, outputLang, spokenLang) {
 /* ── MIC / LIVE WIRE ── */
 async function startMic() {
   if (micActive) return;
+
+  // request mic permission first
+  const ms = document.getElementById('micStatus');
   try {
     micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
   } catch (e) {
-    const ms = document.getElementById('micStatus');
     const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
     ms.textContent = isMobile
-      ? '📱 Mobile-ல் mic வேலை செய்யாது — File Upload tab-ல் audio file upload பண்ணுங்க. PC-ல் use பண்ண: python -m http.server 8000'
-      : '❌ Mic access denied — run: python -m http.server 8000 → http://localhost:8000/tj-newsgen-desktop.html';
+      ? '📱 Mobile-ல் mic blocked — GitHub Pages URL-ல் open பண்ணீங்களா? https://tjnewsroom.github.io/tjnewsgen — try again'
+      : '❌ Mic access denied — browser address bar-ல் mic icon click → Allow';
     ms.className = 't-status err';
     return;
   }
 
   micActive = true; micTransFull = ''; micTamilFull = '';
+
+  // swap buttons immediately
   document.getElementById('micStartBtn').style.display = 'none';
   document.getElementById('micStopBtn').style.display = 'block';
   document.getElementById('micOnairText').value = '';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as captured…</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Loading model, please wait…</div>';
 
-  const ms = document.getElementById('micStatus');
-  ms.textContent = '🔴 Capturing — transcribing every 5 seconds…';
+  ms.textContent = '⏳ Loading Whisper model — please wait, do not close…';
   ms.className = 't-status active';
-  document.getElementById('micViz').classList.add('show');
 
-  /* audio visualizer */
+  // start recording immediately (so we don't miss audio while loading)
+  const modelId = document.getElementById('tModel').value;
+  const spokenLang = document.getElementById('tSpokenLang').value;
+  const outputLang = document.getElementById('tOutputLang').value;
+
+  // audio visualizer
   const actx = new (window.AudioContext || window.webkitAudioContext)();
   const analyser = actx.createAnalyser(); analyser.fftSize = 64;
   actx.createMediaStreamSource(micStream).connect(analyser);
@@ -1322,90 +1329,89 @@ async function startMic() {
   for (let i = 0; i < 10; i++) { const b = document.createElement('div'); b.className = 'mic-bar'; bars.appendChild(b); }
   const barEls = [...bars.querySelectorAll('.mic-bar')];
   const fftData = new Uint8Array(analyser.frequencyBinCount);
+  document.getElementById('micViz').classList.add('show');
   function animViz() {
     micAnimFrame = requestAnimationFrame(animViz);
     analyser.getByteFrequencyData(fftData);
-    barEls.forEach((b, i) => { b.style.height = Math.max(3, Math.round(fftData[i * 2] / 255 * 34)) + 'px'; });
+    barEls.forEach((b, i) => { b.style.height = Math.max(3, Math.round(fftData[i*2]/255*34)) + 'px'; });
   }
   animViz();
 
-  /* pre-load Whisper so first chunk is fast */
-  const modelId = document.getElementById('tModel').value;
-  const spokenLang = document.getElementById('tSpokenLang').value;
-  const outputLang = document.getElementById('tOutputLang').value;
+  // start recorder right away
+  micAudioChunks = [];
+  micRecorder = new MediaRecorder(micStream);
+  micRecorder.ondataavailable = ev => { if (ev.data.size > 0) micAudioChunks.push(ev.data); };
+  micRecorder.start(1000); // collect data every 1s (not just on stop)
 
+  // load models in background - UI stays responsive
   try {
     document.getElementById('micVizLabel').textContent = 'Loading Whisper…';
     await getWhisper(modelId);
     if (outputLang === 'ta-nllb') {
-      document.getElementById('micVizLabel').textContent = 'Loading NLLB…';
+      document.getElementById('micVizLabel').textContent = 'Loading NLLB (~1.2GB)…';
       await getNLLB();
     }
-    document.getElementById('micVizLabel').textContent = 'Ready — listening…';
   } catch (e) {
-    document.getElementById('micStatus').textContent = 'Error loading model: ' + e.message;
-    document.getElementById('micStatus').className = 't-status err';
+    ms.textContent = '❌ Model load failed: ' + e.message;
+    ms.className = 't-status err';
     stopMic(); return;
   }
 
-  /* recorder + chunk processor */
-  micAudioChunks = [];
-  micRecorder = new MediaRecorder(micStream);
-  micRecorder.ondataavailable = ev => { if (ev.data.size > 0) micAudioChunks.push(ev.data); };
-  micRecorder.start();
+  // models ready
+  ms.textContent = '🔴 Capturing — transcribing every 8 seconds…';
+  ms.className = 't-status active';
+  document.getElementById('micVizLabel').textContent = 'Listening…';
+  document.getElementById('liveFeedScroll').innerHTML =
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as captured…</div>';
 
-  let processing = false; // prevent overlap
+  // discard buffered audio from loading time
+  micAudioChunks = [];
+
+  let processing = false;
 
   micInterval = setInterval(async () => {
     if (!micActive || processing) return;
     processing = true;
 
-    /* stop → collect → restart recorder */
-    micRecorder.stop();
-    await new Promise(r => setTimeout(r, 60));
-    const blob = new Blob(micAudioChunks, { type: 'audio/webm' });
+    // use dataavailable chunks collected so far
+    if (micAudioChunks.length === 0) { processing = false; return; }
+
+    const chunks = [...micAudioChunks];
     micAudioChunks = [];
+    const blob = new Blob(chunks, { type: 'audio/webm' });
 
-    if (micActive) {
-      micRecorder = new MediaRecorder(micStream);
-      micRecorder.ondataavailable = ev => { if (ev.data.size > 0) micAudioChunks.push(ev.data); };
-      micRecorder.start();
-    }
-
-    /* process chunk */
     try {
       document.getElementById('micVizLabel').textContent = 'Transcribing…';
-      const audioData = await decodeToFloat32(blob);
+      let audioData;
+      try { audioData = await decodeToFloat32(blob); }
+      catch (e) { document.getElementById('micVizLabel').textContent = 'Decode err, retrying…'; processing = false; return; }
+
       const transcript = await doTranscribe(audioData, spokenLang);
 
-      if (transcript && transcript.length > 2) {
+      if (transcript && transcript.trim().length > 2) {
         let addText = transcript;
         if (outputLang === 'ta-nllb') {
           document.getElementById('micVizLabel').textContent = 'Translating…';
-          addText = await doNLLB(transcript, spokenLang);
+          try { addText = await doNLLB(transcript, spokenLang); } catch(e) { addText = transcript; }
         } else if (outputLang === 'ta-claude') {
           document.getElementById('micVizLabel').textContent = 'Claude translate…';
           try { addText = await callClaudeText('Translate to Tamil. Output ONLY Tamil:\n\n' + transcript); } catch (e) { addText = transcript; }
         }
 
-        /* append to on-air box */
         micTamilFull += (micTamilFull ? ' ' : '') + addText;
         micTransFull += (micTransFull ? ' ' : '') + transcript;
         document.getElementById('micOnairText').value = micTamilFull;
-
-        /* log chunk */
         addToFeedLog(transcript, addText !== transcript ? addText : null);
         document.getElementById('micVizLabel').textContent =
-          new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
       } else {
-        document.getElementById('micVizLabel').textContent = '(silence)';
+        document.getElementById('micVizLabel').textContent = '(silence / no speech)';
       }
     } catch (err) {
-      console.warn('chunk err:', err);
-      document.getElementById('micVizLabel').textContent = 'Error: ' + err.message.slice(0, 40);
+      document.getElementById('micVizLabel').textContent = 'Err: ' + err.message.slice(0, 30);
     }
     processing = false;
-  }, MIC_CHUNK_MS);
+  }, 8000); // 8 second chunks - more audio = better accuracy
 }
 
 function stopMic() {
@@ -1417,7 +1423,9 @@ function stopMic() {
   document.getElementById('micStartBtn').style.display = 'block';
   document.getElementById('micStopBtn').style.display = 'none';
   const ms = document.getElementById('micStatus');
-  ms.textContent = '⏹ Stopped — On-Air Text ready above ↑';
+  ms.textContent = micTamilFull
+    ? '✅ Stopped — ' + micTamilFull.split(' ').length + ' words captured. On-Air Text ready above ↑'
+    : '⏹ Stopped.';
   ms.className = 't-status done';
   document.getElementById('micViz').classList.remove('show');
 }
@@ -1427,7 +1435,7 @@ function addToFeedLog(orig, trans) {
   const placeholder = feed.querySelector('div[style]');
   if (placeholder) placeholder.remove();
   const div = document.createElement('div'); div.className = 'live-chunk';
-  const time = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const time = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
   div.innerHTML =
     '<div class="live-chunk-orig">' + esc(orig) + '</div>' +
     (trans ? '<div class="live-chunk-tamil">' + esc(trans) + '</div>' : '') +

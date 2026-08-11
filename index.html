@@ -414,23 +414,23 @@ select:focus{outline:none;border-color:var(--cyan)}
     <button class="ms on" id="ms-gen" onclick="setMode('generate')">Generate</button>
     <button class="ms" id="ms-trim" onclick="setMode('trim')">Trim to Time</button>
   </div>
-  <div class="topbar-right">
-    <div class="status-pill err" id="apiPill"><span class="led"></span><span id="apiTxt">KEY NEEDED</span></div>
-    <button class="icon-btn" onclick="toggleDrawer()" title="API key">⚙</button>
-  </div>
+  <div class="topbar-right"></div>
 </header>
 
 <!-- DRAWER -->
-<div class="drawer" id="drawer">
-  <label>PROVIDER</label>
-  <select id="apiProvider" onchange="updateProviderHint()" style="background:var(--surface);border:1px solid var(--amber-b);border-radius:var(--r);color:var(--ink);padding:8px 10px;font-family:var(--ui);font-size:13px;flex-shrink:0">
+<!-- API KEY BAR — always visible -->
+<div id="apiBar" style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:#FFFBEB;border-bottom:1px solid #FDE68A;flex-shrink:0;flex-wrap:wrap">
+  <label style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:#D97706;font-weight:600;white-space:nowrap">PROVIDER</label>
+  <select id="apiProvider" onchange="updateProviderHint()" style="background:#fff;border:1px solid #FDE68A;border-radius:6px;color:#111827;padding:7px 10px;font-family:var(--ui);font-size:13px;flex-shrink:0">
     <option value="claude">Claude (Anthropic)</option>
-    <option value="gemini">Gemini (Google)</option>
+    <option value="gemini">Gemini (Google) — free tier</option>
     <option value="openai">ChatGPT (OpenAI)</option>
   </select>
-  <input type="password" id="apiKey" placeholder="sk-ant-api03-... (console.anthropic.com)">
-  <button class="save-btn" onclick="saveKey()">Save</button>
-  <span class="hint" id="providerHint">console.anthropic.com → API Keys</span>
+  <input type="password" id="apiKey" placeholder="sk-ant-api03-..." 
+    style="flex:1;min-width:180px;background:#fff;border:1px solid #FDE68A;border-radius:6px;color:#111827;padding:7px 10px;font-family:var(--mono);font-size:12px">
+  <button onclick="saveKey()" style="padding:7px 16px;border:none;border-radius:6px;background:#D97706;color:#fff;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap">Save</button>
+  <span id="providerHint" style="font-size:11px;color:#D97706;white-space:nowrap">console.anthropic.com → API Keys</span>
+  <div class="status-pill err" id="apiPill" style="margin-left:auto"><span class="led"></span><span id="apiTxt">KEY NEEDED</span></div>
 </div>
 
 <!-- WORKSPACE -->
@@ -852,9 +852,9 @@ function saveKey(){
     localStorage.setItem('tj_provider',getProvider());
   }catch(e){}
   setApiStatus();
-  document.getElementById('drawer').classList.remove('open');
+  // apiBar always visible
 }
-function toggleDrawer(){document.getElementById('drawer').classList.toggle('open');}
+function toggleDrawer(){} // drawer replaced by always-visible apiBar
 window.addEventListener('DOMContentLoaded',()=>{
   try{const k=localStorage.getItem('tj_key');if(k)document.getElementById('apiKey').value=k;}catch(e){}
   setApiStatus();

@@ -422,10 +422,15 @@ select:focus{outline:none;border-color:var(--cyan)}
 
 <!-- DRAWER -->
 <div class="drawer" id="drawer">
-  <label>API KEY</label>
-  <input type="password" id="apiKey" placeholder="sk-ant-api03-... (console.anthropic.com → API Keys)">
+  <label>PROVIDER</label>
+  <select id="apiProvider" onchange="updateProviderHint()" style="background:var(--surface);border:1px solid var(--amber-b);border-radius:var(--r);color:var(--ink);padding:8px 10px;font-family:var(--ui);font-size:13px;flex-shrink:0">
+    <option value="claude">Claude (Anthropic)</option>
+    <option value="gemini">Gemini (Google)</option>
+    <option value="openai">ChatGPT (OpenAI)</option>
+  </select>
+  <input type="password" id="apiKey" placeholder="sk-ant-api03-... (console.anthropic.com)">
   <button class="save-btn" onclick="saveKey()">Save</button>
-  <span class="hint">Browser-only · never sent elsewhere</span>
+  <span class="hint" id="providerHint">console.anthropic.com → API Keys</span>
 </div>
 
 <!-- WORKSPACE -->
@@ -599,13 +604,13 @@ select:focus{outline:none;border-color:var(--cyan)}
           <div class="t-field">
             <label>Whisper model</label>
             <select id="tModel">
-              <option value="Xenova/whisper-base">Base — fast ~150MB</option>
-              <option value="Xenova/whisper-small" selected>Small — accurate ~490MB</option>
+              <option value="Xenova/whisper-base" selected>Base — fast ~150MB ✓ recommended</option>
+              <option value="Xenova/whisper-small">Small — accurate ~490MB (slow)</option>
             </select>
           </div>
         </div>
         <div id="tApiNote" style="display:none" class="src-note">🔑 Claude API key — ⚙ icon-ல் set பண்ணுங்க.</div>
-        <div id="tNllbNote" style="display:none" class="src-note">📦 NLLB: first use ~1.2GB download (one-time, cached). Free, no API key.</div>
+        <div id="tNllbNote" style="display:none" class="src-note">📦 NLLB: first use ~1.2GB download (free, no API key). ⚠️ For File Upload only — Live Mic mode automatically uses Claude API to avoid freezing.</div>
       </div>
 
       <!-- ═══ FILE MODE ═══ -->
@@ -798,13 +803,57 @@ function gotoPage(id){
 
 /* ══ KEY ══ */
 const getKey=()=>document.getElementById('apiKey').value.trim();
+const getProvider=()=>document.getElementById('apiProvider').value;
+
+const PROVIDER_HINTS={
+  claude:'console.anthropic.com → API Keys (sk-ant-...)',
+  gemini:'aistudio.google.com → Get API Key (AIza...)',
+  openai:'platform.openai.com → API Keys (sk-...)'
+};
+function updateProviderHint(){
+  const p=getProvider();
+  const hint=document.getElementById('providerHint');
+  if(hint) hint.textContent=PROVIDER_HINTS[p]||'';
+  const keyEl=document.getElementById('apiKey');
+  if(keyEl) keyEl.placeholder={claude:'sk-ant-api03-...',gemini:'AIza...',openai:'sk-...'}[p]||'API key...';
+  setApiStatus();
+}
+const PROVIDER_MODELS={
+  claude:'claude-sonnet-4-6',
+  gemini:'gemini-1.5-flash',
+  openai:'gpt-4o-mini'
+};
+
+function updateProviderHint(){
+  const p=getProvider();
+  document.getElementById('providerHint').textContent=PROVIDER_HINTS[p]||'';
+  const keyEl=document.getElementById('apiKey');
+  keyEl.placeholder={claude:'sk-ant-api03-...',gemini:'AIza...',openai:'sk-...'}[p]||'API key...';
+  setApiStatus();
+}
+
 function setApiStatus(){
   const k=getKey(),p=document.getElementById('apiPill'),t=document.getElementById('apiTxt');
-  if(k&&k.startsWith('sk-ant')){p.className='status-pill ok';t.textContent='API READY';}
+  const prov=getProvider();
+  const valid=k&&(
+    (prov==='claude'&&k.startsWith('sk-ant'))||
+    (prov==='gemini'&&k.startsWith('AIza'))||
+    (prov==='openai'&&k.startsWith('sk-'))||
+    k.length>10
+  );
+  if(valid){p.className='status-pill ok';t.textContent=getProvider().toUpperCase()+' READY';}
   else if(k){p.className='status-pill err';t.textContent='KEY INVALID?';}
   else{p.className='status-pill err';t.textContent='KEY NEEDED';}
 }
-function saveKey(){try{localStorage.setItem('tj_key',getKey());}catch(e){}setApiStatus();document.getElementById('drawer').classList.remove('open');}
+
+function saveKey(){
+  try{
+    localStorage.setItem('tj_key',getKey());
+    localStorage.setItem('tj_provider',getProvider());
+  }catch(e){}
+  setApiStatus();
+  document.getElementById('drawer').classList.remove('open');
+}
 function toggleDrawer(){document.getElementById('drawer').classList.toggle('open');}
 window.addEventListener('DOMContentLoaded',()=>{
   try{const k=localStorage.getItem('tj_key');if(k)document.getElementById('apiKey').value=k;}catch(e){}
@@ -868,18 +917,23 @@ function loadImg(inp){
 }
 
 /* ══ API ══ */
+/* ══ MULTI-PROVIDER API ══ */
 async function callClaude(system,userMsg,useSearch,attempt){
-  attempt=attempt||1;
-  const key=getKey();
-  if(!key)throw new Error('API key இல்லை — ⚙ → key paste → Save');
+  const key=getKey(), prov=getProvider();
+  if(!key) throw new Error('API key இல்லை — ⚙ → provider select → key paste → Save');
+  if(prov==='gemini') return _callGemini(system,userMsg,key);
+  if(prov==='openai') return _callOpenAI(system,userMsg,key);
+  return _callClaude(system,userMsg,useSearch,key,attempt||1);
+}
+
+async function _callClaude(system,userMsg,useSearch,key,attempt){
   const body={model:'claude-sonnet-4-6',max_tokens:4000,system,messages:[{role:'user',content:userMsg}]};
   if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
   const r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':key,
       'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify(body)
-  });
+    body:JSON.stringify(body)});
   const data=await r.json();
   if(data.error){
     const raw=JSON.stringify(data.error);
@@ -888,20 +942,77 @@ async function callClaude(system,userMsg,useSearch,attempt){
       if(m){try{w=' Reset: '+new Date(m[1]).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST.';}catch(e){}}
       throw new Error('Usage limit — கொஞ்ச நேரம் கழிச்சு try.'+w);
     }
-    if(raw.includes('credit')||raw.includes('billing'))throw new Error('Credit காலி — console.anthropic.com → Billing recharge.');
-    throw new Error(data.error.message||'API error');
+    if(raw.includes('credit')||raw.includes('billing')) throw new Error('Credit காலி — console.anthropic.com Billing recharge.');
+    throw new Error(data.error.message||'Claude API error');
   }
-  if(data.stop_reason==='max_tokens')throw new Error('Response truncated — duration குறைச்சு try.');
+  if(data.stop_reason==='max_tokens') throw new Error('Response truncated — duration குறைச்சு try.');
   const text=(data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n');
   try{return parseJson(text);}catch(e){
     if(attempt<2){
-      const note='\n\nIMPORTANT: ONE valid JSON object only, no markdown.';
+      const note='\n\nIMPORTANT: ONE valid JSON only, no markdown.';
       const rm=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?{...b,text:b.text+note}:b):userMsg+note;
-      return callClaude(system,rm,useSearch,attempt+1);
+      return _callClaude(system,rm,useSearch,key,attempt+1);
     }
     throw new Error('JSON parse failed: '+e.message);
   }
 }
+
+async function _callGemini(system,userMsg,key,attempt){
+  attempt=attempt||1;
+  const txt=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?b.text:'[image]').join('\n'):(typeof userMsg==='string'?userMsg:JSON.stringify(userMsg));
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key,
+    {method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({contents:[{parts:[{text:system+'\n\n'+txt}]}],generationConfig:{maxOutputTokens:4000}})});
+  const data=await r.json();
+  if(data.error) throw new Error('Gemini: '+(data.error.message||'API error'));
+  const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+  try{return parseJson(text);}catch(e){
+    if(attempt<2) return _callGemini(system,userMsg+'\n\nIMPORTANT: ONE valid JSON only.',key,attempt+1);
+    throw new Error('Gemini parse failed: '+e.message);
+  }
+}
+
+async function _callOpenAI(system,userMsg,key,attempt){
+  attempt=attempt||1;
+  const txt=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?b.text:'[image]').join('\n'):(typeof userMsg==='string'?userMsg:JSON.stringify(userMsg));
+  const r=await fetch('https://api.openai.com/v1/chat/completions',
+    {method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+     body:JSON.stringify({model:'gpt-4o-mini',max_tokens:4000,messages:[{role:'system',content:system},{role:'user',content:txt}]})});
+  const data=await r.json();
+  if(data.error) throw new Error('OpenAI: '+(data.error.message||'API error'));
+  const text=data.choices?.[0]?.message?.content||'';
+  try{return parseJson(text);}catch(e){
+    if(attempt<2) return _callOpenAI(system,userMsg+'\n\nIMPORTANT: ONE valid JSON only.',key,attempt+1);
+    throw new Error('OpenAI parse failed: '+e.message);
+  }
+}
+
+async function callClaudeText(prompt){
+  const key=getKey(),prov=getProvider();
+  if(!key) throw new Error('API key needed');
+  if(prov==='gemini'){
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key,
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+    const d=await r.json();if(d.error)throw new Error(d.error.message);
+    return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||'';
+  }
+  if(prov==='openai'){
+    const r=await fetch('https://api.openai.com/v1/chat/completions',
+      {method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+       body:JSON.stringify({model:'gpt-4o-mini',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();if(d.error)throw new Error(d.error.message);
+    return d.choices?.[0]?.message?.content?.trim()||'';
+  }
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,
+      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
+  const d=await r.json();if(d.error)throw new Error(d.error.message||'API error');
+  return (d.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n').trim();
+}
+
+
 function parseJson(text){
   let c=text.replace(/```json|```/g,'').trim();
   const s=c.indexOf('{'),e=c.lastIndexOf('}');
@@ -1339,9 +1450,12 @@ async function startMic() {
 
   // start recorder right away
   micAudioChunks = [];
-  micRecorder = new MediaRecorder(micStream);
+  // pick best supported format
+  const mimeType = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4']
+    .find(t => MediaRecorder.isTypeSupported(t)) || '';
+  micRecorder = new MediaRecorder(micStream, mimeType ? {mimeType} : {});
   micRecorder.ondataavailable = ev => { if (ev.data.size > 0) micAudioChunks.push(ev.data); };
-  micRecorder.start(1000); // collect data every 1s (not just on stop)
+  micRecorder.start(1000); // collect data every 1s
 
   // load models in background - UI stays responsive
   try {
@@ -1378,7 +1492,8 @@ async function startMic() {
 
     const chunks = [...micAudioChunks];
     micAudioChunks = [];
-    const blob = new Blob(chunks, { type: 'audio/webm' });
+    const mType = micRecorder ? (micRecorder.mimeType || 'audio/webm') : 'audio/webm';
+    const blob = new Blob(chunks, { type: mType });
 
     try {
       document.getElementById('micVizLabel').textContent = 'Transcribing…';
@@ -1386,14 +1501,31 @@ async function startMic() {
       try { audioData = await decodeToFloat32(blob); }
       catch (e) { document.getElementById('micVizLabel').textContent = 'Decode err, retrying…'; processing = false; return; }
 
+      // energy check - skip near-silent chunks
+      let energy = 0;
+      for (let i = 0; i < Math.min(audioData.length, 16000); i++) energy += audioData[i] * audioData[i];
+      energy = Math.sqrt(energy / Math.min(audioData.length, 16000));
+      if (energy < 0.005) {
+        document.getElementById('micVizLabel').textContent = '(silence — waiting for speech)';
+        processing = false; return;
+      }
+
       const transcript = await doTranscribe(audioData, spokenLang);
 
-      if (transcript && transcript.trim().length > 2) {
+      // filter hallucinations: repeated words > 4 times = noise artifact
+      const words = transcript.trim().split(/\s+/);
+      const wordFreq = {};
+      words.forEach(w => { wordFreq[w] = (wordFreq[w]||0)+1; });
+      const maxFreq = Math.max(...Object.values(wordFreq));
+      const isHallucination = words.length > 6 && maxFreq > words.length * 0.4;
+
+      if (transcript && transcript.trim().length > 2 && !isHallucination) {
         let addText = transcript;
-        if (outputLang === 'ta-nllb') {
-          document.getElementById('micVizLabel').textContent = 'Translating…';
-          try { addText = await doNLLB(transcript, spokenLang); } catch(e) { addText = transcript; }
-        } else if (outputLang === 'ta-claude') {
+        if (outputLang === 'ta-nllb' || outputLang === 'ta-claude') {
+          // For mic mode: always use Claude API (NLLB 1.2GB causes freeze in live mode)
+          document.getElementById('micVizLabel').textContent = 'Translating via Claude…';
+          try { addText = await callClaudeText('Translate to Tamil broadcast text. ONLY output Tamil, no explanation:\n\n' + transcript); } catch(e) { addText = transcript; }
+        } else if (outputLang === 'en') {
           document.getElementById('micVizLabel').textContent = 'Claude translate…';
           try { addText = await callClaudeText('Translate to Tamil. Output ONLY Tamil:\n\n' + transcript); } catch (e) { addText = transcript; }
         }
@@ -1404,6 +1536,8 @@ async function startMic() {
         addToFeedLog(transcript, addText !== transcript ? addText : null);
         document.getElementById('micVizLabel').textContent =
           new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      } else if (isHallucination) {
+        document.getElementById('micVizLabel').textContent = '(noise detected — skipped)';
       } else {
         document.getElementById('micVizLabel').textContent = '(silence / no speech)';
       }

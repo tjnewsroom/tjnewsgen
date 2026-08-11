@@ -820,7 +820,7 @@ function updateProviderHint(){
 }
 const PROVIDER_MODELS={
   claude:'claude-sonnet-4-6',
-  gemini:'gemini-1.5-flash',
+  gemini:'gemini-2.0-flash',
   openai:'gpt-4o-mini'
 };
 
@@ -960,7 +960,7 @@ async function _callClaude(system,userMsg,useSearch,key,attempt){
 async function _callGemini(system,userMsg,key,attempt){
   attempt=attempt||1;
   const txt=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?b.text:'[image]').join('\n'):(typeof userMsg==='string'?userMsg:JSON.stringify(userMsg));
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key,
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key,
     {method:'POST',headers:{'Content-Type':'application/json'},
      body:JSON.stringify({contents:[{parts:[{text:system+'\n\n'+txt}]}],generationConfig:{maxOutputTokens:4000}})});
   const data=await r.json();
@@ -991,7 +991,7 @@ async function callClaudeText(prompt){
   const key=getKey(),prov=getProvider();
   if(!key) throw new Error('API key needed');
   if(prov==='gemini'){
-    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+key,
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key,
       {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
     const d=await r.json();if(d.error)throw new Error(d.error.message);
     return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||'';

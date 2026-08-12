@@ -918,57 +918,118 @@ function loadImg(inp){
 
 /* ══ API ══ */
 /* ══ MULTI-PROVIDER API ══ */
-async function callClaude(system,userMsg,useSearch,attempt){
-  const key=getKey(), prov=getProvider();
-  if(!key) throw new Error('API key இல்லை — ⚙ → provider select → key paste → Save');
-  if(prov==='gemini') return _callGemini(system,userMsg,key);
-  if(prov==='openai') return _callOpenAI(system,userMsg,key);
-  return _callClaude(system,userMsg,useSearch,key,attempt||1);
+async function callClaude(system, userMsg, useSearch, attempt) {
+  const key = getKey(), prov = getProvider();
+  if (!key) throw new Error('API key இல்லை — ⚙ → provider select → key paste → Save');
+
+  if (prov === 'gemini') return _callGemini(system, userMsg, key, attempt || 1);
+  if (prov === 'openai') return _callOpenAI(system, userMsg, key);
+
+  return _callClaude(system, userMsg, useSearch, key, attempt || 1);
 }
 
-async function _callClaude(system,userMsg,useSearch,key,attempt){
-  const body={model:'claude-sonnet-4-6',max_tokens:4000,system,messages:[{role:'user',content:userMsg}]};
-  if(useSearch)body.tools=[{type:'web_search_20250305',name:'web_search'}];
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':key,
-      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify(body)});
-  const data=await r.json();
-  if(data.error){
-    const raw=JSON.stringify(data.error);
-    if(raw.includes('exceeded_limit')||raw.includes('rate_limit')){
-      let w='';const m=raw.match(/"resets_at":"([^"]+)"/);
-      if(m){try{w=' Reset: '+new Date(m[1]).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST.';}catch(e){}}
-      throw new Error('Usage limit — கொஞ்ச நேரம் கழிச்சு try.'+w);
+async function _callClaude(system, userMsg, useSearch, key, attempt) {
+  const body = {
+    model: 'claude-sonnet-4-6',
+    max_tokens: 4000,
+    system,
+    messages: [{ role: 'user', content: userMsg }]
+  };
+
+  if (useSearch) body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
+
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(body)
+  });
+
+  const data = await r.json();
+  if (data.error) {
+    const raw = JSON.stringify(data.error);
+    if (raw.includes('exceeded_limit') || raw.includes('rate_limit')) {
+      let w = '';
+      const m = raw.match(/"resets_at":"([^"]+)"/);
+      if (m) {
+        try {
+          w = ' Reset: ' + new Date(m[1]).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) + ' IST.';
+        } catch (e) {}
+      }
+      throw new Error('Usage limit — கொஞ்ச நேரம் கழிச்சு try.' + w);
     }
-    if(raw.includes('credit')||raw.includes('billing')) throw new Error('Credit காலி — console.anthropic.com Billing recharge.');
-    throw new Error(data.error.message||'Claude API error');
+    if (raw.includes('credit') || raw.includes('billing')) throw new Error('Credit காலி — console.anthropic.com Billing recharge.');
+    throw new Error(data.error.message || 'Claude API error');
   }
-  if(data.stop_reason==='max_tokens') throw new Error('Response truncated — duration குறைச்சு try.');
-  const text=(data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n');
-  try{return parseJson(text);}catch(e){
-    if(attempt<2){
-      const note='\n\nIMPORTANT: ONE valid JSON only, no markdown.';
-      const rm=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?{...b,text:b.text+note}:b):userMsg+note;
-      return _callClaude(system,rm,useSearch,key,attempt+1);
+
+  if (data.stop_reason === 'max_tokens') throw new Error('Response truncated — duration குறைச்சு try.');
+
+  const text = (data.content || []).map(i => i.type === 'text' ? i.text : '').filter(Boolean).join('\n');
+  try {
+    return parseJson(text);
+  } catch (e) {
+    if (attempt < 2) {
+      const note = '\n\nIMPORTANT: ONE valid JSON only, no markdown.';
+      const rm = Array.isArray(userMsg)
+        ? userMsg.map(b => b.type === 'text' ? { ...b, text: b.text + note } : b)
+        : userMsg + note;
+      return _callClaude(system, rm, useSearch, key, attempt + 1);
     }
-    throw new Error('JSON parse failed: '+e.message);
+    throw new Error('JSON parse failed: ' + e.message);
   }
 }
 
-async function _callGemini(system,userMsg,key,attempt){
-  attempt=attempt||1;
-  const txt=Array.isArray(userMsg)?userMsg.map(b=>b.type==='text'?b.text:'[image]').join('\n'):(typeof userMsg==='string'?userMsg:JSON.stringify(userMsg));
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key,
-    {method:'POST',headers:{'Content-Type':'application/json'},
-     body:JSON.stringify({contents:[{parts:[{text:system+'\n\n'+txt}]}],generationConfig:{maxOutputTokens:4000}})});
-  const data=await r.json();
-  if(data.error) throw new Error('Gemini: '+(data.error.message||'API error'));
-  const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-  try{return parseJson(text);}catch(e){
-    if(attempt<2) return _callGemini(system,userMsg+'\n\nIMPORTANT: ONE valid JSON only.',key,attempt+1);
-    throw new Error('Gemini parse failed: '+e.message);
+async function _callGemini(system, userMsg, key, attempt) {
+  attempt = attempt || 1;
+
+  const txt = Array.isArray(userMsg)
+    ? userMsg.map(b => {
+        if (b.type === 'text') return b.text;
+        if (b.type === 'image') return '[image]';
+        return '';
+      }).filter(Boolean).join('\n')
+    : (typeof userMsg === 'string' ? userMsg : JSON.stringify(userMsg));
+
+  const r = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + key,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: system + '\n\n' + txt }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          maxOutputTokens: 4000
+        }
+      })
+    }
+  );
+
+  const data = await r.json();
+  if (data.error) throw new Error('Gemini: ' + (data.error.message || 'API error'));
+
+  const text = data.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('\n') || '';
+  try {
+    return parseJson(text);
+  } catch (e) {
+    if (attempt < 2) {
+      const retryText = Array.isArray(userMsg)
+        ? userMsg
+        : userMsg + '\n\nIMPORTANT: ONE valid JSON only.';
+      return _callGemini(system, retryText, key, attempt + 1);
+    }
+    throw new Error('Gemini parse failed: ' + e.message);
   }
 }
 
@@ -991,7 +1052,7 @@ async function callClaudeText(prompt){
   const key=getKey(),prov=getProvider();
   if(!key) throw new Error('API key needed');
   if(prov==='gemini'){
-    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key,
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+key,
       {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
     const d=await r.json();if(d.error)throw new Error(d.error.message);
     return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||'';

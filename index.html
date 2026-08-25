@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TJ NewsGen Â· Bulletin Engine</title>
+<title>TJ NewsGen · Bulletin Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -27,7 +27,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px;
 button{font-family:var(--ui);cursor:pointer}
 ::selection{background:rgba(2,132,199,.15)}
 
-/* â”€â”€ TOPBAR â”€â”€ */
+/* ── TOPBAR ── */
 .topbar{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;
   background:var(--surface);border-bottom:1px solid var(--line);flex-shrink:0;box-shadow:var(--sh)}
 .brand{display:flex;align-items:center;gap:9px;margin-right:4px}
@@ -71,7 +71,7 @@ button{font-family:var(--ui);cursor:pointer}
   align-items:center;justify-content:center;transition:.15s;box-shadow:var(--sh)}
 .icon-btn:hover{color:var(--ink);border-color:var(--ink-dim)}
 
-/* â”€â”€ DRAWER â”€â”€ */
+/* ── DRAWER ── */
 .drawer{display:none;background:var(--amber-l);border-bottom:1px solid var(--amber-b);
   padding:10px 18px;gap:10px;align-items:center;flex-shrink:0}
 .drawer.open{display:flex}
@@ -84,14 +84,14 @@ button{font-family:var(--ui);cursor:pointer}
   background:var(--amber);color:#fff;font-weight:600;font-size:13px}
 .drawer .hint{font-size:11px;color:var(--amber);white-space:nowrap}
 
-/* â”€â”€ WORKSPACE â”€â”€ */
+/* ── WORKSPACE ── */
 .workspace{flex:1;overflow:hidden;position:relative}
 .page{position:absolute;inset:0;display:none;overflow:hidden}
 .page.on{display:flex}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════
    NEWSGEN PAGE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════ */
 #pg-newsgen{flex-direction:row}
 .rail{width:370px;flex-shrink:0;border-right:1px solid var(--line);
   background:var(--surface);display:flex;flex-direction:column;overflow:hidden}
@@ -226,7 +226,7 @@ textarea{resize:vertical;min-height:110px;line-height:1.7}
   border-bottom:1px solid var(--line-soft);font-family:var(--tamil);
   font-size:14px;line-height:1.6;color:var(--ink-dim)}
 .ticker-pts li:last-child{border-bottom:none}
-.ticker-pts li::before{content:'â–¶';color:var(--red);font-size:9px;
+.ticker-pts li::before{content:'▶';color:var(--red);font-size:9px;
   flex-shrink:0;margin-top:5px}
 .stat-row{display:flex;gap:10px;margin-bottom:14px}
 .stat{flex:1;background:var(--surface);border:1px solid var(--line);
@@ -247,9 +247,9 @@ textarea{resize:vertical;min-height:110px;line-height:1.7}
   font-size:13px;line-height:1.7;color:#991B1B}
 .error-box b{color:var(--red)}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   TRANSCRIBER PAGE â€” FULL WINDOW
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════
+   TRANSCRIBER PAGE — FULL WINDOW
+══════════════════════════════ */
 #pg-transcriber{background:var(--bg);overflow-y:auto;flex-direction:column;align-items:center}
 .t-wrap{width:100%;max-width:780px;padding:24px 20px 60px}
 .t-title{font-size:20px;font-weight:700;margin-bottom:4px}
@@ -328,7 +328,7 @@ select:focus{outline:none;border-color:var(--cyan)}
   margin-bottom:14px;line-height:1.6}
 .t-quality-note b{color:var(--amber);display:block;margin-bottom:4px}
 
-/* â”€â”€ FOOTER â”€â”€ */
+/* ── FOOTER ── */
 .footbar{height:30px;padding:0 18px;border-top:1px solid var(--line);
   background:var(--surface);display:flex;align-items:center;
   font-family:var(--mono);font-size:9px;letter-spacing:1px;
@@ -336,7 +336,7 @@ select:focus{outline:none;border-color:var(--cyan)}
 .footbar .r{margin-left:auto}
 
 
-/* â”€â”€ TRANSCRIBER ADDITIONS â”€â”€ */
+/* ── TRANSCRIBER ADDITIONS ── */
 .t-mode-tabs{display:flex;gap:6px;margin-bottom:16px}
 .tmt{flex:1;padding:10px;border:1px solid var(--line);border-radius:var(--r);
   background:var(--surface);color:var(--ink-dim);font-size:13px;font-weight:600;transition:.15s}
@@ -391,10 +391,16 @@ select:focus{outline:none;border-color:var(--cyan)}
   padding:2px 10px 5px;background:var(--surface)}
 
 
-/* â”€â”€ WORLD MONITOR â”€â”€ */
+/* ── WORLD MONITOR ── */
 #pg-monitor{background:var(--bg);overflow-y:auto;flex-direction:column}
-.mon-wrap{max-width:1100px;margin:0 auto;padding:0 20px 60px;width:100%}
-.mon-sticky-top{position:sticky;top:0;z-index:10;background:var(--bg);padding:14px 0 8px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.mon-wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px;width:100%;box-sizing:border-box}
+.mon-sticky-top{position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line);margin-bottom:10px}
+@media(max-width:600px){
+  .mon-header{flex-wrap:wrap;gap:8px}
+  .mon-title{font-size:16px}
+  .mf{padding:5px 10px;font-size:11px}
+  .msrc{font-size:10px;padding:4px 8px}
+}
 .mon-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
 .mon-title{font-size:18px;font-weight:700}
 .mon-live{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--green);background:var(--green-l);border:1px solid var(--green-b);border-radius:20px;padding:4px 10px}
@@ -433,7 +439,7 @@ select:focus{outline:none;border-color:var(--cyan)}
 .mact.gen:hover{background:var(--red);color:#fff}
 .mon-empty{text-align:center;padding:60px 20px;color:var(--ink-faint);font-size:13px;font-family:var(--mono)}
 /* breaking alert banner */
-.break-banner{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--red);color:#fff;padding:10px 20px;display:none;align-items:center;gap:12px;font-weight:700;font-size:14px;box-shadow:0 4px 12px rgba(220,38,38,.4)}
+.break-banner{display:none;background:var(--red);color:#fff;padding:10px 16px;align-items:center;gap:10px;font-weight:700;font-size:13px;flex-shrink:0;flex-wrap:wrap}
 .break-banner.show{display:flex}
 .break-banner .bb-close{margin-left:auto;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0 4px}
 .break-banner .bb-dot{width:10px;height:10px;border-radius:50%;background:#fff;animation:pulse 1s infinite;flex-shrink:0}
@@ -454,9 +460,9 @@ select:focus{outline:none;border-color:var(--cyan)}
     <div class="sub">BULLETIN ENGINE</div>
   </div>
   <div class="nav-pills">
-    <button class="np on" id="nav-newsgen" onclick="gotoPage('newsgen')">âº Script Generator</button>
-    <button class="np green-pill" id="nav-transcriber" onclick="gotoPage('transcriber')" style="background:none;color:var(--ink-dim)">ðŸŽ™ Transcriber</button>
-    <button class="np" id="nav-monitor" onclick="gotoPage('monitor')" style="background:none;color:var(--ink-dim);border-left:1px solid var(--line);margin-left:4px">ðŸŒ World Monitor</button>
+    <button class="np on" id="nav-newsgen" onclick="gotoPage('newsgen')">⏺ Script Generator</button>
+    <button class="np green-pill" id="nav-transcriber" onclick="gotoPage('transcriber')" style="background:none;color:var(--ink-dim)">🎙 Transcriber</button>
+    <button class="np" id="nav-monitor" onclick="gotoPage('monitor')" style="background:none;color:var(--ink-dim);border-left:1px solid var(--line);margin-left:4px">🌍 World Monitor</button>
   </div>
   <div class="mode-seg" id="modeSeg">
     <button class="ms on" id="ms-gen" onclick="setMode('generate')">Generate</button>
@@ -466,25 +472,25 @@ select:focus{outline:none;border-color:var(--cyan)}
 </header>
 
 <!-- DRAWER -->
-<!-- API KEY BAR â€” always visible -->
+<!-- API KEY BAR — always visible -->
 <div id="apiBar" style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:#FFFBEB;border-bottom:1px solid #FDE68A;flex-shrink:0;flex-wrap:wrap">
   <label style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:#D97706;font-weight:600;white-space:nowrap">PROVIDER</label>
   <select id="apiProvider" onchange="updateProviderHint()" style="background:#fff;border:1px solid #FDE68A;border-radius:6px;color:#111827;padding:7px 10px;font-family:var(--ui);font-size:13px;flex-shrink:0">
     <option value="claude">Claude (Anthropic)</option>
-    <option value="gemini">Gemini (Google) â€” free tier</option>
+    <option value="gemini">Gemini (Google) — free tier</option>
     <option value="openai">ChatGPT (OpenAI)</option>
   </select>
   <input type="password" id="apiKey" placeholder="sk-ant-api03-..." 
     style="flex:1;min-width:180px;background:#fff;border:1px solid #FDE68A;border-radius:6px;color:#111827;padding:7px 10px;font-family:var(--mono);font-size:12px">
   <button onclick="saveKey()" style="padding:7px 16px;border:none;border-radius:6px;background:#D97706;color:#fff;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap">Save</button>
-  <span id="providerHint" style="font-size:11px;color:#D97706;white-space:nowrap">console.anthropic.com â†’ API Keys</span>
+  <span id="providerHint" style="font-size:11px;color:#D97706;white-space:nowrap">console.anthropic.com → API Keys</span>
   <div class="status-pill err" id="apiPill" style="margin-left:auto"><span class="led"></span><span id="apiTxt">KEY NEEDED</span></div>
 </div>
 
 <!-- WORKSPACE -->
 <div class="workspace">
 
-  <!-- â•â• NEWSGEN PAGE â•â• -->
+  <!-- ══ NEWSGEN PAGE ══ -->
   <div class="page on" id="pg-newsgen">
     <aside class="rail">
       <div class="rail-scroll">
@@ -499,21 +505,21 @@ select:focus{outline:none;border-color:var(--cyan)}
               <button class="sc" data-src="img" onclick="setSrc('img')">Newspaper Image</button>
             </div>
             <div id="src-raw">
-              <textarea id="rawScript" placeholder="Reporter script / spot copy â€” Tamil or English"></textarea>
+              <textarea id="rawScript" placeholder="Reporter script / spot copy — Tamil or English"></textarea>
             </div>
             <div id="src-url" style="display:none">
               <input type="text" id="newsUrl" placeholder="https://article-link...">
-              <div class="src-note">Article web search à®µà®´à®¿à®¯à®¾ à®ªà®Ÿà®¿à®šà¯à®šà¯ facts à®®à®Ÿà¯à®Ÿà¯à®®à¯ use à®†à®•à¯à®®à¯.</div>
+              <div class="src-note">Article web search வழியா படிச்சு facts மட்டும் use ஆகும்.</div>
             </div>
             <div id="src-img" style="display:none">
               <div class="img-drop">
                 <input type="file" id="paperImg" accept="image/*" onchange="loadImg(this)">
-                <div class="ico">ðŸ“°</div>
-                <div class="t">Newspaper image select à®ªà®£à¯à®£à¯à®™à¯à®•</div>
-                <div class="s">Tamil/English clipping Â· press note Â· printed text photo</div>
+                <div class="ico">📰</div>
+                <div class="t">Newspaper image select பண்ணுங்க</div>
+                <div class="s">Tamil/English clipping · press note · printed text photo</div>
               </div>
               <div id="imgPreview"><img id="imgPrevImg" src="" alt=""></div>
-              <div class="src-note" style="margin-top:8px">ðŸ“Œ Clear photo Â· good light Â· one article in frame = best accuracy</div>
+              <div class="src-note" style="margin-top:8px">📌 Clear photo · good light · one article in frame = best accuracy</div>
             </div>
           </div>
 
@@ -555,7 +561,7 @@ select:focus{outline:none;border-color:var(--cyan)}
                 <button class="dq" onclick="setDur(100)">100</button>
               </div>
             </div>
-            <div class="dur-est">â‰ˆ <span id="wEst">70</span> Tamil words Â· 1.75 w/s</div>
+            <div class="dur-est">≈ <span id="wEst">70</span> Tamil words · 1.75 w/s</div>
           </div>
 
           <div class="step">
@@ -568,7 +574,7 @@ select:focus{outline:none;border-color:var(--cyan)}
         <div id="pane-trim" style="display:none">
           <div class="step">
             <div class="step-hd"><span class="num">1</span><span class="lbl">EXISTING TAMIL SCRIPT</span></div>
-            <textarea id="trimScript" style="min-height:200px" placeholder="Full script paste à®ªà®£à¯à®£à¯à®™à¯à®•..."></textarea>
+            <textarea id="trimScript" style="min-height:200px" placeholder="Full script paste பண்ணுங்க..."></textarea>
           </div>
           <div class="step">
             <div class="step-hd"><span class="num">2</span><span class="lbl">TRIM TO DURATION</span></div>
@@ -590,7 +596,7 @@ select:focus{outline:none;border-color:var(--cyan)}
 
       </div>
       <div class="rail-foot">
-        <button class="btn-primary" id="goBtn" onclick="go()">âº &nbsp;GENERATE SCRIPT</button>
+        <button class="btn-primary" id="goBtn" onclick="go()">⏺ &nbsp;GENERATE SCRIPT</button>
       </div>
     </aside>
 
@@ -601,27 +607,27 @@ select:focus{outline:none;border-color:var(--cyan)}
       </div>
       <div class="stage-body" id="output">
         <div class="empty">
-          <div class="mark">â€” STANDBY â€”</div>
+          <div class="mark">— STANDBY —</div>
           <div class="flow-steps">
             <div class="fs"><div class="n">STEP 1</div><div class="d">Raw script, link or newspaper image</div></div>
             <div class="fs"><div class="n">STEP 2</div><div class="d">Bulletin type, format, duration</div></div>
-            <div class="fs"><div class="n">STEP 3</div><div class="d">Generate â†’ copy blocks â†’ paste in Blaze</div></div>
+            <div class="fs"><div class="n">STEP 3</div><div class="d">Generate → copy blocks → paste in Blaze</div></div>
           </div>
-          <div class="note">TamilJanam house style Â· Anchor â†’ VO â†’ MOS Â· Blaze-ready</div>
+          <div class="note">TamilJanam house style · Anchor → VO → MOS · Blaze-ready</div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- â•â• TRANSCRIBER PAGE â€” FULL WINDOW â•â• -->
+  <!-- ══ TRANSCRIBER PAGE — FULL WINDOW ══ -->
   <div class="page" id="pg-transcriber">
     <div class="t-wrap">
-      <div class="t-title">ðŸŽ™ Transcriber + Live Wire Tool</div>
-      <div class="t-sub">Reporter bytes Â· Press meets Â· Live ANI/agency feeds â†’ Tamil on-air text. Runs on your device.</div>
+      <div class="t-title">🎙 Transcriber + Live Wire Tool</div>
+      <div class="t-sub">Reporter bytes · Press meets · Live ANI/agency feeds → Tamil on-air text. Runs on your device.</div>
 
       <div class="t-mode-tabs">
-        <button class="tmt on" id="tmt-file" onclick="setTMode('file')">ðŸ“ File Upload</button>
-        <button class="tmt" id="tmt-mic" onclick="setTMode('mic')">ðŸŽ¤ Live Mic / Wire Feed</button>
+        <button class="tmt on" id="tmt-file" onclick="setTMode('file')">📁 File Upload</button>
+        <button class="tmt" id="tmt-mic" onclick="setTMode('mic')">🎤 Live Mic / Wire Feed</button>
       </div>
 
       <!-- SETTINGS -->
@@ -644,38 +650,38 @@ select:focus{outline:none;border-color:var(--cyan)}
             <label>Output language</label>
             <select id="tOutputLang" onchange="handleOutputLangChange()">
               <option value="same">Same as spoken</option>
-              <option value="ta-nllb">Tamil â€” free, on-device (NLLB)</option>
-              <option value="ta-claude">Tamil â€” Claude API</option>
-              <option value="en">English â€” Claude API</option>
+              <option value="ta-nllb">Tamil — free, on-device (NLLB)</option>
+              <option value="ta-claude">Tamil — Claude API</option>
+              <option value="en">English — Claude API</option>
             </select>
           </div>
           <div class="t-field">
             <label>Whisper model</label>
             <select id="tModel">
-              <option value="Xenova/whisper-base" selected>Base â€” fast ~150MB âœ“ recommended</option>
-              <option value="Xenova/whisper-small">Small â€” accurate ~490MB (slow)</option>
+              <option value="Xenova/whisper-base" selected>Base — fast ~150MB ✓ recommended</option>
+              <option value="Xenova/whisper-small">Small — accurate ~490MB (slow)</option>
             </select>
           </div>
         </div>
-        <div id="tApiNote" style="display:none" class="src-note">ðŸ”‘ Claude API key â€” âš™ icon-à®²à¯ set à®ªà®£à¯à®£à¯à®™à¯à®•.</div>
-        <div id="tNllbNote" style="display:none" class="src-note">ðŸ“¦ NLLB: first use ~1.2GB download (free, no API key). âš ï¸ For File Upload only â€” Live Mic mode automatically uses Claude API to avoid freezing.</div>
+        <div id="tApiNote" style="display:none" class="src-note">🔑 Claude API key — ⚙ icon-ல் set பண்ணுங்க.</div>
+        <div id="tNllbNote" style="display:none" class="src-note">📦 NLLB: first use ~1.2GB download (free, no API key). ⚠️ For File Upload only — Live Mic mode automatically uses Claude API to avoid freezing.</div>
       </div>
 
-      <!-- â•â•â• FILE MODE â•â•â• -->
+      <!-- ═══ FILE MODE ═══ -->
       <div id="t-file-panel" class="tpanel">
         <h2>Upload Audio File</h2>
-        <div class="t-quality-note"><b>âš  Best results:</b> Speech-only audio, no background music/noise. Trim to speech before uploading.</div>
+        <div class="t-quality-note"><b>⚠ Best results:</b> Speech-only audio, no background music/noise. Trim to speech before uploading.</div>
         <div class="dz" id="dz">
           <input type="file" id="tFile" accept="audio/*">
-          <div class="ico">ðŸŽ™</div>
+          <div class="ico">🎙</div>
           <div class="mt">Click to choose audio or drag here</div>
-          <div class="st">MP3 Â· WAV Â· M4A Â· OGG â€” reporter bytes, press meets, phone clips</div>
+          <div class="st">MP3 · WAV · M4A · OGG — reporter bytes, press meets, phone clips</div>
         </div>
         <div class="t-fname" id="tFname"></div>
-        <button class="t-run" id="tRunBtn" disabled>â–¶ &nbsp;TRANSCRIBE FILE</button>
+        <button class="t-run" id="tRunBtn" disabled>▶ &nbsp;TRANSCRIBE FILE</button>
         <div class="t-prog" id="tProg"><div class="t-prog-fill" id="tProgFill"></div></div>
         <div class="t-status" id="tStatus"></div>
-        <!-- FILE OUTPUT â€” immediately below button, no scroll needed -->
+        <!-- FILE OUTPUT — immediately below button, no scroll needed -->
         <div id="fileOutArea" style="display:none;margin-top:16px">
           <div class="out-split">
             <div class="out-half" id="fileOrigHalf">
@@ -688,51 +694,51 @@ select:focus{outline:none;border-color:var(--cyan)}
             </div>
           </div>
           <div class="onair-section">
-            <div class="onair-label">âœ¦ ON-AIR TEXT &nbsp;<span class="onair-hint">â€” à®‡à®¤à¯ˆ edit à®ªà®£à¯à®£à®¿ CG / Ticker-à®•à¯à®•à¯ copy à®ªà®£à¯à®£à¯à®™à¯à®•</span></div>
-            <textarea id="onairText" class="onair-box" placeholder="Translated / transcribed text à®‡à®™à¯à®•à¯‡ à®µà®°à¯à®®à¯ â€” edit à®ªà®£à¯à®£à®¿ copy à®ªà®£à¯à®£à¯à®™à¯à®•..."></textarea>
+            <div class="onair-label">✦ ON-AIR TEXT &nbsp;<span class="onair-hint">— இதை edit பண்ணி CG / Ticker-க்கு copy பண்ணுங்க</span></div>
+            <textarea id="onairText" class="onair-box" placeholder="Translated / transcribed text இங்கே வரும் — edit பண்ணி copy பண்ணுங்க..."></textarea>
             <div class="t-copy-row">
-              <button onclick="copyOnair(this)" class="copy-cg-btn">ðŸ“‹ Copy for CG / Ticker</button>
+              <button onclick="copyOnair(this)" class="copy-cg-btn">📋 Copy for CG / Ticker</button>
               <button id="tCopyOrig">Copy transcript</button>
               <button id="tCopyTrans" style="display:none">Copy translation</button>
-              <button id="tDownload">â¬‡ Download .txt</button>
-              <button class="send-btn" id="tSend">â© Send to NewsGen</button>
+              <button id="tDownload">⬇ Download .txt</button>
+              <button class="send-btn" id="tSend">⏩ Send to NewsGen</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- â•â•â• MIC / LIVE WIRE MODE â•â•â• -->
+      <!-- ═══ MIC / LIVE WIRE MODE ═══ -->
       <div id="t-mic-panel" class="tpanel" style="display:none">
         <h2>Live Mic / Wire Feed Capture</h2>
         <div class="src-note" style="margin-bottom:12px;border-left-color:var(--cyan)">
-          <b>Usage:</b> ANI/agency wire feed-à® speakers-à®²à¯ play à®ªà®£à¯à®£à¯à®™à¯à®•. Start à®…à®´à¯à®¤à¯à®¤à¯à®™à¯à®• â€” mic capture à®ªà®£à¯à®£à®¿ 6 seconds-à®•à¯à®•à¯ à®’à®°à¯ à®¤à®Ÿà®µà¯ˆ transcribe + translate à®†à®•à¯à®®à¯.<br><br>
-          <b>âš  Mic needs localhost:</b> <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">python -m http.server 8000</code> â†’ <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">http://localhost:8000/tj-newsgen-desktop.html</code>
+          <b>Usage:</b> ANI/agency wire feed-ஐ speakers-ல் play பண்ணுங்க. Start அழுத்துங்க — mic capture பண்ணி 6 seconds-க்கு ஒரு தடவை transcribe + translate ஆகும்.<br><br>
+          <b>⚠ Mic needs localhost:</b> <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">python -m http.server 8000</code> → <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">http://localhost:8000/tj-newsgen-desktop.html</code>
         </div>
         <div class="mic-controls">
-          <button class="t-run" id="micStartBtn" onclick="startMic()">ðŸŽ¤ &nbsp;START CAPTURE</button>
-          <button class="t-run" id="micStopBtn" style="background:var(--red);display:none" onclick="stopMic()">â¹ &nbsp;STOP</button>
+          <button class="t-run" id="micStartBtn" onclick="startMic()">🎤 &nbsp;START CAPTURE</button>
+          <button class="t-run" id="micStopBtn" style="background:var(--red);display:none" onclick="stopMic()">⏹ &nbsp;STOP</button>
         </div>
         <div class="t-status" id="micStatus"></div>
         <div class="mic-viz" id="micViz">
           <div class="mic-bars" id="micBars"></div>
-          <span id="micVizLabel" style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">â€”â€”</span>
+          <span id="micVizLabel" style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">——</span>
         </div>
 
-        <!-- ON-AIR BOX â€” always visible in mic mode, updates live -->
+        <!-- ON-AIR BOX — always visible in mic mode, updates live -->
         <div class="onair-section" id="micOnairSection" style="margin-top:14px">
-          <div class="onair-label">âœ¦ ON-AIR TEXT &nbsp;<span class="onair-hint">â€” live update à®†à®•à¯à®®à¯, edit à®ªà®£à¯à®£à®¿ copy à®ªà®£à¯à®£à¯à®™à¯à®•</span></div>
-          <textarea id="micOnairText" class="onair-box" style="min-height:110px" placeholder="Captured Tamil text à®‡à®™à¯à®•à¯‡ live-à®† à®µà®°à¯à®®à¯..."></textarea>
+          <div class="onair-label">✦ ON-AIR TEXT &nbsp;<span class="onair-hint">— live update ஆகும், edit பண்ணி copy பண்ணுங்க</span></div>
+          <textarea id="micOnairText" class="onair-box" style="min-height:110px" placeholder="Captured Tamil text இங்கே live-ஆ வரும்..."></textarea>
           <div class="t-copy-row">
-            <button onclick="copyMicOnair(this)" class="copy-cg-btn">ðŸ“‹ Copy for CG / Ticker</button>
-            <button onclick="clearMicOutput()" style="border-color:var(--red-b);color:var(--red)">ðŸ—‘ Clear</button>
-            <button class="send-btn" id="micSend">â© Send to NewsGen</button>
+            <button onclick="copyMicOnair(this)" class="copy-cg-btn">📋 Copy for CG / Ticker</button>
+            <button onclick="clearMicOutput()" style="border-color:var(--red-b);color:var(--red)">🗑 Clear</button>
+            <button class="send-btn" id="micSend">⏩ Send to NewsGen</button>
           </div>
         </div>
 
-        <!-- LIVE FEED LOG â€” collapsible, shows all chunks -->
+        <!-- LIVE FEED LOG — collapsible, shows all chunks -->
         <details style="margin-top:14px">
           <summary style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);padding:8px 0;user-select:none">
-            ðŸ”´ LIVE FEED LOG â€” click to expand all chunks
+            🔴 LIVE FEED LOG — click to expand all chunks
           </summary>
           <div class="live-feed-box show" id="liveFeedBox">
             <div class="live-feed-header">
@@ -740,14 +746,14 @@ select:focus{outline:none;border-color:var(--cyan)}
               <button class="clr-btn" id="clearFeedBtn">Clear log</button>
             </div>
             <div class="live-feed-scroll" id="liveFeedScroll">
-              <div style="padding:16px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks will appear here as capturedâ€¦</div>
+              <div style="padding:16px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks will appear here as captured…</div>
             </div>
           </div>
         </details>
       </div>
 
       <div class="t-note">
-        Whisper transcription runs on your device â€” audio never leaves your computer.<br>
+        Whisper transcription runs on your device — audio never leaves your computer.<br>
         NLLB translation is also on-device and free. Claude translate uses your API key.
       </div>
     </div>
@@ -755,32 +761,31 @@ select:focus{outline:none;border-color:var(--cyan)}
 
 </div>
 
-  <!-- â•â• WORLD MONITOR PAGE â•â• -->
+  <!-- ══ WORLD MONITOR PAGE ══ -->
   <div class="page" id="pg-monitor">
-    <!-- breaking alert banner -->
-    <div class="break-banner" id="breakBanner">
-      <div class="bb-dot"></div>
-      <span id="breakBannerText">ðŸ”´ BREAKING</span>
-      <button class="bb-close" onclick="document.getElementById('breakBanner').classList.remove('show');if(window._alertRepeat)clearInterval(window._alertRepeat);">âœ•</button>
-    </div>
     <div class="mon-wrap">
+    <!-- breaking alert banner — inside flow, not fixed overlay -->
+    <div class="break-banner" id="breakBanner" style="border-radius:0;margin:0 -20px;width:calc(100% + 40px)">
+      <span id="breakBannerText">BREAKING</span>
+      <button class="bb-close" onclick="document.getElementById('breakBanner').classList.remove('show');if(window._alertRepeat)clearInterval(window._alertRepeat);if(window._bannerRotate)clearInterval(window._bannerRotate);" style="margin-left:auto;background:rgba(255,255,255,.25);border:none;color:#fff;font-size:16px;cursor:pointer;padding:2px 8px;border-radius:4px">✕</button>
+    </div>
       <div class="mon-sticky-top">
       <div class="mon-header">
-        <div class="mon-title">ðŸŒ World Monitor</div>
-        <div class="mon-live"><div class="blink"></div><span id="monStatus">LOADINGâ€¦</span></div>
+        <div class="mon-title">🌍 World Monitor</div>
+        <div class="mon-live"><div class="blink"></div><span id="monStatus">LOADING…</span></div>
         <div class="mon-stats" id="monStats"></div>
 
-        <button id="monRefreshBtn" onclick="monRefresh()" style="padding:6px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink-dim);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span id="monRefreshIcon" style="display:inline-block;transition:transform .5s">âŸ³</span> Refresh</button>
-        <button onclick="gotoPage('newsgen')" style="padding:6px 14px;border:none;border-radius:var(--r);background:var(--red);color:#fff;font-size:12px;font-weight:600;cursor:pointer">âº Script Generator</button>
+        <button id="monRefreshBtn" onclick="monRefresh()" style="padding:6px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink-dim);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span id="monRefreshIcon" style="display:inline-block;transition:transform .5s">⟳</span> Refresh</button>
+        <button onclick="gotoPage('newsgen')" style="padding:6px 14px;border:none;border-radius:var(--r);background:var(--red);color:#fff;font-size:12px;font-weight:600;cursor:pointer">⏺ Script Generator</button>
       </div>
 
       <!-- Priority filter -->
       <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
-        <div class="mf on" data-pri="ALL" onclick="setMonFilter(this,'ALL')" style="background:#111827;color:#fff;border-color:#111827">All</div>
-        <div class="mf" data-pri="BREAKING" onclick="setMonFilter(this,'BREAKING')" style="border-color:#DC2626;color:#DC2626">ðŸ”´ Breaking</div>
-        <div class="mf" data-pri="TAMIL" onclick="setMonFilter(this,'TAMIL')" style="border-color:#EA580C;color:#EA580C">ðŸŸ  Tamil</div>
-        <div class="mf" data-pri="INDIA" onclick="setMonFilter(this,'INDIA')" style="border-color:#2563EB;color:#2563EB">ðŸ‡®ðŸ‡³ India</div>
-        <div class="mf" data-pri="HIGH" onclick="setMonFilter(this,'HIGH')" style="border-color:#16A34A;color:#16A34A">ðŸŒ World</div>
+        <div class="mf on" data-pri="ALL" onclick="setMonFilter(this,'ALL')" style="background:#111827;color:#fff;border-color:#111827;font-weight:700">All</div>
+        <div class="mf" data-pri="BREAKING" onclick="setMonFilter(this,'BREAKING')" style="border-color:#DC2626;color:#DC2626"><b style="color:var(--red)">●</b> Breaking</div>
+        <div class="mf" data-pri="TAMIL" onclick="setMonFilter(this,'TAMIL')" style="border-color:#EA580C;color:#EA580C"><b style="color:#EA580C">●</b> Tamil</div>
+        <div class="mf" data-pri="INDIA" onclick="setMonFilter(this,'INDIA')" style="border-color:#2563EB;color:#2563EB"><b>IN</b> India</div>
+        <div class="mf" data-pri="HIGH" onclick="setMonFilter(this,'HIGH')" style="border-color:#16A34A;color:#16A34A"><b>🌐</b> World</div>
         <select id="monFreshSel" onchange="setFreshness(this.value)" style="padding:6px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink-dim);font-size:12px;font-family:var(--mono);margin-left:auto">
           <option value="30">Last 30 min</option>
           <option value="60">Last 1 hour</option>
@@ -796,91 +801,91 @@ select:focus{outline:none;border-color:var(--cyan)}
       </div><!-- end mon-sticky-top -->
       <div id="monPagTop" style="display:none;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding:8px 0"></div>
       <div class="mon-grid" id="monGrid">
-        <div class="mon-empty">Loading feedsâ€¦ first load takes a moment.</div>
+        <div class="mon-empty">Loading feeds… first load takes a moment.</div>
       </div>
     </div>
   </div>
 <!-- FOOTER -->
 <footer class="footbar">
-  <span>TJ NEWSGEN v2.2 Â· DESK BUILD</span>
-  <span>CLAUDE SONNET Â· 1.75 W/S</span>
-  <span class="r">SELECT TEXT â†’ WORD COUNT</span>
+  <span>TJ NEWSGEN v2.2 · DESK BUILD</span>
+  <span>CLAUDE SONNET · 1.75 W/S</span>
+  <span class="r">SELECT TEXT → WORD COUNT</span>
 </footer>
 <div id="selBadge"></div>
 
 <script>
 const WPS = 1.75;
 
-/* â•â• TRAINED PROMPTS â•â• */
+/* ══ TRAINED PROMPTS ══ */
 const SYS = `You are the senior output editor of TamilJanam, a Tamil TV news channel. You write broadcast-ready Tamil news scripts (NRCS rundown style) strictly in TamilJanam HOUSE STYLE.
 
-TAMILJANAM HOUSE STYLE (learned from real aired scripts â€” follow exactly):
+TAMILJANAM HOUSE STYLE (learned from real aired scripts — follow exactly):
 - Body length: 4-6 sentences regardless of raw source length. Ruthlessly compress.
 - LEAD: open with the outcome / latest development + place. (e.g. medal winners' welcome is the lead, not the tournament.)
-- Pure Tamil word preference over Sanskrit/English: à®•à¯à®®à¯à®ªà®¾à®ªà®¿à®·à¯‡à®•à®®à¯ â†’ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯; 19 à®µà®¯à®¤à¯à®•à¯à®•à¯à®Ÿà¯à®ªà®Ÿà¯à®Ÿà¯‹à®°à¯ â†’ à®‡à®³à¯ˆà®¯à¯‹à®°à¯.
-- ALWAYS DROP: department names (à®‡à®¨à¯à®¤à¯ à®šà®®à®¯ à®…à®±à®¨à®¿à®²à¯ˆà®¤à¯à®¤à¯à®±à¯ˆ etc.), procedural ritual details (à®®à¯à®¤à®²à¯/à®‡à®°à®£à¯à®Ÿà®¾à®®à¯ à®•à®¾à®² à®¯à®¾à®•à®šà®¾à®²à¯ˆ), lists of states/dignitaries, sweets/garlands ceremony detail, "à®šà®®à¯‚à®• à®µà®²à¯ˆà®¤à®³à®™à¯à®•à®³à®¿à®²à¯ à®µà¯ˆà®°à®²à¯" framing, repeated sentences, speculation and rhetorical questions (à®¨à®Ÿà®µà®Ÿà®¿à®•à¯à®•à¯ˆ à®Žà®Ÿà¯à®•à¯à®•à¯à®®à®¾?).
-- ALWAYS KEEP: place hierarchy (à®®à®¾à®µà®Ÿà¯à®Ÿà®®à¯ â†’ à®Šà®°à®¾à®Ÿà¯à®šà®¿ â†’ à®•à®¿à®°à®¾à®®à®®à¯), exact numbers (à®ªà®¤à®•à¯à®•à®™à¯à®•à®³à¯, à®¤à¯‡à®¤à®¿à®•à®³à¯), names with designation.
-- Connectors between sentences: à®…à®¤à®©à¯à®ªà®Ÿà®¿, / à®…à®¤à¯ˆà®¤à¯ à®¤à¯Šà®Ÿà®°à¯à®¨à¯à®¤à¯, / à®‡à®¤à®©à¯ˆà®¯à®Ÿà¯à®¤à¯à®¤à¯, / à®‡à®¤à®¿à®²à¯ à®ªà®™à¯à®•à¯‡à®±à¯à®±.
-- Party/org names abbreviated after context: à®¤à®®à®¿à®´à®• à®µà¯†à®±à¯à®±à®¿ à®•à®´à®•à®®à¯ â†’ à®¤.à®µà¯†.à®•.
-- Dates format: à®œà¯‚à®©à¯ 27 à®®à¯à®¤à®²à¯ à®œà¯‚à®©à¯ 29-à®†à®®à¯ à®¤à¯‡à®¤à®¿ à®µà®°à¯ˆ.
-- Controversy stories: state facts neutrally, close with "...à®…à®¤à®¿à®°à¯à®šà¯à®šà®¿à®¯à¯ˆà®¯à¯à®®à¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆà®¯à¯à®®à¯ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯" style. Never speculate.
-- Sentence endings: à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯ / à®…à®³à®¿à®•à¯à®•à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯ / à®šà¯†à®¯à¯à®¤à®©à®°à¯ / à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯.
-- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors â€” "...à®Žà®©à¯à®±à¯à®®à¯", "...à®Žà®©à®µà¯à®®à¯", "à®®à®±à¯à®±à¯à®®à¯" â€” and close with à®Žà®©à¯à®±à®¾à®°à¯ / à®Žà®© à®¤à¯†à®°à®¿à®µà®¿à®¤à¯à®¤à®¾à®°à¯ / à®Žà®© à®•à¯‚à®±à®¿à®©à®¾à®°à¯. NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...à®Žà®Ÿà¯à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®µà®°à®µà¯‡à®±à¯à®•à®¤à¯à®¤à®•à¯à®•à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯, à®•à®²à®ªà¯à®ªà¯ à®¤à®¿à®°à¯à®®à®£ à®¤à®¿à®Ÿà¯à®Ÿà®¤à¯à®¤à®¿à®²à¯... à®šà®¾à®©à¯à®±à®¿à®¤à®´à¯ à®ªà¯†à®± à®…à®°à®šà¯ à®¨à®¿à®°à¯à®ªà®¨à¯à®¤à®¿à®•à¯à®• à®µà¯‡à®£à¯à®Ÿà¯à®®à¯ à®Žà®©à¯à®±à¯à®®à¯, à®ªà¯‹à®¤à¯ˆà®ªà¯à®ªà¯Šà®°à¯à®³à¯ à®ªà®°à®µà®²à¯... à®ªà®¾à®¤à®¿à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯ à®…à®µà®°à¯ à®•à¯‚à®±à®¿à®©à®¾à®°à¯."
+- Pure Tamil word preference over Sanskrit/English: கும்பாபிஷேகம் → குடமுழுக்கு; 19 வயதுக்குட்பட்டோர் → இளையோர்.
+- ALWAYS DROP: department names (இந்து சமய அறநிலைத்துறை etc.), procedural ritual details (முதல்/இரண்டாம் கால யாகசாலை), lists of states/dignitaries, sweets/garlands ceremony detail, "சமூக வலைதளங்களில் வைரல்" framing, repeated sentences, speculation and rhetorical questions (நடவடிக்கை எடுக்குமா?).
+- ALWAYS KEEP: place hierarchy (மாவட்டம் → ஊராட்சி → கிராமம்), exact numbers (பதக்கங்கள், தேதிகள்), names with designation.
+- Connectors between sentences: அதன்படி, / அதைத் தொடர்ந்து, / இதனையடுத்து, / இதில் பங்கேற்ற.
+- Party/org names abbreviated after context: தமிழக வெற்றி கழகம் → த.வெ.க.
+- Dates format: ஜூன் 27 முதல் ஜூன் 29-ஆம் தேதி வரை.
+- Controversy stories: state facts neutrally, close with "...அதிர்ச்சியையும் சர்ச்சையையும் ஏற்படுத்தி உள்ளது" style. Never speculate.
+- Sentence endings: நடைபெற்றது / அளிக்கப்பட்டது / செய்தனர் / ஏற்படுத்தி உள்ளது.
+- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors — "...என்றும்", "...எனவும்", "மற்றும்" — and close with என்றார் / என தெரிவித்தார் / என கூறினார். NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...எடுத்துள்ளது வரவேற்கத்தக்கது என்றும், கலப்பு திருமண திட்டத்தில்... சான்றிதழ் பெற அரசு நிர்பந்திக்க வேண்டும் என்றும், போதைப்பொருள் பரவல்... பாதித்துள்ளது என்றும் அவர் கூறினார்."
 
-HOUSE STYLE EXAMPLE 1 (RAW â†’ AIRED):
-RAW (long, repetitive): à®¤à®¿à®°à¯à®µà®£à¯à®£à®¾à®®à®²à¯ˆ à®…à®Ÿà¯à®¤à¯à®¤ à®…à®Ÿà®¿à®…à®£à¯à®£à®¾à®®à®²à¯ˆ à®•à®¿à®°à®¾à®®à®¤à¯à®¤à®¿à®²à¯ à®ªà®´à®®à¯ˆ à®µà®¾à®¯à¯à®¨à¯à®¤ à®†à®¤à®¿ à®…à®°à¯à®£à®¾à®šà¯à®šà®²à¯‡à®¸à¯à®µà®°à®°à¯ à®•à¯‹à®µà®¿à®²à¯ à®•à¯à®®à¯à®ªà®¾à®ªà®¿à®·à¯‡à®•à®®à¯ à®µà¯†à®•à¯ à®µà®¿à®®à®°à¯à®šà¯ˆà®¯à®¾à®• à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯... [details of HR&CE works, yagasalai first/second/third kala poojas, go pooja, sivachariyars veda mantras, kalasam, devotees repeated twice]
-AIRED: à®¤à®¿à®°à¯à®µà®£à¯à®£à®¾à®®à®²à¯ˆ à®…à®Ÿà¯à®¤à¯à®¤ à®…à®Ÿà®¿à®…à®£à¯à®£à®¾à®®à®²à¯ˆ à®•à®¿à®°à®¾à®®à®¤à¯à®¤à®¿à®²à¯ à®†à®¯à®¿à®°à®®à¯ à®†à®£à¯à®Ÿà¯à®•à®³à¯ à®ªà®´à®®à¯ˆà®¯à®¾à®© à®†à®¤à®¿ à®…à®°à¯à®£à®¾à®šà¯à®šà®²à¯‡à®¸à¯à®µà®°à®°à¯ à®•à¯‹à®µà®¿à®²à®¿à®²à¯ à®¤à®¿à®°à¯à®ªà¯à®ªà®£à®¿à®•à®³à¯ à®¨à®¿à®±à¯ˆà®µà®Ÿà¯ˆà®¨à¯à®¤à®¤à¯ˆ à®…à®Ÿà¯à®¤à¯à®¤à¯ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯ à®µà®¿à®´à®¾ à®¨à®Ÿà®¤à¯à®¤ à®¤à¯€à®°à¯à®®à®¾à®©à®¿à®•à¯à®•à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯. à®…à®¤à®©à¯à®ªà®Ÿà®¿, à®¯à®¾à®•à®šà®¾à®²à¯ˆ à®ªà¯‚à®œà¯ˆà®•à®³à¯ à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯. à®…à®¤à¯ˆà®¤à¯ à®¤à¯Šà®Ÿà®°à¯à®¨à¯à®¤à¯, à®•à¯‹à®ªà¯à®°à®•à¯ à®•à®²à®šà®™à¯à®•à®³à®¿à®²à¯ à®ªà¯à®©à®¿à®¤à®¨à¯€à®°à¯ à®Šà®±à¯à®±à®ªà¯à®ªà®Ÿà¯à®Ÿà¯ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯ à®¨à®Ÿà®¤à¯à®¤à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯. à®‡à®¤à®¿à®²à¯ à®ªà®™à¯à®•à¯‡à®±à¯à®± à®†à®¯à®¿à®°à®•à¯à®•à®£à®•à¯à®•à®¾à®© à®ªà®•à¯à®¤à®°à¯à®•à®³à¯, à®…à®°à¯‹à®•à®°à®¾ à®®à¯à®´à®•à¯à®•à®®à®¿à®Ÿà¯à®Ÿà¯ à®šà®¾à®®à®¿ à®¤à®°à®¿à®šà®©à®®à¯ à®šà¯†à®¯à¯à®¤à®©à®°à¯.
-MOS SLUG: à®¤à®¿à®°à¯à®µà®£à¯à®£à®¾à®®à®²à¯ˆ à®…à®°à¯à®•à¯‡ à®†à®¤à®¿ à®…à®°à¯à®£à®¾à®šà¯à®šà®²à¯‡à®¸à¯à®µà®°à®°à¯ à®•à¯‹à®µà®¿à®²à¯ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯ à®µà®¿à®´à®¾ à®µà¯†à®•à¯à®µà®¿à®®à®°à®¿à®šà¯ˆà®¯à®¾à®• à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯.
+HOUSE STYLE EXAMPLE 1 (RAW → AIRED):
+RAW (long, repetitive): திருவண்ணாமலை அடுத்த அடிஅண்ணாமலை கிராமத்தில் பழமை வாய்ந்த ஆதி அருணாச்சலேஸ்வரர் கோவில் கும்பாபிஷேகம் வெகு விமர்சையாக நடைபெற்றது... [details of HR&CE works, yagasalai first/second/third kala poojas, go pooja, sivachariyars veda mantras, kalasam, devotees repeated twice]
+AIRED: திருவண்ணாமலை அடுத்த அடிஅண்ணாமலை கிராமத்தில் ஆயிரம் ஆண்டுகள் பழமையான ஆதி அருணாச்சலேஸ்வரர் கோவிலில் திருப்பணிகள் நிறைவடைந்ததை அடுத்து குடமுழுக்கு விழா நடத்த தீர்மானிக்கப்பட்டது. அதன்படி, யாகசாலை பூஜைகள் நடைபெற்றது. அதைத் தொடர்ந்து, கோபுரக் கலசங்களில் புனிதநீர் ஊற்றப்பட்டு குடமுழுக்கு நடத்தப்பட்டது. இதில் பங்கேற்ற ஆயிரக்கணக்கான பக்தர்கள், அரோகரா முழக்கமிட்டு சாமி தரிசனம் செய்தனர்.
+MOS SLUG: திருவண்ணாமலை அருகே ஆதி அருணாச்சலேஸ்வரர் கோவில் குடமுழுக்கு விழா வெகுவிமரிசையாக நடைபெற்றது.
 
-HOUSE STYLE EXAMPLE 2 (RAW â†’ AIRED):
+HOUSE STYLE EXAMPLE 2 (RAW → AIRED):
 RAW: [TVK district secretary flagged off govt bus service, 25-year demand, minister recommendation, sweets distributed, earlier polio drops controversy video, "shock", will party act question]
-AIRED: à®¤à¯†à®©à¯à®•à®¾à®šà®¿ à®®à®¾à®µà®Ÿà¯à®Ÿà®®à¯ à®•à¯€à®´à®†à®®à¯à®ªà¯‚à®°à¯ à®Šà®°à®¾à®Ÿà¯à®šà®¿à®•à¯à®•à¯à®Ÿà¯à®ªà®Ÿà¯à®Ÿ à®®à®žà¯à®šà®ªà¯à®ªà¯à®³à¯à®³à®¿ à®•à®¿à®°à®¾à®®à®¤à¯à®¤à®¿à®²à¯ à®ªà¯à®¤à®¿à®¯ à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ à®šà¯‡à®µà¯ˆ à®¤à¯Šà®Ÿà®•à¯à®• à®µà®¿à®´à®¾ à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯. à®‡à®¤à®¿à®²à¯, à®…à®®à¯ˆà®šà¯à®šà®°à¯ à®µà®¿à®œà®¯à¯ à®¤à®®à®¿à®´à®©à¯ à®ªà®¾à®°à¯à®¤à¯à®¤à®¿à®ªà®©à¯ à®ªà®°à®¿à®¨à¯à®¤à¯à®°à¯ˆà®¯à®¿à®©à¯ à®ªà¯‡à®°à®¿à®²à¯, à®¤à¯†à®©à¯à®•à®¾à®šà®¿ à®¤à¯†à®±à¯à®•à¯ à®®à®¾à®µà®Ÿà¯à®Ÿ à®¤.à®µà¯†.à®•. à®šà¯†à®¯à®²à®¾à®³à®°à¯ à®µà®¿à®ªà®¿à®©à¯ à®šà®•à¯à®•à®°à®µà®°à¯à®¤à¯à®¤à®¿ à®ªà®™à¯à®•à¯‡à®±à¯à®±à¯, à®…à®°à®šà¯à®ªà¯à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ à®šà¯‡à®µà¯ˆà®¯à¯ˆ à®¤à¯Šà®Ÿà®™à¯à®•à®¿ à®µà¯ˆà®¤à¯à®¤à®¾à®°à¯. à®šà®¿à®² à®¨à®¾à®Ÿà¯à®•à®³à¯à®•à¯à®•à¯ à®®à¯à®©à¯à®ªà¯ à®µà®¿à®°à¯à®¤à¯à®¨à®•à®°à®¿à®²à¯ à®¤.à®µà¯†.à®• à®¨à®¿à®°à¯à®µà®¾à®•à®¿ à®’à®°à¯à®µà®°à¯ à®•à¯à®´à®¨à¯à®¤à¯ˆà®•à®³à¯à®•à¯à®•à¯ à®ªà¯‹à®²à®¿à®¯à¯‹ à®šà¯Šà®Ÿà¯à®Ÿà¯ à®®à®°à¯à®¨à¯à®¤à¯ à®µà®´à®™à¯à®•à®¿à®¯à®¤à¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿à®¯ à®¨à®¿à®²à¯ˆà®¯à®¿à®²à¯, à®¤à®±à¯à®ªà¯‹à®¤à¯ à®¤.à®µà¯†.à®• à®¨à®¿à®°à¯à®µà®¾à®•à®¿ à®…à®°à®šà¯à®ªà¯ à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ˆ à®¤à¯Šà®Ÿà®™à¯à®•à®¿ à®µà¯ˆà®¤à¯à®¤à®¿à®°à¯à®ªà¯à®ªà®¤à¯ à®…à®¤à®¿à®°à¯à®šà¯à®šà®¿à®¯à¯ˆà®¯à¯à®®à¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆà®¯à¯à®®à¯ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯.
-MOS SLUG: à®¤à¯†à®©à¯à®•à®¾à®šà®¿ à®®à®¾à®µà®Ÿà¯à®Ÿà®¤à¯à®¤à®¿à®²à¯ à®¤.à®µà¯†.à®•. à®®à®¾à®µà®Ÿà¯à®Ÿà®šà¯ à®šà¯†à®¯à®²à®¾à®³à®°à¯ à®…à®°à®šà¯à®ªà¯à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ à®šà¯‡à®µà¯ˆà®¯à¯ˆ à®¤à¯Šà®Ÿà®™à¯à®•à®¿ à®µà¯ˆà®¤à¯à®¤ à®¨à®¿à®•à®´à¯à®µà¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯.
+AIRED: தென்காசி மாவட்டம் கீழஆம்பூர் ஊராட்சிக்குட்பட்ட மஞ்சப்புள்ளி கிராமத்தில் புதிய பேருந்து சேவை தொடக்க விழா நடைபெற்றது. இதில், அமைச்சர் விஜய் தமிழன் பார்த்திபன் பரிந்துரையின் பேரில், தென்காசி தெற்கு மாவட்ட த.வெ.க. செயலாளர் விபின் சக்கரவர்த்தி பங்கேற்று, அரசுப்பேருந்து சேவையை தொடங்கி வைத்தார். சில நாட்களுக்கு முன்பு விருதுநகரில் த.வெ.க நிர்வாகி ஒருவர் குழந்தைகளுக்கு போலியோ சொட்டு மருந்து வழங்கியது சர்ச்சையை ஏற்படுத்திய நிலையில், தற்போது த.வெ.க நிர்வாகி அரசுப் பேருந்தை தொடங்கி வைத்திருப்பது அதிர்ச்சியையும் சர்ச்சையையும் ஏற்படுத்தி உள்ளது.
+MOS SLUG: தென்காசி மாவட்டத்தில் த.வெ.க. மாவட்டச் செயலாளர் அரசுப்பேருந்து சேவையை தொடங்கி வைத்த நிகழ்வு சர்ச்சையை ஏற்படுத்தி உள்ளது.
 
 
 TAMILJANAM BLAZE FORMAT TEMPLATES (structure your segments EXACTLY like this):
-- HL: one ANCHOR segment, 1-2 short lines, append (à®ªà¯à®°à¯€à®¤à¯) at end. 15-45 sec.
-- VO BREATH: segment1 ANCHOR = ONE sentence lead; segment2 ANCHOR = 3-5 sentence read ending (à®ªà¯à®°à¯€à®¤à¯); segment3 VO = detailed full script, one para per point separated by blank lines.
+- HL: one ANCHOR segment, 1-2 short lines, append (ப்ரீத்) at end. 15-45 sec.
+- VO BREATH: segment1 ANCHOR = ONE sentence lead; segment2 ANCHOR = 3-5 sentence read ending (ப்ரீத்); segment3 VO = detailed full script, one para per point separated by blank lines.
 - RDR: segment1 ANCHOR = 1-sentence breaking lead; segment2 ANCHOR = condensed 4-6 sentence read.
-- VO + BYTE: like VO BREATH plus BYTE segment with speaker + byte_in/byte_out cues; mark byte position in VO with (à®ªà¯ˆà®Ÿà¯).
-- PKG: segment1 ANCHOR = 2-3 sentence intro ending "...à®…à®¤à¯ à®ªà®±à¯à®±à®¿à®¯ à®’à®°à¯ à®šà¯†à®¯à¯à®¤à®¿ à®¤à¯Šà®•à¯à®ªà¯à®ªà¯."; segment2 VO = LONG multi-para VO covering all angles; end with reporter PTC line if source has reporter name.
-- ONE MINUTE: single VO segment, ~5 paras, ~105 words total (â‰ˆ60 sec).
-- MINI TALKS: segment1 ANCHOR = intro ending "...à®®à®¿à®©à®¿à®Ÿà®¾à®•à¯à®¸à¯ à®ªà®•à¯à®¤à®¿à®¯à®¿à®²à¯ à®ªà®¾à®°à¯à®•à¯à®•à®²à®¾à®®à¯..."; segment2 VO = interview content with ----- separators between topic shifts; put 4-6 pulled QUOTES (in "quotes") into supers array for 50-50 cards.
+- VO + BYTE: like VO BREATH plus BYTE segment with speaker + byte_in/byte_out cues; mark byte position in VO with (பைட்).
+- PKG: segment1 ANCHOR = 2-3 sentence intro ending "...அது பற்றிய ஒரு செய்தி தொகுப்பு."; segment2 VO = LONG multi-para VO covering all angles; end with reporter PTC line if source has reporter name.
+- ONE MINUTE: single VO segment, ~5 paras, ~105 words total (≈60 sec).
+- MINI TALKS: segment1 ANCHOR = intro ending "...மினிடாக்ஸ் பகுதியில் பார்க்கலாம்..."; segment2 VO = interview content with ----- separators between topic shifts; put 4-6 pulled QUOTES (in "quotes") into supers array for 50-50 cards.
 - BREATHER: ultra-short 8-12 sec single ANCHOR read.
 - supers array = Notes column content: 4-6 short Tamil lines + location line. NEVER put supers inside script text.
 
 TECHNICAL RULES:
-- Read pace: 1.75 Tamil words per second (Blaze-verified rate). Compute segment durations from word counts. Total must fit the target duration (Â±10%).
+- Read pace: 1.75 Tamil words per second (Blaze-verified rate). Compute segment durations from word counts. Total must fit the target duration (±10%).
 - Format definitions:
   * VO = anchor voice-over on visuals
-  * BYTE = soundbite; give BYTE IN (first words) and BYTE OUT (last words) cues plus who is speaking; do NOT invent quotes â€” only use quotes present in the source, else mark [BYTE: reporter-à®†à®²à¯ confirm à®ªà®£à¯à®£à®µà¯à®®à¯]
+  * BYTE = soundbite; give BYTE IN (first words) and BYTE OUT (last words) cues plus who is speaking; do NOT invent quotes — only use quotes present in the source, else mark [BYTE: reporter-ஆல் confirm பண்ணவும்]
   * RDR = anchor read on camera, no visuals
   * PKG = full package: anchor lead + VO + BYTE slots + reporter sign-off (PTC)
-  * BREATHER = ultra-short 8â€“12 sec headline-style read between segments
+  * BREATHER = ultra-short 8–12 sec headline-style read between segments
 - Bulletin tone: "Top 50" = very tight single-thought items; "Prime News" = fuller context, sharper lead; "3-Minute Stories" = narrative arc with human angle; "Breaking News" = urgent present-tense; "General News" = standard.
 - slug: English NRCS slug in TamilJanam Blaze convention: [FORMAT] [LOCATION CODE] - [SUBJECT] (e.g. "VO BREATH AMT - LADY INJURED", "HL MDU BUS ACCIDENT"). Location codes: CHN=Chennai, MDU=Madurai, CBE=Coimbatore, TRY=Trichy, TNV=Tirunelveli, AMT=Ambattur, NKL=Namakkal, DGL=Dindigul, KRR=Karur, TVM=Thiruvannamalai, SVG=Sivagangai, TNK=Tenkasi. Unknown place: use first 3 consonants uppercase.
 - mos_slug: one complete Tamil sentence summarizing the story, TamilJanam MOS style (see examples above).
-- SUPERS: 2â€“4 on-screen graphic text lines in Tamil (max 8 words each).
-- TICKER: format as "HEADER||Point 1 (medium, ~15-20 words)||Point 2 (medium, ~15-20 words)" â€” header is a short bold title; each point is a complete meaningful sentence, not too short, content puriyura mathiri. Use || as separator.
+- SUPERS: 2–4 on-screen graphic text lines in Tamil (max 8 words each).
+- TICKER: format as "HEADER||Point 1 (medium, ~15-20 words)||Point 2 (medium, ~15-20 words)" — header is a short bold title; each point is a complete meaningful sentence, not too short, content puriyura mathiri. Use || as separator.
 - ticker_header: header text only (no ||)
 - ticker_points: array of 2 point strings
 - Never fabricate facts, names, numbers, or quotes not in the source. If source lacks a detail, omit it.
 
 Respond ONLY with valid JSON, no markdown fences, no preamble:
 {"slug":"","mos_slug":"","bulletin_type":"","anchor_lead":"","segments":[{"type":"VO|BYTE|RDR|PKG|BREATHER","speaker":"","text":"","byte_in":"","byte_out":"","duration_sec":0}],"ticker":"HEADER||Point1||Point2","ticker_header":"","ticker_points":["",""],"total_duration_sec":0,"editor_note":""}`;
-const SYS_TRIM = `You are the senior output editor of TamilJanam Tamil news channel. Task: trim/condense a Tamil broadcast script to a target duration WITHOUT losing meaning (à®ªà¯Šà®°à¯à®³à¯ à®®à®¾à®±à®¾à®®à®²à¯).
+const SYS_TRIM = `You are the senior output editor of TamilJanam Tamil news channel. Task: trim/condense a Tamil broadcast script to a target duration WITHOUT losing meaning (பொருள் மாறாமல்).
 
 RULES:
-- Read pace: 1.75 Tamil words/sec (Blaze rate) â†’ target word count = seconds Ã— 1.75.
-- Preserve: core facts, names, numbers, place, attribution. Cut: repetition, filler connectors, adjectives, secondary detail â€” in that priority order.
+- Read pace: 1.75 Tamil words/sec (Blaze rate) → target word count = seconds × 1.75.
+- Preserve: core facts, names, numbers, place, attribution. Cut: repetition, filler connectors, adjectives, secondary detail — in that priority order.
 - Keep spoken broadcast Tamil register. Sentences must stay grammatical and natural to read aloud.
 - Never add new information.
-- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors â€” "...à®Žà®©à¯à®±à¯à®®à¯", "...à®Žà®©à®µà¯à®®à¯", "à®®à®±à¯à®±à¯à®®à¯" â€” and close with à®Žà®©à¯à®±à®¾à®°à¯ / à®Žà®© à®¤à¯†à®°à®¿à®µà®¿à®¤à¯à®¤à®¾à®°à¯ / à®Žà®© à®•à¯‚à®±à®¿à®©à®¾à®°à¯. NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...à®Žà®Ÿà¯à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®µà®°à®µà¯‡à®±à¯à®•à®¤à¯à®¤à®•à¯à®•à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯, à®•à®²à®ªà¯à®ªà¯ à®¤à®¿à®°à¯à®®à®£ à®¤à®¿à®Ÿà¯à®Ÿà®¤à¯à®¤à®¿à®²à¯... à®šà®¾à®©à¯à®±à®¿à®¤à®´à¯ à®ªà¯†à®± à®…à®°à®šà¯ à®¨à®¿à®°à¯à®ªà®¨à¯à®¤à®¿à®•à¯à®• à®µà¯‡à®£à¯à®Ÿà¯à®®à¯ à®Žà®©à¯à®±à¯à®®à¯, à®ªà¯‹à®¤à¯ˆà®ªà¯à®ªà¯Šà®°à¯à®³à¯ à®ªà®°à®µà®²à¯... à®ªà®¾à®¤à®¿à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯ à®…à®µà®°à¯ à®•à¯‚à®±à®¿à®©à®¾à®°à¯."
+- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors — "...என்றும்", "...எனவும்", "மற்றும்" — and close with என்றார் / என தெரிவித்தார் / என கூறினார். NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...எடுத்துள்ளது வரவேற்கத்தக்கது என்றும், கலப்பு திருமண திட்டத்தில்... சான்றிதழ் பெற அரசு நிர்பந்திக்க வேண்டும் என்றும், போதைப்பொருள் பரவல்... பாதித்துள்ளது என்றும் அவர் கூறினார்."
 
 Respond ONLY with valid JSON, no markdown fences:
-{"trimmed_script":"","original_words":0,"trimmed_words":0,"est_duration_sec":0,"removed_summary":"(Tamil-à®²à¯ â€” what was cut and why meaning is intact)"}`;
+{"trimmed_script":"","original_words":0,"trimmed_words":0,"est_duration_sec":0,"removed_summary":"(Tamil-ல் — what was cut and why meaning is intact)"}`;
 
-/* â•â• PAGE NAV â•â• */
+/* ══ PAGE NAV ══ */
 function gotoPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   const pg=document.getElementById('pg-'+id);
@@ -902,14 +907,14 @@ function gotoPage(id){
   if(id==='monitor' && typeof initMonitor==='function' && !monInterval) initMonitor();
 }
 
-/* â•â• KEY â•â• */
+/* ══ KEY ══ */
 const getKey=()=>document.getElementById('apiKey').value.trim();
 const getProvider=()=>document.getElementById('apiProvider').value;
 
 const PROVIDER_HINTS={
-  claude:'console.anthropic.com â†’ API Keys (sk-ant-...)',
-  gemini:'aistudio.google.com â†’ Get API Key (AIza...)',
-  openai:'platform.openai.com â†’ API Keys (sk-...)'
+  claude:'console.anthropic.com → API Keys (sk-ant-...)',
+  gemini:'aistudio.google.com → Get API Key (AIza...)',
+  openai:'platform.openai.com → API Keys (sk-...)'
 };
 function updateProviderHint(){
   const p=getProvider();
@@ -966,7 +971,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('wEst').textContent=Math.round(40*WPS);
 });
 
-/* â•â• MODE â•â• */
+/* ══ MODE ══ */
 let mode='generate', src='raw', imgB64=null, lastOutput=null;
 function setMode(m){
   mode=m;
@@ -974,7 +979,7 @@ function setMode(m){
   document.getElementById('ms-trim').classList.toggle('on',m==='trim');
   document.getElementById('pane-gen').style.display=m==='generate'?'block':'none';
   document.getElementById('pane-trim').style.display=m==='trim'?'block':'none';
-  document.getElementById('goBtn').innerHTML=m==='generate'?'âº &nbsp;GENERATE SCRIPT':'âœ‚ &nbsp;TRIM SCRIPT';
+  document.getElementById('goBtn').innerHTML=m==='generate'?'⏺ &nbsp;GENERATE SCRIPT':'✂ &nbsp;TRIM SCRIPT';
   document.getElementById('stageTitle').textContent=m==='generate'?'RUNDOWN OUTPUT':'TRIM OUTPUT';
 }
 function setSrc(s){
@@ -996,7 +1001,7 @@ function setTrimDur(v){document.getElementById('trimDur').value=v;}
 const pick=id=>document.querySelector('#'+id+' .chip.on').dataset.v;
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* â•â• IMAGE â•â• */
+/* ══ IMAGE ══ */
 function loadImg(inp){
   const f=inp.files[0];if(!f)return;
   const r=new FileReader();
@@ -1017,11 +1022,11 @@ function loadImg(inp){
   r.readAsDataURL(f);
 }
 
-/* â•â• API â•â• */
-/* â•â• MULTI-PROVIDER API â•â• */
+/* ══ API ══ */
+/* ══ MULTI-PROVIDER API ══ */
 async function callClaude(system,userMsg,useSearch,attempt){
   const key=getKey(), prov=getProvider();
-  if(!key) throw new Error('API key à®‡à®²à¯à®²à¯ˆ â€” âš™ â†’ provider select â†’ key paste â†’ Save');
+  if(!key) throw new Error('API key இல்லை — ⚙ → provider select → key paste → Save');
   if(prov==='gemini') return _callGemini(system,userMsg,key);
   if(prov==='openai') return _callOpenAI(system,userMsg,key);
   return _callClaude(system,userMsg,useSearch,key,attempt||1);
@@ -1041,12 +1046,12 @@ async function _callClaude(system,userMsg,useSearch,key,attempt){
     if(raw.includes('exceeded_limit')||raw.includes('rate_limit')){
       let w='';const m=raw.match(/"resets_at":"([^"]+)"/);
       if(m){try{w=' Reset: '+new Date(m[1]).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST.';}catch(e){}}
-      throw new Error('Usage limit â€” à®•à¯Šà®žà¯à®š à®¨à¯‡à®°à®®à¯ à®•à®´à®¿à®šà¯à®šà¯ try.'+w);
+      throw new Error('Usage limit — கொஞ்ச நேரம் கழிச்சு try.'+w);
     }
-    if(raw.includes('credit')||raw.includes('billing')) throw new Error('Credit à®•à®¾à®²à®¿ â€” console.anthropic.com Billing recharge.');
+    if(raw.includes('credit')||raw.includes('billing')) throw new Error('Credit காலி — console.anthropic.com Billing recharge.');
     throw new Error(data.error.message||'Claude API error');
   }
-  if(data.stop_reason==='max_tokens') throw new Error('Response truncated â€” duration à®•à¯à®±à¯ˆà®šà¯à®šà¯ try.');
+  if(data.stop_reason==='max_tokens') throw new Error('Response truncated — duration குறைச்சு try.');
   const text=(data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n');
   try{return parseJson(text);}catch(e){
     if(attempt<2){
@@ -1142,23 +1147,23 @@ async function callClaudeText(prompt){
   return (data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n').trim();
 }
 
-/* â•â• UI HELPERS â•â• */
+/* ══ UI HELPERS ══ */
 function showLoading(msg){
   document.getElementById('stageActs').innerHTML='';
   document.getElementById('output').innerHTML='<div class="spinner-wrap"><div class="spinner"></div><div class="load-txt">'+msg+'</div></div>';
 }
 function showError(e){
-  document.getElementById('output').innerHTML='<div class="error-box"><b>à®ªà®¿à®´à¯ˆ Â· </b>'+esc(e.message)+'</div>';
+  document.getElementById('output').innerHTML='<div class="error-box"><b>பிழை · </b>'+esc(e.message)+'</div>';
 }
 async function copyText(btn,text){
   try{await navigator.clipboard.writeText(text);}catch(e){}
-  const old=btn.textContent;btn.textContent='âœ“ Copied';btn.classList.add('done');
+  const old=btn.textContent;btn.textContent='✓ Copied';btn.classList.add('done');
   setTimeout(()=>{btn.textContent=old;btn.classList.remove('done');},1400);
 }
 const fmtSec=s=>{s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
 const wc=s=>(s||'').trim().split(/\s+/).filter(Boolean).length;
 
-/* â•â• GO â•â• */
+/* ══ GO ══ */
 function go(){mode==='generate'?generate():trim();}
 
 async function generate(){
@@ -1168,15 +1173,15 @@ async function generate(){
   let sourceBlock,useSearch=false,imageMode=false;
   if(src==='raw'){
     const raw=document.getElementById('rawScript').value.trim();
-    if(!raw){alert('Raw script paste à®ªà®£à¯à®£à¯à®™à¯à®•');return;}
+    if(!raw){alert('Raw script paste பண்ணுங்க');return;}
     sourceBlock='RAW SOURCE SCRIPT:\n"""\n'+raw+'\n"""';
   }else if(src==='url'){
     const url=document.getElementById('newsUrl').value.trim();
-    if(!url){alert('URL à®•à¯Šà®Ÿà¯à®™à¯à®•');return;}
+    if(!url){alert('URL கொடுங்க');return;}
     sourceBlock='SOURCE: Read via web search, use ONLY its facts: '+url;
     useSearch=true;
   }else{
-    if(!imgB64){alert('Newspaper image upload à®ªà®£à¯à®£à¯à®™à¯à®•');return;}
+    if(!imgB64){alert('Newspaper image upload பண்ணுங்க');return;}
     sourceBlock='SOURCE: Attached newspaper image. Read ONLY facts printed in it. Ignore ads and other columns.';
     imageMode=true;
   }
@@ -1185,7 +1190,7 @@ async function generate(){
     (instr?'\nINSTRUCTIONS: '+instr:'');
   const btn=document.getElementById('goBtn');
   btn.disabled=true;
-  showLoading(useSearch?'READING ARTICLE Â· WRITING SCRIPT':imageMode?'READING NEWSPAPER IMAGE Â· WRITING SCRIPT':'WRITING BROADCAST SCRIPT');
+  showLoading(useSearch?'READING ARTICLE · WRITING SCRIPT':imageMode?'READING NEWSPAPER IMAGE · WRITING SCRIPT':'WRITING BROADCAST SCRIPT');
   try{
     const payload=imageMode?[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:imgB64}},{type:'text',text:userMsg}]:userMsg;
     const out=await callClaude(SYS,payload,useSearch);
@@ -1194,14 +1199,14 @@ async function generate(){
   btn.disabled=false;
 }
 
-/* â•â• RENDER â•â• */
+/* ══ RENDER ══ */
 function fullText(o){
   let t='SLUG: '+o.slug+' ['+o.bulletin_type+'] DUR: '+fmtSec(o.total_duration_sec)+'\n';
   if(o.mos_slug)t+='MOS: '+o.mos_slug+'\n';
   t+='\n';
   if(o.anchor_lead)t+='[ANCHOR]\n'+o.anchor_lead+'\n\n';
   (o.segments||[]).forEach(s=>{
-    t+='['+s.type+(s.speaker?' â€” '+s.speaker:'')+']'+(s.duration_sec?' ('+fmtSec(s.duration_sec)+')':'')+'\n'+s.text+'\n';
+    t+='['+s.type+(s.speaker?' — '+s.speaker:'')+']'+(s.duration_sec?' ('+fmtSec(s.duration_sec)+')':'')+'\n'+s.text+'\n';
     if(s.byte_in)t+='IN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"\n';
     t+='\n';
   });
@@ -1210,8 +1215,8 @@ function fullText(o){
 }
 function renderRundown(o){
   document.getElementById('stageActs').innerHTML=
-    '<button class="btn" onclick="copyText(this,fullText(lastOutput))">â§‰ Copy all</button>'+
-    '<button class="btn red" onclick="generate()">â†» Regen</button>';
+    '<button class="btn" onclick="copyText(this,fullText(lastOutput))">⧉ Copy all</button>'+
+    '<button class="btn red" onclick="generate()">↻ Regen</button>';
   let h='<div class="slugstrip"><span class="slug">'+esc(o.slug)+'</span>'+
     '<span class="btype">'+esc(o.bulletin_type)+'</span>'+
     '<span class="dur">'+fmtSec(o.total_duration_sec)+'<small>EST DUR</small></span></div>';
@@ -1221,8 +1226,8 @@ function renderRundown(o){
   (o.segments||[]).forEach(s=>{
     const t=(s.type||'VO').split(/[\s(+]/)[0].toUpperCase();
     let body=esc(s.text);
-    if(s.byte_in)body+='<span class="cue">IN: "'+esc(s.byte_in)+'" â†’ OUT: "'+esc(s.byte_out)+'"</span>';
-    h+=secCard(t,t+(s.speaker?' Â· '+esc(s.speaker):''),body,s.duration_sec,s.text+(s.byte_in?'\nIN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"':''));
+    if(s.byte_in)body+='<span class="cue">IN: "'+esc(s.byte_in)+'" → OUT: "'+esc(s.byte_out)+'"</span>';
+    h+=secCard(t,t+(s.speaker?' · '+esc(s.speaker):''),body,s.duration_sec,s.text+(s.byte_in?'\nIN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"':''));
   });
   // 3 MOS
   if(o.mos_slug){
@@ -1241,7 +1246,7 @@ function renderRundown(o){
       (parts.length?'<ul class="ticker-pts">'+parts.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>':'')+
       '</div></div>';
   }
-  if(o.editor_note)h+='<div class="removed">âœŽ '+esc(o.editor_note)+'</div>';
+  if(o.editor_note)h+='<div class="removed">✎ '+esc(o.editor_note)+'</div>';
   document.getElementById('output').innerHTML=h;
 }
 function secCard(tag,title,bodyHtml,durSec,copySrc){
@@ -1251,20 +1256,20 @@ function secCard(tag,title,bodyHtml,durSec,copySrc){
     '</div><div class="sec-body">'+bodyHtml+'</div></div>';
 }
 
-/* â•â• TRIM â•â• */
+/* ══ TRIM ══ */
 async function trim(){
   const s=document.getElementById('trimScript').value.trim();
-  if(!s){alert('Script paste à®ªà®£à¯à®£à¯à®™à¯à®•');return;}
+  if(!s){alert('Script paste பண்ணுங்க');return;}
   const dur=document.getElementById('trimDur').value;
   const instr=document.getElementById('trimInstr').value.trim();
   const um='SCRIPT:\n"""\n'+s+'\n"""\n\nTARGET: '+dur+' seconds (~'+Math.round(dur*WPS)+' words)'+(instr?'\nINSTRUCTIONS: '+instr:'');
   const btn=document.getElementById('goBtn');btn.disabled=true;
-  showLoading('TRIMMING Â· MEANING PRESERVED');
+  showLoading('TRIMMING · MEANING PRESERVED');
   try{
     const o=await callClaude(SYS_TRIM,um,false);
     document.getElementById('stageActs').innerHTML=
-      '<button class="btn" id="tCpyBtn">â§‰ Copy trimmed</button>'+
-      '<button class="btn red" onclick="trim()">â†» Re-trim</button>';
+      '<button class="btn" id="tCpyBtn">⧉ Copy trimmed</button>'+
+      '<button class="btn red" onclick="trim()">↻ Re-trim</button>';
     document.getElementById('output').innerHTML=
       '<div class="stat-row">'+
         '<div class="stat"><div class="v">'+o.original_words+'</div><div class="l">ORIGINAL</div></div>'+
@@ -1273,31 +1278,31 @@ async function trim(){
       '</div>'+
       '<div class="sec"><div class="sec-hd"><span class="rtag rt-VO">TRIMMED SCRIPT</span></div>'+
       '<div class="sec-body" id="trimOut">'+esc(o.trimmed_script)+'</div></div>'+
-      (o.removed_summary?'<div class="removed">âœ‚ '+esc(o.removed_summary)+'</div>':'');
+      (o.removed_summary?'<div class="removed">✂ '+esc(o.removed_summary)+'</div>':'');
     document.getElementById('tCpyBtn').onclick=function(){copyText(this,o.trimmed_script);};
   }catch(e){showError(e);}
   btn.disabled=false;
 }
 
-/* â•â• SELECTION COUNTER â•â• */
+/* ══ SELECTION COUNTER ══ */
 document.addEventListener('selectionchange',()=>{
   const t=(window.getSelection()||'').toString().trim();
   const b=document.getElementById('selBadge');
   if(!t){b.style.display='none';return;}
   const w=t.split(/\s+/).filter(Boolean).length;
-  b.textContent=w+' words Â· '+Math.round(w/WPS)+' sec';
+  b.textContent=w+' words · '+Math.round(w/WPS)+' sec';
   b.style.display='block';
 });
 
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════
    TRANSCRIBER v2.6
    FIX: drop Web Worker (importScripts fails on file://)
    Use dynamic import() in main thread + yield between chunks
    to avoid "page not responsive" freezes
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════ */
 
-/* â”€â”€ LAZY LOAD â”€â”€ */
+/* ── LAZY LOAD ── */
 let _whisper = null, _nllb = null, _loadedModel = null;
 const NLLB_LANG = {
   en:'eng_Latn', hi:'hin_Deva', ta:'tam_Taml',
@@ -1350,7 +1355,7 @@ async function doNLLB(text, spokenLang) {
   return out[0].translation_text;
 }
 
-/* â”€â”€ DECODE AUDIO (main thread, fast) â”€â”€ */
+/* ── DECODE AUDIO (main thread, fast) ── */
 async function decodeToFloat32(source) {
   const ab = source instanceof ArrayBuffer ? source : await source.arrayBuffer();
   const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
@@ -1366,7 +1371,7 @@ async function decodeToFloat32(source) {
   return data;
 }
 
-/* â”€â”€ STATE â”€â”€ */
+/* ── STATE ── */
 let tFile = null, tMode = 'file';
 let lastTranscript = '', lastTranslation = '';
 let micStream = null, micRecorder = null, micAudioChunks = [];
@@ -1374,7 +1379,7 @@ let micInterval = null, micActive = false, micAnimFrame = null;
 let micTransFull = '', micTamilFull = '';
 const MIC_CHUNK_MS = 5000;
 
-/* â”€â”€ MODE SWITCH â”€â”€ */
+/* ── MODE SWITCH ── */
 function setTMode(m) {
   tMode = m;
   document.getElementById('tmt-file').classList.toggle('on', m === 'file');
@@ -1389,7 +1394,7 @@ function handleOutputLangChange() {
   document.getElementById('tNllbNote').style.display = ol === 'ta-nllb' ? 'block' : 'none';
 }
 
-/* â”€â”€ FILE DROP â”€â”€ */
+/* ── FILE DROP ── */
 const dz = document.getElementById('dz');
 const tFileInp = document.getElementById('tFile');
 dz.addEventListener('click', () => tFileInp.click());
@@ -1403,7 +1408,7 @@ tFileInp.addEventListener('change', () => { if (tFileInp.files.length) setTFile(
 
 function setTFile(f) {
   tFile = f;
-  document.getElementById('tFname').textContent = 'ðŸ“Ž ' + f.name + ' (' + Math.round(f.size / 1024) + 'KB)';
+  document.getElementById('tFname').textContent = '📎 ' + f.name + ' (' + Math.round(f.size / 1024) + 'KB)';
   document.getElementById('tRunBtn').disabled = false;
   document.getElementById('fileOutArea').style.display = 'none';
   setTS('', '');
@@ -1415,7 +1420,7 @@ function setTS(t, c) {
   el.className = 't-status ' + (c || '');
 }
 
-/* â”€â”€ FILE TRANSCRIBE â”€â”€ */
+/* ── FILE TRANSCRIBE ── */
 document.getElementById('tRunBtn').addEventListener('click', async () => {
   if (!tFile) return;
   const btn = document.getElementById('tRunBtn');
@@ -1430,40 +1435,40 @@ document.getElementById('tRunBtn').addEventListener('click', async () => {
   const outputLang = document.getElementById('tOutputLang').value;
 
   try {
-    setTS('Decoding audioâ€¦', 'active');
+    setTS('Decoding audio…', 'active');
     const audioData = await decodeToFloat32(tFile);
     fill.style.width = '10%';
 
-    setTS('Loading Whisper modelâ€¦ (first time takes a minute)', 'active');
+    setTS('Loading Whisper model… (first time takes a minute)', 'active');
     await getWhisper(modelId, p => {
       if (p.status === 'progress' && p.progress)
         fill.style.width = Math.min(50, 10 + p.progress * 0.4).toFixed(0) + '%';
     });
     fill.style.width = '52%';
 
-    setTS('Transcribing audioâ€¦', 'active');
+    setTS('Transcribing audio…', 'active');
     const transcript = await doTranscribe(audioData, spokenLang);
     lastTranscript = transcript;
     fill.style.width = '65%';
 
     // show transcript immediately
     showFileOutput(transcript, null, outputLang, spokenLang);
-    setTS(outputLang !== 'same' ? 'Translatingâ€¦' : 'âœ“ Done', outputLang !== 'same' ? 'active' : 'done');
+    setTS(outputLang !== 'same' ? 'Translating…' : '✓ Done', outputLang !== 'same' ? 'active' : 'done');
 
     let translation = null;
     if (outputLang === 'ta-nllb') {
-      setTS('Loading NLLB modelâ€¦ (first time ~1.2GB download)', 'active');
+      setTS('Loading NLLB model… (first time ~1.2GB download)', 'active');
       await getNLLB(p => {
         if (p.status === 'progress' && p.progress)
           fill.style.width = Math.min(90, 65 + p.progress * 0.25).toFixed(0) + '%';
       });
-      setTS('Translating to Tamilâ€¦', 'active');
+      setTS('Translating to Tamil…', 'active');
       translation = await doNLLB(transcript, spokenLang);
     } else if (outputLang === 'ta-claude') {
-      setTS('Translating via Claude APIâ€¦', 'active');
+      setTS('Translating via Claude API…', 'active');
       translation = await callClaudeText('Translate to Tamil broadcast text. Output ONLY Tamil:\n\n' + transcript);
     } else if (outputLang === 'en') {
-      setTS('Translating to Englishâ€¦', 'active');
+      setTS('Translating to English…', 'active');
       translation = await callClaudeText('Translate to English. Output ONLY the translation:\n\n' + transcript);
     }
 
@@ -1471,7 +1476,7 @@ document.getElementById('tRunBtn').addEventListener('click', async () => {
     showFileOutput(transcript, translation, outputLang, spokenLang);
     fill.style.width = '100%';
     setTimeout(() => prog.classList.remove('show'), 700);
-    setTS('âœ“ Done â€” On-Air Text ready below â†“', 'done');
+    setTS('✓ Done — On-Air Text ready below ↓', 'done');
   } catch (err) {
     setTS('Error: ' + err.message, 'err');
     prog.classList.remove('show');
@@ -1499,7 +1504,7 @@ function showFileOutput(transcript, translation, outputLang, spokenLang) {
   area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-/* â”€â”€ MIC / LIVE WIRE â”€â”€ */
+/* ── MIC / LIVE WIRE ── */
 async function startMic() {
   if (micActive) return;
 
@@ -1510,8 +1515,8 @@ async function startMic() {
   } catch (e) {
     const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
     ms.textContent = isMobile
-      ? 'ðŸ“± Mobile-à®²à¯ mic blocked â€” GitHub Pages URL-à®²à¯ open à®ªà®£à¯à®£à¯€à®™à¯à®•à®³à®¾? https://tjnewsroom.github.io/tjnewsgen â€” try again'
-      : 'âŒ Mic access denied â€” browser address bar-à®²à¯ mic icon click â†’ Allow';
+      ? '📱 Mobile-ல் mic blocked — GitHub Pages URL-ல் open பண்ணீங்களா? https://tjnewsroom.github.io/tjnewsgen — try again'
+      : '❌ Mic access denied — browser address bar-ல் mic icon click → Allow';
     ms.className = 't-status err';
     return;
   }
@@ -1523,9 +1528,9 @@ async function startMic() {
   document.getElementById('micStopBtn').style.display = 'block';
   document.getElementById('micOnairText').value = '';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Loading model, please waitâ€¦</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Loading model, please wait…</div>';
 
-  ms.textContent = 'â³ Loading Whisper model â€” please wait, do not closeâ€¦';
+  ms.textContent = '⏳ Loading Whisper model — please wait, do not close…';
   ms.className = 't-status active';
 
   // start recording immediately (so we don't miss audio while loading)
@@ -1560,24 +1565,24 @@ async function startMic() {
 
   // load models in background - UI stays responsive
   try {
-    document.getElementById('micVizLabel').textContent = 'Loading Whisperâ€¦';
+    document.getElementById('micVizLabel').textContent = 'Loading Whisper…';
     await getWhisper(modelId);
     if (outputLang === 'ta-nllb') {
-      document.getElementById('micVizLabel').textContent = 'Loading NLLB (~1.2GB)â€¦';
+      document.getElementById('micVizLabel').textContent = 'Loading NLLB (~1.2GB)…';
       await getNLLB();
     }
   } catch (e) {
-    ms.textContent = 'âŒ Model load failed: ' + e.message;
+    ms.textContent = '❌ Model load failed: ' + e.message;
     ms.className = 't-status err';
     stopMic(); return;
   }
 
   // models ready
-  ms.textContent = 'ðŸ”´ Capturing â€” transcribing every 8 secondsâ€¦';
+  ms.textContent = '🔴 Capturing — transcribing every 8 seconds…';
   ms.className = 't-status active';
-  document.getElementById('micVizLabel').textContent = 'Listeningâ€¦';
+  document.getElementById('micVizLabel').textContent = 'Listening…';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as capturedâ€¦</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as captured…</div>';
 
   // discard buffered audio from loading time
   micAudioChunks = [];
@@ -1597,17 +1602,17 @@ async function startMic() {
     const blob = new Blob(chunks, { type: mType });
 
     try {
-      document.getElementById('micVizLabel').textContent = 'Transcribingâ€¦';
+      document.getElementById('micVizLabel').textContent = 'Transcribing…';
       let audioData;
       try { audioData = await decodeToFloat32(blob); }
-      catch (e) { document.getElementById('micVizLabel').textContent = 'Decode err, retryingâ€¦'; processing = false; return; }
+      catch (e) { document.getElementById('micVizLabel').textContent = 'Decode err, retrying…'; processing = false; return; }
 
       // energy check - skip near-silent chunks
       let energy = 0;
       for (let i = 0; i < Math.min(audioData.length, 16000); i++) energy += audioData[i] * audioData[i];
       energy = Math.sqrt(energy / Math.min(audioData.length, 16000));
       if (energy < 0.005) {
-        document.getElementById('micVizLabel').textContent = '(silence â€” waiting for speech)';
+        document.getElementById('micVizLabel').textContent = '(silence — waiting for speech)';
         processing = false; return;
       }
 
@@ -1624,10 +1629,10 @@ async function startMic() {
         let addText = transcript;
         if (outputLang === 'ta-nllb' || outputLang === 'ta-claude') {
           // For mic mode: always use Claude API (NLLB 1.2GB causes freeze in live mode)
-          document.getElementById('micVizLabel').textContent = 'Translating via Claudeâ€¦';
+          document.getElementById('micVizLabel').textContent = 'Translating via Claude…';
           try { addText = await callClaudeText('Translate to Tamil broadcast text. ONLY output Tamil, no explanation:\n\n' + transcript); } catch(e) { addText = transcript; }
         } else if (outputLang === 'en') {
-          document.getElementById('micVizLabel').textContent = 'Claude translateâ€¦';
+          document.getElementById('micVizLabel').textContent = 'Claude translate…';
           try { addText = await callClaudeText('Translate to Tamil. Output ONLY Tamil:\n\n' + transcript); } catch (e) { addText = transcript; }
         }
 
@@ -1638,7 +1643,7 @@ async function startMic() {
         document.getElementById('micVizLabel').textContent =
           new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
       } else if (isHallucination) {
-        document.getElementById('micVizLabel').textContent = '(noise detected â€” skipped)';
+        document.getElementById('micVizLabel').textContent = '(noise detected — skipped)';
       } else {
         document.getElementById('micVizLabel').textContent = '(silence / no speech)';
       }
@@ -1659,8 +1664,8 @@ function stopMic() {
   document.getElementById('micStopBtn').style.display = 'none';
   const ms = document.getElementById('micStatus');
   ms.textContent = micTamilFull
-    ? 'âœ… Stopped â€” ' + micTamilFull.split(' ').length + ' words captured. On-Air Text ready above â†‘'
-    : 'â¹ Stopped.';
+    ? '✅ Stopped — ' + micTamilFull.split(' ').length + ' words captured. On-Air Text ready above ↑'
+    : '⏹ Stopped.';
   ms.className = 't-status done';
   document.getElementById('micViz').classList.remove('show');
 }
@@ -1683,7 +1688,7 @@ function clearMicOutput() {
   micTransFull = ''; micTamilFull = '';
   document.getElementById('micOnairText').value = '';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Cleared. Chunks appear hereâ€¦</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Cleared. Chunks appear here…</div>';
 }
 
 setTimeout(() => {
@@ -1691,26 +1696,26 @@ setTimeout(() => {
   if (cb) cb.addEventListener('click', clearMicOutput);
 }, 100);
 
-/* â”€â”€ ON-AIR COPY â”€â”€ */
+/* ── ON-AIR COPY ── */
 function copyOnair(btn) {
   navigator.clipboard.writeText(document.getElementById('onairText').value);
-  const old = btn.textContent; btn.textContent = 'âœ“ Copied!';
+  const old = btn.textContent; btn.textContent = '✓ Copied!';
   setTimeout(() => btn.textContent = old, 1400);
 }
 function copyMicOnair(btn) {
   navigator.clipboard.writeText(document.getElementById('micOnairText').value);
-  const old = btn.textContent; btn.textContent = 'âœ“ Copied!';
+  const old = btn.textContent; btn.textContent = '✓ Copied!';
   setTimeout(() => btn.textContent = old, 1400);
 }
 
-/* â”€â”€ COPY / DOWNLOAD / SEND â”€â”€ */
+/* ── COPY / DOWNLOAD / SEND ── */
 document.getElementById('tCopyOrig').addEventListener('click', function () {
   navigator.clipboard.writeText(lastTranscript);
-  const o = this.textContent; this.textContent = 'âœ“'; setTimeout(() => this.textContent = o, 1200);
+  const o = this.textContent; this.textContent = '✓'; setTimeout(() => this.textContent = o, 1200);
 });
 document.getElementById('tCopyTrans').addEventListener('click', function () {
   navigator.clipboard.writeText(lastTranslation);
-  const o = this.textContent; this.textContent = 'âœ“'; setTimeout(() => this.textContent = o, 1200);
+  const o = this.textContent; this.textContent = '✓'; setTimeout(() => this.textContent = o, 1200);
 });
 document.getElementById('tDownload').addEventListener('click', () => {
   const content = lastTranslation
@@ -1733,8 +1738,8 @@ document.getElementById('tSend').addEventListener('click', sendFn);
 const micSendEl = document.getElementById('micSend');
 if (micSendEl) micSendEl.addEventListener('click', sendFn);
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   WORLD MONITOR v3 â€” 8 fixes:
+/* ══════════════════════════════
+   WORLD MONITOR v3 — 8 fixes:
    1. Story list continuously updates, no popup repeat
    2. Time on LEFT side of each card
    3. Refresh works properly (clears seen IDs)
@@ -1743,10 +1748,10 @@ if (micSendEl) micSendEl.addEventListener('click', sendFn);
    6. More Tamil sources added
    7. Next/Prev navigation buttons
    8. Color-coded priority cards + more news sites
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════ */
 
 const MON_FEEDS = [
-  // â•â• TAMIL FIRST â•â•
+  // ══ TAMIL FIRST ══
   { name:'Dinamalar',         url:'https://www.dinamalar.com/rss/latest-news.xml',                          cat:'TAMIL', pri_boost:true },
   { name:'OneIndia Tamil',    url:'https://tamil.oneindia.com/rss/tamil-news-fb.xml',                       cat:'TAMIL', pri_boost:true },
   { name:'News18 Tamil',      url:'https://tamil.news18.com/commonfeeds/v1/tam/rss/latest.xml',             cat:'TAMIL', pri_boost:true },
@@ -1756,7 +1761,8 @@ const MON_FEEDS = [
   { name:'Polimer News',      url:'https://www.polimernews.com/rss/rss.xml',                                cat:'TAMIL', pri_boost:true },
   { name:'Maalaimalar',       url:'https://www.maalaimalar.com/rss/latest-news.xml',                        cat:'TAMIL', pri_boost:true },
   { name:'Nakkheeran',        url:'https://www.nakkheeran.in/feed/',                                        cat:'TAMIL', pri_boost:true },
-  // â•â• NATIONAL INDIA â•â•
+  { name:'Daily Thanthi',     url:'https://www.dailythanthi.com/rss/latest-news',                          cat:'TAMIL', pri_boost:true },
+  // ══ NATIONAL INDIA ══
   { name:'Hindu National',    url:'https://www.thehindu.com/news/national/feeder/default.rss',              cat:'INDIA' },
   { name:'NDTV India',        url:'https://feeds.feedburner.com/ndtvnews-india-news',                       cat:'INDIA' },
   { name:'Times of India',    url:'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',             cat:'INDIA' },
@@ -1765,10 +1771,13 @@ const MON_FEEDS = [
   { name:'BBC India',         url:'https://feeds.bbci.co.uk/news/world/asia/india/rss.xml',                 cat:'INDIA' },
   { name:'NDTV',              url:'https://feeds.feedburner.com/ndtvnews-top-stories',                      cat:'INDIA' },
   { name:'Republic World',    url:'https://www.republicworld.com/feeds/news.rss',                           cat:'INDIA' },
-  // â•â• WORLD â•â•
+  // ══ WORLD ══
   { name:'BBC World',         url:'https://feeds.bbci.co.uk/news/world/rss.xml',                           cat:'WORLD' },
   { name:'Al Jazeera',        url:'https://www.aljazeera.com/xml/rss/all.xml',                             cat:'WORLD' },
   { name:'Reuters World',     url:'https://feeds.reuters.com/reuters/worldNews',                            cat:'WORLD' },
+  { name:'Reuters India',  url:'https://feeds.reuters.com/reuters/INtopNews', cat:'INDIA' },
+  { name:'ANI News',       url:'https://www.aninews.in/rss/national.xml', cat:'INDIA' },
+  { name:'PTI News',       url:'https://www.ptinews.com/rss/allnews.xml', cat:'INDIA' },
   { name:'AP News',           url:'https://rsshub.app/apnews/topics/ap-top-news',                          cat:'WORLD' },
   { name:'Sky News',          url:'https://feeds.skynews.com/feeds/rss/world.xml',                         cat:'WORLD' },
   { name:'CNN',               url:'http://rss.cnn.com/rss/edition.rss',                                    cat:'WORLD' },
@@ -1778,14 +1787,14 @@ const MON_FEEDS = [
 const BREAK_KEYWORDS = ['breaking','flash','urgent','killed','dead','explosion','attack',
   'earthquake','flood','fire','blast','crash','assassination','war','strike',
   'arrested','convicted','verdict','emergency','disaster','tsunami',
-  'à¦ªà¦°à¦¬à¦°à§à¦¤à§€','à®ªà®°à®ªà®°à®ªà¯à®ªà¯','à®¤à®¿à®Ÿà¯€à®°à¯','à®µà¯†à®Ÿà®¿à®•à¯à®£à¯à®Ÿà¯','à®¤à¯€à®µà®¿à®°à®µà®¾à®¤à®¿','à®ªà®Ÿà¯à®•à¯Šà®²à¯ˆ','à®¨à®¿à®²à®¨à®Ÿà¯à®•à¯à®•à®®à¯'];
+  'পরবর্তী','பரபரப்பு','திடீர்','வெடிகுண்டு','தீவிரவாதி','படுகொலை','நிலநடுக்கம்'];
 const HIGH_KEYWORDS = ['india','modi','bjp','congress','supreme court','parliament',
   'tamil','tamilnadu','chennai','election','court','verdict','protest',
-  'à®®à¯à®¤à®²à¯à®µà®°à¯','à®ªà®¿à®°à®¤à®®à®°à¯','à®¨à¯€à®¤à®¿à®®à®©à¯à®±à®®à¯','à®¤à¯‡à®°à¯à®¤à®²à¯'];
+  'முதல்வர்','பிரதமர்','நீதிமன்றம்','தேர்தல்'];
 const INDIA_KEYWORDS = ['india','indian','delhi','mumbai','chennai','bangalore',
   'gujarat','maharashtra','tamilnadu','kolkata','hyderabad'];
-const TAMIL_BREAK = ['à®¤à®¿à®Ÿà¯€à®°à¯','à®ªà®Ÿà¯à®•à¯Šà®²à¯ˆ','à®µà¯†à®Ÿà®¿à®•à¯à®£à¯à®Ÿà¯','à®¤à¯€à®µà®¿à®°à®µà®¾à®¤à®¿','à®¨à®¿à®²à®¨à®Ÿà¯à®•à¯à®•à®®à¯','à®µà¯†à®³à¯à®³à®®à¯',
-  'à®¤à¯€ à®µà®¿à®ªà®¤à¯à®¤à¯','à®µà®¿à®ªà®¤à¯à®¤à¯','à®ªà®°à®ªà®°à®ªà¯à®ªà¯','à®®à®°à®£à®®à¯','à®•à¯Šà®²à¯ˆ','à®•à¯ˆà®¤à¯','à®†à®ªà®¤à¯à®¤à¯'];
+const TAMIL_BREAK = ['திடீர்','படுகொலை','வெடிகுண்டு','தீவிரவாதி','நிலநடுக்கம்','வெள்ளம்',
+  'தீ விபத்து','விபத்து','பரபரப்பு','மரணம்','கொலை','கைது','ஆபத்து'];
 
 function priClass(text, cat, priBoosted){
   const t=(text||'').toLowerCase();
@@ -1884,15 +1893,15 @@ function flashTab(text){
   if(tabFlashInterval)return;
   let on=true;
   tabFlashInterval=setInterval(()=>{
-    document.title=on?'ðŸ”´ BREAKING â€” '+text.slice(0,30):origTitle;on=!on;
+    document.title=on?'🔴 BREAKING — '+text.slice(0,30):origTitle;on=!on;
   },1000);
   setTimeout(()=>{clearInterval(tabFlashInterval);tabFlashInterval=null;document.title=origTitle;},15000);
 }
 
-/* FETCH ALL â€” fix 3: proper refresh clears old data */
+/* FETCH ALL — fix 3: proper refresh clears old data */
 async function fetchAllFeeds(isRefresh=false){
   const statusEl=document.getElementById('monStatus');
-  if(statusEl) statusEl.textContent='FETCHINGâ€¦';
+  if(statusEl) statusEl.textContent='FETCHING…';
   if(isRefresh){
     // hard refresh: clear seen IDs so all stories show as fresh
     monSeenIds=new Set();
@@ -1933,9 +1942,10 @@ async function fetchAllFeeds(isRefresh=false){
     function showBannerItem(idx){
       const item=newBreaking[idx%newBreaking.length];
       if(bannerText) bannerText.innerHTML=
-        'ðŸ”´ BREAKING <span style="font-size:11px;opacity:.8;font-weight:400">['+item.source+']</span>: '+
+        '<span style="background:#fff;color:#DC2626;font-weight:900;font-size:11px;padding:2px 6px;border-radius:3px;margin-right:6px">LIVE</span>'+
+        '<b>BREAKING</b> <span style="font-size:11px;opacity:.85;font-weight:400">['+item.source+']</span>: '+
         item.title.slice(0,90)+
-        ' <span style="font-size:11px;opacity:.7">('+item.source+' Â· '+(idx+1)+'/'+newBreaking.length+')</span>';
+        ' <span style="font-size:11px;opacity:.7"> ('+item.source+' '+(idx+1)+'/'+newBreaking.length+')</span>';
       if(banner) banner.classList.add('show');
     }
     showBannerItem(0);
@@ -1952,7 +1962,7 @@ async function fetchAllFeeds(isRefresh=false){
       else clearInterval(window._alertRepeat);
     },30000);
     if(Notification.permission==='granted')
-      new Notification('ðŸ”´ TJ BREAKING â€” '+newBreaking[0].source,{body:newBreaking[0].title.slice(0,80)});
+      new Notification('🔴 TJ BREAKING — '+newBreaking[0].source,{body:newBreaking[0].title.slice(0,80)});
   }
 
   // update sources (fix 6: show all sources)
@@ -1966,14 +1976,14 @@ async function fetchAllFeeds(isRefresh=false){
   const fresh=monItems.filter(i=>{const d=new Date(i.fetchDate||i.pubDate);return!isNaN(d)&&(Date.now()-d)<3600000;}).length;
   const breaking=monItems.filter(i=>i.pri==='BREAKING').length;
   const statsEl=document.getElementById('monStats');
-  if(statsEl) statsEl.textContent=`${monItems.length} stories Â· ${fresh} fresh Â· ${breaking} breaking`;
-  if(statusEl) statusEl.textContent='LIVE Â· '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  if(statsEl) statsEl.textContent=`${monItems.length} stories · ${fresh} fresh · ${breaking} breaking`;
+  if(statusEl) statusEl.textContent='LIVE · '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
 
   monPage=0;
   renderMonitor();
 }
 
-/* RENDER â€” fix 1: list view, fix 2: time on left, fix 4: filter as tabs, fix 7: pagination */
+/* RENDER — fix 1: list view, fix 2: time on left, fix 4: filter as tabs, fix 7: pagination */
 function renderMonitor(){
   let items=monItems;
   // freshness
@@ -2026,9 +2036,9 @@ function renderMonitor(){
       <div style="font-size:14.5px;font-weight:600;line-height:1.4;color:#111827;margin-bottom:4px">${esc(item.title)}</div>
       ${item.desc?`<div style="font-size:12px;color:#4B5563;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(item.desc.slice(0,180))}</div>`:''}
       <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-        <button onclick='sendToNewsGenMon(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:none;border-radius:5px;background:${c.badge};color:#fff;font-size:11.5px;font-weight:700;cursor:pointer">âº Generate Script</button>
-        ${item.link?`<button onclick="window.open('${esc(item.link)}','_blank')" style="padding:5px 11px;border:1px solid ${c.border};border-radius:5px;background:transparent;color:${c.badge};font-size:11.5px;cursor:pointer">ðŸ”— Open</button>`:''}
-        <button onclick='copyMonItem(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:1px solid #E5E7EB;border-radius:5px;background:transparent;color:#6B7280;font-size:11.5px;cursor:pointer">â§‰ Copy</button>
+        <button onclick='sendToNewsGenMon(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:none;border-radius:5px;background:${c.badge};color:#fff;font-size:11.5px;font-weight:700;cursor:pointer">⏺ Generate Script</button>
+        ${item.link?`<button onclick="window.open('${esc(item.link)}','_blank')" style="padding:5px 11px;border:1px solid ${c.border};border-radius:5px;background:transparent;color:${c.badge};font-size:11.5px;cursor:pointer">🔗 Open</button>`:''}
+        <button onclick='copyMonItem(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:1px solid #E5E7EB;border-radius:5px;background:transparent;color:#6B7280;font-size:11.5px;cursor:pointer">⧉ Copy</button>
       </div>
     </div>`;
   }).join('');
@@ -2046,9 +2056,9 @@ function updatePagination(totalPages, total){
     if(totalPages<=1){el.style.display='none';return;}
     el.style.display='flex';
     el.innerHTML=`
-      <button onclick="monGoPage(${monPage-1})" ${monPage===0?'disabled':''} style="padding:7px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:${monPage===0?'#9CA3AF':'#111827'};cursor:${monPage===0?'default':'pointer'};font-size:13px">â† Prev</button>
-      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);align-self:center">Page ${monPage+1} of ${totalPages} Â· ${total} stories</span>
-      <button onclick="monGoPage(${monPage+1})" ${monPage>=totalPages-1?'disabled':''} style="padding:7px 16px;border:1px solid var(--line);border-radius:var(--r);background:${monPage>=totalPages-1?'var(--surface)':'var(--red)'};color:${monPage>=totalPages-1?'#9CA3AF':'#fff'};cursor:${monPage>=totalPages-1?'default':'pointer'};font-size:13px">Next â†’</button>`;
+      <button onclick="monGoPage(${monPage-1})" ${monPage===0?'disabled':''} style="padding:7px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:${monPage===0?'#9CA3AF':'#111827'};cursor:${monPage===0?'default':'pointer'};font-size:13px">&larr; Prev</button>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);align-self:center">Page ${monPage+1} of ${totalPages} · ${total} stories</span>
+      <button onclick="monGoPage(${monPage+1})" ${monPage>=totalPages-1?'disabled':''} style="padding:7px 16px;border:1px solid var(--line);border-radius:var(--r);background:${monPage>=totalPages-1?'var(--surface)':'var(--red)'};color:${monPage>=totalPages-1?'#9CA3AF':'#fff'};cursor:${monPage>=totalPages-1?'default':'pointer'};font-size:13px">Next &rarr;</button>`;
   });
 }
 

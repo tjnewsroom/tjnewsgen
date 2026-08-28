@@ -443,6 +443,13 @@ select:focus{outline:none;border-color:var(--cyan)}
 .break-banner.show{display:flex}
 .break-banner .bb-close{margin-left:auto;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0 4px}
 .break-banner .bb-dot{width:10px;height:10px;border-radius:50%;background:#fff;animation:pulse 1s infinite;flex-shrink:0}
+
+/* ── CORRECTION LOOP ── */
+#clStatsBar{flex-shrink:0}
+#clPanel textarea:focus{outline:none;border-color:var(--cyan);background:#fff}
+.cl-accuracy-pulse{animation:clpulse .6s ease}
+@keyframes clpulse{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+
 /* sel badge */
 #selBadge{position:fixed;bottom:38px;right:14px;z-index:99;display:none;
   background:var(--ink);color:#fff;border-radius:7px;padding:6px 12px;
@@ -1192,8 +1199,11 @@ async function generate(){
   btn.disabled=true;
   showLoading(useSearch?'READING ARTICLE · WRITING SCRIPT':imageMode?'READING NEWSPAPER IMAGE · WRITING SCRIPT':'WRITING BROADCAST SCRIPT');
   try{
+    // inject editor corrections as additional examples
+    const clExamples = typeof clBuildExamples==='function' ? clBuildExamples() : '';
+    const SYS_WITH_CL = clExamples ? SYS + clExamples : SYS;
     const payload=imageMode?[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:imgB64}},{type:'text',text:userMsg}]:userMsg;
-    const out=await callClaude(SYS,payload,useSearch);
+    const out=await callClaude(SYS_WITH_CL,payload,useSearch);
     lastOutput=out;renderRundown(out);
   }catch(e){showError(e);}
   btn.disabled=false;
@@ -2145,6 +2155,274 @@ function initMonitor(){
   fetchAllFeeds(false);
   monInterval=setInterval(()=>fetchAllFeeds(false),30000);
 }
+
+/* ══════════════════════════════
+   CORRECTION LOOP — Active Learning
+   Editor corrects AI output → saved as training pair →
+   Next generation uses corrections → accuracy improves
+   Storage: localStorage (browser) — persists across sessions
+   Accuracy tracking: shows % match improvement over time
+══════════════════════════════ */
+
+const CL_KEY = 'tj_corrections'; // localStorage key
+const CL_MAX = 50; // max pairs to store (token limit safe)
+
+/* ── Load/Save corrections ── */
+function clLoad() {
+  try { return JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { return []; }
+}
+function clSave(pairs) {
+  try { localStorage.setItem(CL_KEY, JSON.stringify(pairs.slice(-CL_MAX))); } catch(e) {}
+}
+
+/* ── Add a new correction pair ── */
+function clAdd(rawInput, aiOutput, editorCorrection, format, bulletinType) {
+  const pairs = clLoad();
+  const pair = {
+    id: Date.now(),
+    date: new Date().toISOString().slice(0,10),
+    format: format || '',
+    bulletinType: bulletinType || '',
+    raw: rawInput.slice(0, 800),
+    ai: aiOutput.slice(0, 800),
+    corrected: editorCorrection.slice(0, 800),
+    // compute similarity score
+    similarity: clSimilarity(aiOutput, editorCorrection)
+  };
+  pairs.push(pair);
+  clSave(pairs);
+  clUpdateStats();
+  return pair;
+}
+
+/* ── Simple word-overlap similarity 0-100 ── */
+function clSimilarity(a, b) {
+  const wa = new Set((a||'').trim().split(/\s+/).filter(Boolean));
+  const wb = new Set((b||'').trim().split(/\s+/).filter(Boolean));
+  if (!wa.size || !wb.size) return 0;
+  let common = 0;
+  wa.forEach(w => { if (wb.has(w)) common++; });
+  return Math.round((common * 2) / (wa.size + wb.size) * 100);
+}
+
+/* ── Build few-shot examples from corrections for system prompt ── */
+function clBuildExamples() {
+  const pairs = clLoad();
+  if (!pairs.length) return '';
+  // use last 5 corrections as examples
+  const recent = pairs.slice(-5);
+  let block = '\n\nEDITOR CORRECTIONS (learn from these — these are higher priority than base examples):\n';
+  recent.forEach((p, i) => {
+    block += `\nCORRECTION EXAMPLE ${i+1} [${p.format||'VO'} · ${p.bulletinType||'General'}]:\n`;
+    block += `RAW: ${p.raw.slice(0,300)}\n`;
+    block += `AI GENERATED (was wrong):\n${p.ai.slice(0,300)}\n`;
+    block += `EDITOR CORRECTED TO (use this style):\n${p.corrected.slice(0,300)}\n`;
+  });
+  return block;
+}
+
+/* ── Accuracy stats ── */
+function clGetStats() {
+  const pairs = clLoad();
+  if (!pairs.length) return { count: 0, avgSimilarity: 0, trend: [], level: 0 };
+  const sims = pairs.map(p => p.similarity);
+  const avg = Math.round(sims.reduce((a,b)=>a+b,0) / sims.length);
+  // trend: last 10 in groups of 5
+  const trend = [];
+  for (let i = 0; i < sims.length; i += 5) {
+    const chunk = sims.slice(i, i+5);
+    trend.push(Math.round(chunk.reduce((a,b)=>a+b,0)/chunk.length));
+  }
+  // accuracy level
+  let level = 0;
+  if (pairs.length >= 3) level = 1;
+  if (pairs.length >= 10) level = 2;
+  if (pairs.length >= 20) level = 3;
+  if (avg >= 80) level = Math.max(level, 3);
+  if (avg >= 90) level = 4;
+  return { count: pairs.length, avgSimilarity: avg, trend, level };
+}
+
+/* ── Accuracy level label ── */
+function clLevelLabel(level) {
+  return ['🔴 Baseline (0%)', '🟡 Learning (30–60%)', '🟠 Improving (60–75%)', '🟢 Good (75–90%)', '🏆 Expert (90%+)'][level] || '';
+}
+
+/* ── Update stats display ── */
+function clUpdateStats() {
+  const el = document.getElementById('clStatsBar');
+  if (!el) return;
+  const stats = clGetStats();
+  const levelLabel = clLevelLabel(stats.level);
+  const pct = stats.avgSimilarity;
+  const barColor = pct < 50 ? '#DC2626' : pct < 70 ? '#D97706' : pct < 85 ? '#16A34A' : '#7C3AED';
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line)">
+      <span style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim)">AI ACCURACY</span>
+      <div style="flex:1;max-width:200px;height:8px;background:var(--surface3);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${barColor};border-radius:4px;transition:width .6s"></div>
+      </div>
+      <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:${barColor}">${pct}%</span>
+      <span style="font-size:12px;color:var(--ink-dim)">${levelLabel}</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">${stats.count} corrections saved</span>
+      <button onclick="clShowHistory()" style="padding:4px 10px;border:1px solid var(--line);border-radius:5px;background:none;color:var(--ink-dim);font-size:11px;cursor:pointer">History</button>
+      ${stats.count>0?`<button onclick="clExport()" style="padding:4px 10px;border:1px solid var(--line);border-radius:5px;background:none;color:var(--ink-dim);font-size:11px;cursor:pointer">Export</button>`:''}
+    </div>`;
+}
+
+/* ── Inject correction panel below AI output ── */
+function clInjectPanel(rawInput, aiText, format, bulletinType) {
+  const existing = document.getElementById('clPanel');
+  if (existing) existing.remove();
+
+  const panel = document.createElement('div');
+  panel.id = 'clPanel';
+  panel.style.cssText = 'background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:14px;overflow:hidden';
+  panel.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--line)">
+      <span style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);font-weight:600">EDITOR CORRECTION</span>
+      <span style="font-size:11px;color:var(--ink-faint)">— AI script-ஐ correct பண்ணுங்க → AI கத்துக்கும்</span>
+      <span id="clMatchPct" style="margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--green)"></span>
+    </div>
+    <div style="padding:12px 14px">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-faint);margin-bottom:6px">AI OUTPUT (edit below to correct):</div>
+      <textarea id="clEditorBox" style="width:100%;min-height:140px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--tamil);font-size:15px;line-height:1.8;color:var(--ink);resize:vertical"
+        placeholder="AI output இங்கே வரும் — edit பண்ணி Save Correction பண்ணுங்க..."
+        oninput="clPreviewMatch()">${esc(aiText)}</textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button onclick="clSaveCorrection('${encodeURIComponent(rawInput)}','${encodeURIComponent(format)}','${encodeURIComponent(bulletinType)}')"
+          style="padding:8px 18px;border:none;border-radius:8px;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer">
+          ✓ Save Correction → Train AI
+        </button>
+        <button onclick="clCopyBox()" style="padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink-dim);font-size:13px;cursor:pointer">⧉ Copy</button>
+        <button onclick="clResetBox('${encodeURIComponent(aiText)}')" style="padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink-dim);font-size:13px;cursor:pointer">↺ Reset</button>
+        <span id="clSaveMsg" style="align-self:center;font-size:12px;color:var(--green);font-weight:600;display:none">✓ Saved! AI will use this next time.</span>
+      </div>
+      <div style="margin-top:10px;padding:8px 10px;background:var(--surface2);border-radius:6px;font-size:11.5px;color:var(--ink-faint)">
+        💡 <b>How it works:</b> உங்க correction next generation-ல் automatic-ஆ example-ஆ use ஆகும். More corrections → Higher accuracy. Target: 20 corrections = 75%+ accuracy.
+      </div>
+    </div>`;
+
+  document.getElementById('output')?.appendChild(panel);
+  clPreviewMatch();
+}
+
+function clPreviewMatch() {
+  const box = document.getElementById('clEditorBox');
+  const orig = box?.dataset.original || '';
+  const edited = box?.value || '';
+  if (!orig) return;
+  const sim = clSimilarity(orig, edited);
+  const el = document.getElementById('clMatchPct');
+  if (el) {
+    const color = sim > 85 ? 'var(--green)' : sim > 60 ? 'var(--amber)' : 'var(--red)';
+    el.textContent = `Match: ${sim}%`;
+    el.style.color = color;
+  }
+}
+
+function clSaveCorrection(rawEnc, formatEnc, bulletinEnc) {
+  const box = document.getElementById('clEditorBox');
+  if (!box) return;
+  const aiText = decodeURIComponent(box.dataset.original || '');
+  const corrected = box.value.trim();
+  const raw = decodeURIComponent(rawEnc);
+  const format = decodeURIComponent(formatEnc);
+  const bulletin = decodeURIComponent(bulletinEnc);
+  if (!corrected || corrected.length < 10) { alert('Correction-ஐ type பண்ணுங்க'); return; }
+  const pair = clAdd(raw, aiText, corrected, format, bulletin);
+  const msg = document.getElementById('clSaveMsg');
+  if (msg) { msg.style.display = 'inline'; setTimeout(() => msg.style.display = 'none', 3000); }
+  clUpdateStats();
+  // flash accuracy bar
+  const pct = clGetStats().avgSimilarity;
+  const bar = document.querySelector('#clStatsBar [style*="width"]');
+  if (bar) bar.style.width = pct + '%';
+}
+
+function clCopyBox() {
+  const txt = document.getElementById('clEditorBox')?.value || '';
+  navigator.clipboard.writeText(txt);
+}
+
+function clResetBox(enc) {
+  const box = document.getElementById('clEditorBox');
+  if (box) box.value = decodeURIComponent(enc);
+}
+
+/* ── History modal ── */
+function clShowHistory() {
+  const pairs = clLoad();
+  if (!pairs.length) { alert('Corrections இல்லை இன்னும்.'); return; }
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;overflow-y:auto;padding:20px';
+  modal.innerHTML = `<div style="max-width:700px;margin:0 auto;background:var(--surface);border-radius:12px;overflow:hidden">
+    <div style="display:flex;align-items:center;padding:14px 18px;background:var(--surface2);border-bottom:1px solid var(--line)">
+      <span style="font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:1.5px">CORRECTION HISTORY — ${pairs.length} pairs</span>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="margin-left:auto;border:none;background:none;font-size:20px;cursor:pointer;color:var(--ink-dim)">✕</button>
+    </div>
+    <div style="padding:14px;max-height:70vh;overflow-y:auto">
+      ${pairs.slice().reverse().map((p,i) => `
+        <div style="border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:10px">
+          <div style="display:flex;gap:8px;margin-bottom:6px;font-family:var(--mono);font-size:10px;color:var(--ink-faint)">
+            <span>#${pairs.length-i}</span><span>${p.date}</span><span>${p.format}</span>
+            <span style="margin-left:auto;font-weight:700;color:${p.similarity>80?'var(--green)':'var(--amber)'}">${p.similarity}% match</span>
+            <button onclick="clDeletePair(${p.id})" style="border:none;background:none;color:var(--red);cursor:pointer;font-size:11px">Delete</button>
+          </div>
+          <div style="font-size:12px;color:var(--ink-dim);margin-bottom:4px"><b>AI:</b> ${esc((p.ai||'').slice(0,120))}…</div>
+          <div style="font-size:12px;color:var(--ink)"><b>Corrected:</b> ${esc((p.corrected||'').slice(0,120))}…</div>
+        </div>`).join('')}
+    </div>
+    <div style="padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px">
+      <button onclick="clClearAll()" style="padding:7px 14px;border:1px solid var(--red-b);border-radius:7px;background:var(--red-l);color:var(--red);font-size:12px;cursor:pointer">Clear All</button>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="margin-left:auto;padding:7px 14px;border:1px solid var(--line);border-radius:7px;background:none;color:var(--ink-dim);font-size:12px;cursor:pointer">Close</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+function clDeletePair(id) {
+  let pairs = clLoad().filter(p => p.id !== id);
+  clSave(pairs);
+  clUpdateStats();
+  document.querySelector('[style*=fixed]')?.remove();
+  clShowHistory();
+}
+
+function clClearAll() {
+  if (confirm('All corrections delete ஆகும். Sure?')) {
+    localStorage.removeItem(CL_KEY);
+    clUpdateStats();
+    document.querySelector('[style*=fixed]')?.remove();
+  }
+}
+
+/* ── Export corrections as JSON ── */
+function clExport() {
+  const pairs = clLoad();
+  const blob = new Blob([JSON.stringify(pairs, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tj_corrections_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── Inject stats bar on newsgen page load ── */
+function clInitStatsBar() {
+  if (document.getElementById('clStatsBar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'clStatsBar';
+  const stage = document.querySelector('.stage');
+  if (stage) stage.insertBefore(bar, stage.firstChild);
+  clUpdateStats();
+}
+
+/* ── Init on page load ── */
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(clInitStatsBar, 500);
+});
 
 </script>
 </body>

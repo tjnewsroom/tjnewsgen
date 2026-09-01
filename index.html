@@ -1258,6 +1258,33 @@ function renderRundown(o){
   }
   if(o.editor_note)h+='<div class="removed">✎ '+esc(o.editor_note)+'</div>';
   document.getElementById('output').innerHTML=h;
+
+  // ── CORRECTION PANEL — editable copy of generated script ──
+  setTimeout(()=>{
+    // build structured editable text
+    const parts=[];
+    if(o.anchor_lead) parts.push('[ANCHOR]\n'+o.anchor_lead);
+    (o.segments||[]).forEach(seg=>{
+      let p='['+((seg.type||'VO').split(/[\s(+]/)[0].toUpperCase())+(seg.speaker?' · '+seg.speaker:'')+']\n'+(seg.text||'');
+      if(seg.byte_in) p+='\nIN: "'+seg.byte_in+'"  OUT: "'+seg.byte_out+'"';
+      parts.push(p);
+    });
+    if(o.mos_slug) parts.push('[MOS SLUG]\n'+o.mos_slug);
+    if(o.ticker) parts.push('[TICKER]\n'+o.ticker);
+    const scriptText=parts.join('\n\n');
+
+    const rawSrc=src==='raw'?(document.getElementById('rawScript')?.value||''):
+                 src==='url'?(document.getElementById('newsUrl')?.value||''):'(image)';
+    const fmt=pick('fmtChips')||'';
+    const bt=pick('btChips')||'';
+
+    clInjectPanel(rawSrc, scriptText, fmt, bt);
+    setTimeout(()=>{
+      const box=document.getElementById('clEditorBox');
+      if(box){ box.value=scriptText; box.dataset.original=scriptText; clPreviewMatch(); }
+    },60);
+    clInitStatsBar();
+  },150);
 }
 function secCard(tag,title,bodyHtml,durSec,copySrc){
   return '<div class="sec"><div class="sec-hd"><span class="rtag rt-'+tag+'">'+title+'</span>'+
@@ -2278,28 +2305,79 @@ function clInjectPanel(rawInput, aiText, format, bulletinType) {
   const panel = document.createElement('div');
   panel.id = 'clPanel';
   panel.style.cssText = 'background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:14px;overflow:hidden';
+  const stats = clGetStats();
+  const pct = stats.avgSimilarity;
+  const barColor = pct < 50 ? '#DC2626' : pct < 70 ? '#D97706' : pct < 85 ? '#16A34A' : '#7C3AED';
   panel.innerHTML = `
-    <div style="display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--line)">
-      <span style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);font-weight:600">EDITOR CORRECTION</span>
-      <span style="font-size:11px;color:var(--ink-faint)">— AI script-ஐ correct பண்ணுங்க → AI கத்துக்கும்</span>
-      <span id="clMatchPct" style="margin-left:auto;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--green)"></span>
-    </div>
-    <div style="padding:12px 14px">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-faint);margin-bottom:6px">AI OUTPUT (edit below to correct):</div>
-      <textarea id="clEditorBox" style="width:100%;min-height:140px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--tamil);font-size:15px;line-height:1.8;color:var(--ink);resize:vertical"
-        placeholder="AI output இங்கே வரும் — edit பண்ணி Save Correction பண்ணுங்க..."
-        oninput="clPreviewMatch()">${esc(aiText)}</textarea>
-      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-        <button onclick="clSaveCorrection('${encodeURIComponent(rawInput)}','${encodeURIComponent(format)}','${encodeURIComponent(bulletinType)}')"
-          style="padding:8px 18px;border:none;border-radius:8px;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer">
-          ✓ Save Correction → Train AI
-        </button>
-        <button onclick="clCopyBox()" style="padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink-dim);font-size:13px;cursor:pointer">⧉ Copy</button>
-        <button onclick="clResetBox('${encodeURIComponent(aiText)}')" style="padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink-dim);font-size:13px;cursor:pointer">↺ Reset</button>
-        <span id="clSaveMsg" style="align-self:center;font-size:12px;color:var(--green);font-weight:600;display:none">✓ Saved! AI will use this next time.</span>
+    <!-- HEADER -->
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:7px">
+        <span style="width:10px;height:10px;border-radius:50%;background:#22C55E;box-shadow:0 0 6px #22C55E;flex-shrink:0"></span>
+        <span style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1.5px">EDITOR CORRECTION PANEL</span>
       </div>
-      <div style="margin-top:10px;padding:8px 10px;background:var(--surface2);border-radius:6px;font-size:11.5px;color:var(--ink-faint)">
-        💡 <b>How it works:</b> உங்க correction next generation-ல் automatic-ஆ example-ஆ use ஆகும். More corrections → Higher accuracy. Target: 20 corrections = 75%+ accuracy.
+      <span style="font-size:11px;opacity:.7">AI script-ஐ correct பண்ணுங்க → AI கத்துக்கும்</span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <div style="background:rgba(255,255,255,.1);border-radius:20px;padding:3px 10px;font-family:var(--mono);font-size:10px">
+          ${stats.count} corrections · ${pct}% accuracy
+        </div>
+        <div style="width:80px;height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${barColor};border-radius:3px;transition:width .6s"></div>
+        </div>
+      </div>
+    </div>
+    <!-- ACCURACY ROW -->
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--line)">
+      ${[['0 corrections','Baseline','#DC2626'],['5+ corrections','Learning','#D97706'],['15+ corrections','Improving','#F59E0B'],['25+ corrections','Good','#16A34A'],['40+ corrections','Expert','#7C3AED']].map((l,i)=>`
+        <div style="flex:1;padding:6px 8px;text-align:center;background:${stats.count>=[0,5,15,25,40][i]?l[2]+'22':'var(--surface2)'};border-right:1px solid var(--line)">
+          <div style="font-size:9px;font-family:var(--mono);color:${stats.count>=[0,5,15,25,40][i]?l[2]:'var(--ink-faint)'};font-weight:600">${l[1]}</div>
+          <div style="font-size:9px;color:var(--ink-faint)">${l[0]}</div>
+        </div>`).join('')}
+    </div>
+    <!-- EDITOR BOX -->
+    <div style="padding:14px 16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-dim);font-weight:600">✏ AI OUTPUT-ஐ EDIT பண்ணுங்க (corrections highlight ஆகும்):</span>
+        <span id="clMatchPct" style="font-family:var(--mono);font-size:12px;font-weight:700"></span>
+      </div>
+      <textarea id="clEditorBox"
+        style="width:100%;min-height:160px;background:#FAFAFA;border:2px solid #E5E7EB;border-radius:8px;padding:12px 14px;font-family:var(--tamil);font-size:15px;line-height:1.85;color:#111827;resize:vertical;box-shadow:inset 0 1px 3px rgba(0,0,0,.06)"
+        oninput="clPreviewMatch()"
+        placeholder="AI script இங்கே தெரியும் — நேரடியா edit பண்ணுங்க..."></textarea>
+      <!-- ACTION BUTTONS -->
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">
+        <button onclick="clSaveCorrection('${encodeURIComponent(rawInput)}','${encodeURIComponent(format)}','${encodeURIComponent(bulletinType)}')"
+          style="padding:10px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.3);display:flex;align-items:center;gap:6px">
+          <span style="font-size:16px">✓</span> Save &amp; Train AI
+        </button>
+        <button onclick="clCopyBox()"
+          style="padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-dim);font-size:13px;cursor:pointer">
+          ⧉ Copy
+        </button>
+        <button onclick="clResetBox('${encodeURIComponent(aiText)}')"
+          style="padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-dim);font-size:13px;cursor:pointer">
+          ↺ Reset
+        </button>
+        <button onclick="clShowHistory()"
+          style="padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-dim);font-size:13px;cursor:pointer">
+          📋 History (${stats.count})
+        </button>
+        <span id="clSaveMsg" style="font-size:12.5px;color:#16A34A;font-weight:700;display:none;align-items:center;gap:5px">
+          ✓ Saved! AI will learn this style.
+        </span>
+      </div>
+      <!-- PROGRESS TIP -->
+      <div style="margin-top:12px;padding:10px 12px;background:linear-gradient(135deg,#EFF6FF,#F0FDF4);border-radius:8px;border-left:3px solid #2563EB;display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:18px;flex-shrink:0">💡</span>
+        <div style="font-size:12px;color:var(--ink-dim);line-height:1.6">
+          <b style="color:var(--ink)">How accuracy improves:</b> உங்க correction-ஐ save பண்ண பண்ண, next script generate-ல் AI automatic-ஆ உங்க style-ஐ use பண்ணும்.
+          <span style="display:block;margin-top:4px">
+            🔴 0→5 corrections: Baseline &nbsp;→&nbsp; 
+            🟡 5→15: Learning &nbsp;→&nbsp; 
+            🟠 15→25: Improving (70%) &nbsp;→&nbsp; 
+            🟢 25→40: Good (85%) &nbsp;→&nbsp; 
+            🏆 40+: Expert (90%+)
+          </span>
+        </div>
       </div>
     </div>`;
 

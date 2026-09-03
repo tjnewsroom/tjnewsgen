@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TJ NewsGen · Bulletin Engine</title>
+<title>TJ NewsGen Â· Bulletin Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -27,7 +27,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:14px;
 button{font-family:var(--ui);cursor:pointer}
 ::selection{background:rgba(2,132,199,.15)}
 
-/* ── TOPBAR ── */
+/* â”€â”€ TOPBAR â”€â”€ */
 .topbar{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;
   background:var(--surface);border-bottom:1px solid var(--line);flex-shrink:0;box-shadow:var(--sh)}
 .brand{display:flex;align-items:center;gap:9px;margin-right:4px}
@@ -71,7 +71,7 @@ button{font-family:var(--ui);cursor:pointer}
   align-items:center;justify-content:center;transition:.15s;box-shadow:var(--sh)}
 .icon-btn:hover{color:var(--ink);border-color:var(--ink-dim)}
 
-/* ── DRAWER ── */
+/* â”€â”€ DRAWER â”€â”€ */
 .drawer{display:none;background:var(--amber-l);border-bottom:1px solid var(--amber-b);
   padding:10px 18px;gap:10px;align-items:center;flex-shrink:0}
 .drawer.open{display:flex}
@@ -84,14 +84,19 @@ button{font-family:var(--ui);cursor:pointer}
   background:var(--amber);color:#fff;font-weight:600;font-size:13px}
 .drawer .hint{font-size:11px;color:var(--amber);white-space:nowrap}
 
-/* ── WORKSPACE ── */
+/* â”€â”€ WORKSPACE â”€â”€ */
 .workspace{flex:1;overflow:hidden;position:relative}
 .page{position:absolute;inset:0;display:none;overflow:hidden}
 .page.on{display:flex}
+/* newsgen 3-col layout */
+#pg-newsgen{display:none}
+#pg-newsgen.on{display:grid;grid-template-columns:360px 1fr 420px;grid-template-rows:1fr;overflow:hidden}
+@media(max-width:1100px){#pg-newsgen.on{grid-template-columns:320px 1fr;}}
+@media(max-width:800px){#pg-newsgen.on{grid-template-columns:1fr;grid-template-rows:auto auto auto;overflow-y:auto}}
 
-/* ══════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    NEWSGEN PAGE
-══════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #pg-newsgen{flex-direction:row}
 .rail{width:370px;flex-shrink:0;border-right:1px solid var(--line);
   background:var(--surface);display:flex;flex-direction:column;overflow:hidden}
@@ -226,7 +231,7 @@ textarea{resize:vertical;min-height:110px;line-height:1.7}
   border-bottom:1px solid var(--line-soft);font-family:var(--tamil);
   font-size:14px;line-height:1.6;color:var(--ink-dim)}
 .ticker-pts li:last-child{border-bottom:none}
-.ticker-pts li::before{content:'▶';color:var(--red);font-size:9px;
+.ticker-pts li::before{content:'â–¶';color:var(--red);font-size:9px;
   flex-shrink:0;margin-top:5px}
 .stat-row{display:flex;gap:10px;margin-bottom:14px}
 .stat{flex:1;background:var(--surface);border:1px solid var(--line);
@@ -247,9 +252,9 @@ textarea{resize:vertical;min-height:110px;line-height:1.7}
   font-size:13px;line-height:1.7;color:#991B1B}
 .error-box b{color:var(--red)}
 
-/* ══════════════════════════════
-   TRANSCRIBER PAGE — FULL WINDOW
-══════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   TRANSCRIBER PAGE â€” FULL WINDOW
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #pg-transcriber{background:var(--bg);overflow-y:auto;flex-direction:column;align-items:center}
 .t-wrap{width:100%;max-width:780px;padding:24px 20px 60px}
 .t-title{font-size:20px;font-weight:700;margin-bottom:4px}
@@ -328,7 +333,7 @@ select:focus{outline:none;border-color:var(--cyan)}
   margin-bottom:14px;line-height:1.6}
 .t-quality-note b{color:var(--amber);display:block;margin-bottom:4px}
 
-/* ── FOOTER ── */
+/* â”€â”€ FOOTER â”€â”€ */
 .footbar{height:30px;padding:0 18px;border-top:1px solid var(--line);
   background:var(--surface);display:flex;align-items:center;
   font-family:var(--mono);font-size:9px;letter-spacing:1px;
@@ -336,7 +341,7 @@ select:focus{outline:none;border-color:var(--cyan)}
 .footbar .r{margin-left:auto}
 
 
-/* ── TRANSCRIBER ADDITIONS ── */
+/* â”€â”€ TRANSCRIBER ADDITIONS â”€â”€ */
 .t-mode-tabs{display:flex;gap:6px;margin-bottom:16px}
 .tmt{flex:1;padding:10px;border:1px solid var(--line);border-radius:var(--r);
   background:var(--surface);color:var(--ink-dim);font-size:13px;font-weight:600;transition:.15s}
@@ -391,7 +396,7 @@ select:focus{outline:none;border-color:var(--cyan)}
   padding:2px 10px 5px;background:var(--surface)}
 
 
-/* ── WORLD MONITOR ── */
+/* â”€â”€ WORLD MONITOR â”€â”€ */
 #pg-monitor{background:var(--bg);overflow-y:auto;flex-direction:column}
 .mon-wrap{max-width:1100px;margin:0 auto;padding:0 16px 60px;width:100%;box-sizing:border-box}
 .mon-sticky-top{position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line);margin-bottom:10px}
@@ -444,11 +449,18 @@ select:focus{outline:none;border-color:var(--cyan)}
 .break-banner .bb-close{margin-left:auto;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0 4px}
 .break-banner .bb-dot{width:10px;height:10px;border-radius:50%;background:#fff;animation:pulse 1s infinite;flex-shrink:0}
 
-/* ── CORRECTION LOOP ── */
+/* â”€â”€ CORRECTION LOOP â”€â”€ */
 #clStatsBar{flex-shrink:0}
 #clPanel textarea:focus{outline:none;border-color:var(--cyan);background:#fff}
 .cl-accuracy-pulse{animation:clpulse .6s ease}
 @keyframes clpulse{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+
+/* â”€â”€ CORRECTION COLUMN â”€â”€ */
+.cl-mile{flex:1;padding:5px 4px;text-align:center;font-size:9px;font-family:var(--mono);color:var(--ink-faint);border-right:1px solid var(--line);background:var(--surface2)}
+.cl-mile.done{background:#DCFCE7;color:#16A34A;font-weight:700}
+#correctionCol{display:none}
+#pg-newsgen.on #correctionCol{display:flex;flex-direction:column}
+@media(max-width:1100px){#pg-newsgen.on #correctionCol{display:none}}
 
 /* sel badge */
 #selBadge{position:fixed;bottom:38px;right:14px;z-index:99;display:none;
@@ -467,9 +479,9 @@ select:focus{outline:none;border-color:var(--cyan)}
     <div class="sub">BULLETIN ENGINE</div>
   </div>
   <div class="nav-pills">
-    <button class="np on" id="nav-newsgen" onclick="gotoPage('newsgen')">⏺ Script Generator</button>
-    <button class="np green-pill" id="nav-transcriber" onclick="gotoPage('transcriber')" style="background:none;color:var(--ink-dim)">🎙 Transcriber</button>
-    <button class="np" id="nav-monitor" onclick="gotoPage('monitor')" style="background:none;color:var(--ink-dim);border-left:1px solid var(--line);margin-left:4px">🌍 World Monitor</button>
+    <button class="np on" id="nav-newsgen" onclick="gotoPage('newsgen')">âº Script Generator</button>
+    <button class="np green-pill" id="nav-transcriber" onclick="gotoPage('transcriber')" style="background:none;color:var(--ink-dim)">ðŸŽ™ Transcriber</button>
+    <button class="np" id="nav-monitor" onclick="gotoPage('monitor')" style="background:none;color:var(--ink-dim);border-left:1px solid var(--line);margin-left:4px">ðŸŒ World Monitor</button>
   </div>
   <div class="mode-seg" id="modeSeg">
     <button class="ms on" id="ms-gen" onclick="setMode('generate')">Generate</button>
@@ -479,25 +491,25 @@ select:focus{outline:none;border-color:var(--cyan)}
 </header>
 
 <!-- DRAWER -->
-<!-- API KEY BAR — always visible -->
+<!-- API KEY BAR â€” always visible -->
 <div id="apiBar" style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:#FFFBEB;border-bottom:1px solid #FDE68A;flex-shrink:0;flex-wrap:wrap">
   <label style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:#D97706;font-weight:600;white-space:nowrap">PROVIDER</label>
   <select id="apiProvider" onchange="updateProviderHint()" style="background:#fff;border:1px solid #FDE68A;border-radius:6px;color:#111827;padding:7px 10px;font-family:var(--ui);font-size:13px;flex-shrink:0">
     <option value="claude">Claude (Anthropic)</option>
-    <option value="gemini">Gemini (Google) — free tier</option>
+    <option value="gemini">Gemini (Google) â€” free tier</option>
     <option value="openai">ChatGPT (OpenAI)</option>
   </select>
   <input type="password" id="apiKey" placeholder="sk-ant-api03-..." 
     style="flex:1;min-width:180px;background:#fff;border:1px solid #FDE68A;border-radius:6px;color:#111827;padding:7px 10px;font-family:var(--mono);font-size:12px">
   <button onclick="saveKey()" style="padding:7px 16px;border:none;border-radius:6px;background:#D97706;color:#fff;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap">Save</button>
-  <span id="providerHint" style="font-size:11px;color:#D97706;white-space:nowrap">console.anthropic.com → API Keys</span>
+  <span id="providerHint" style="font-size:11px;color:#D97706;white-space:nowrap">console.anthropic.com â†’ API Keys</span>
   <div class="status-pill err" id="apiPill" style="margin-left:auto"><span class="led"></span><span id="apiTxt">KEY NEEDED</span></div>
 </div>
 
 <!-- WORKSPACE -->
 <div class="workspace">
 
-  <!-- ══ NEWSGEN PAGE ══ -->
+  <!-- â•â• NEWSGEN PAGE â•â• -->
   <div class="page on" id="pg-newsgen">
     <aside class="rail">
       <div class="rail-scroll">
@@ -512,21 +524,21 @@ select:focus{outline:none;border-color:var(--cyan)}
               <button class="sc" data-src="img" onclick="setSrc('img')">Newspaper Image</button>
             </div>
             <div id="src-raw">
-              <textarea id="rawScript" placeholder="Reporter script / spot copy — Tamil or English"></textarea>
+              <textarea id="rawScript" placeholder="Reporter script / spot copy â€” Tamil or English"></textarea>
             </div>
             <div id="src-url" style="display:none">
               <input type="text" id="newsUrl" placeholder="https://article-link...">
-              <div class="src-note">Article web search வழியா படிச்சு facts மட்டும் use ஆகும்.</div>
+              <div class="src-note">Article web search à®µà®´à®¿à®¯à®¾ à®ªà®Ÿà®¿à®šà¯à®šà¯ facts à®®à®Ÿà¯à®Ÿà¯à®®à¯ use à®†à®•à¯à®®à¯.</div>
             </div>
             <div id="src-img" style="display:none">
               <div class="img-drop">
                 <input type="file" id="paperImg" accept="image/*" onchange="loadImg(this)">
-                <div class="ico">📰</div>
-                <div class="t">Newspaper image select பண்ணுங்க</div>
-                <div class="s">Tamil/English clipping · press note · printed text photo</div>
+                <div class="ico">ðŸ“°</div>
+                <div class="t">Newspaper image select à®ªà®£à¯à®£à¯à®™à¯à®•</div>
+                <div class="s">Tamil/English clipping Â· press note Â· printed text photo</div>
               </div>
               <div id="imgPreview"><img id="imgPrevImg" src="" alt=""></div>
-              <div class="src-note" style="margin-top:8px">📌 Clear photo · good light · one article in frame = best accuracy</div>
+              <div class="src-note" style="margin-top:8px">ðŸ“Œ Clear photo Â· good light Â· one article in frame = best accuracy</div>
             </div>
           </div>
 
@@ -568,7 +580,7 @@ select:focus{outline:none;border-color:var(--cyan)}
                 <button class="dq" onclick="setDur(100)">100</button>
               </div>
             </div>
-            <div class="dur-est">≈ <span id="wEst">70</span> Tamil words · 1.75 w/s</div>
+            <div class="dur-est">â‰ˆ <span id="wEst">70</span> Tamil words Â· 1.75 w/s</div>
           </div>
 
           <div class="step">
@@ -581,7 +593,7 @@ select:focus{outline:none;border-color:var(--cyan)}
         <div id="pane-trim" style="display:none">
           <div class="step">
             <div class="step-hd"><span class="num">1</span><span class="lbl">EXISTING TAMIL SCRIPT</span></div>
-            <textarea id="trimScript" style="min-height:200px" placeholder="Full script paste பண்ணுங்க..."></textarea>
+            <textarea id="trimScript" style="min-height:200px" placeholder="Full script paste à®ªà®£à¯à®£à¯à®™à¯à®•..."></textarea>
           </div>
           <div class="step">
             <div class="step-hd"><span class="num">2</span><span class="lbl">TRIM TO DURATION</span></div>
@@ -603,7 +615,7 @@ select:focus{outline:none;border-color:var(--cyan)}
 
       </div>
       <div class="rail-foot">
-        <button class="btn-primary" id="goBtn" onclick="go()">⏺ &nbsp;GENERATE SCRIPT</button>
+        <button class="btn-primary" id="goBtn" onclick="go()">âº &nbsp;GENERATE SCRIPT</button>
       </div>
     </aside>
 
@@ -614,27 +626,77 @@ select:focus{outline:none;border-color:var(--cyan)}
       </div>
       <div class="stage-body" id="output">
         <div class="empty">
-          <div class="mark">— STANDBY —</div>
+          <div class="mark">â€” STANDBY â€”</div>
           <div class="flow-steps">
             <div class="fs"><div class="n">STEP 1</div><div class="d">Raw script, link or newspaper image</div></div>
             <div class="fs"><div class="n">STEP 2</div><div class="d">Bulletin type, format, duration</div></div>
-            <div class="fs"><div class="n">STEP 3</div><div class="d">Generate → copy blocks → paste in Blaze</div></div>
+            <div class="fs"><div class="n">STEP 3</div><div class="d">Generate â†’ copy blocks â†’ paste in Blaze</div></div>
           </div>
-          <div class="note">TamilJanam house style · Anchor → VO → MOS · Blaze-ready</div>
+          <div class="note">TamilJanam house style Â· Anchor â†’ VO â†’ MOS Â· Blaze-ready</div>
         </div>
       </div>
     </main>
+
+    <!-- â”€â”€ CORRECTION COLUMN (3rd col) â”€â”€ -->
+    <aside id="correctionCol" style="border-left:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:10px 14px;background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;flex-shrink:0;display:flex;align-items:center;gap:8px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0"></span>
+        <span style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px">EDITOR CORRECTION</span>
+        <span id="clAccBadge" style="margin-left:auto;font-family:var(--mono);font-size:10px;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:10px">0% Â· 0 saved</span>
+      </div>
+      <!-- accuracy bar -->
+      <div style="height:4px;background:#E5E7EB;flex-shrink:0">
+        <div id="clAccBar" style="height:100%;width:0%;background:#16A34A;transition:width .6s"></div>
+      </div>
+      <!-- milestone strip -->
+      <div style="display:flex;border-bottom:1px solid var(--line);flex-shrink:0">
+        ${['Baseline','Learning','Improving','Good','Expert'].map((l,i)=>`<div class="cl-mile" id="clMile${i}">${l}</div>`).join('')}
+      </div>
+      <!-- editor area -->
+      <div style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:1px">âœ EDIT AI OUTPUT DIRECTLY:</div>
+        <textarea id="clEditorBox"
+          style="flex:1;min-height:300px;background:#FAFAFA;border:2px solid #E5E7EB;border-radius:8px;padding:11px 13px;font-family:var(--tamil);font-size:14.5px;line-height:1.85;color:#111827;resize:none;width:100%"
+          oninput="clPreviewMatch()"
+          placeholder="Generate a script â†’ it appears here for editing..."></textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:11px;color:var(--ink-faint)">Match vs AI original:</span>
+          <span id="clMatchPct" style="font-family:var(--mono);font-size:12px;font-weight:700"></span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button id="clSaveBtn" onclick="clSaveCorrectionCol()" style="flex:1;padding:9px;border:none;border-radius:8px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;font-size:13px;font-weight:700;cursor:pointer">âœ“ Save &amp; Train AI</button>
+          <button onclick="clCopyBox()" style="padding:9px 13px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink-dim);font-size:12.5px;cursor:pointer">â§‰ Copy</button>
+        </div>
+        <span id="clSaveMsg" style="font-size:12px;color:#16A34A;font-weight:700;display:none">âœ“ Saved! AI learns from this.</span>
+        <!-- script history -->
+        <div style="border-top:1px solid var(--line);padding-top:10px;margin-top:4px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <span style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-dim)">ðŸ“‹ SCRIPT HISTORY</span>
+            <button onclick="clClearHistory()" style="font-size:10px;border:none;background:none;color:var(--ink-faint);cursor:pointer">Clear</button>
+          </div>
+          <div id="clHistoryList" style="display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto"></div>
+        </div>
+        <div style="margin-top:6px;padding:9px 10px;background:#EFF6FF;border-radius:7px;border-left:3px solid #2563EB;font-size:11px;color:#374151;line-height:1.6">
+          ðŸ’¡ <b>Accuracy levels:</b><br>
+          ðŸ”´ 0â€“5 corrections: Baseline<br>
+          ðŸŸ¡ 5â€“15: Learning (50â€“65%)<br>
+          ðŸŸ  15â€“25: Improving (65â€“80%)<br>
+          ðŸŸ¢ 25â€“40: Good (80â€“90%)<br>
+          ðŸ† 40+: Expert (90%+)
+        </div>
+      </div>
+    </aside>
   </div>
 
-  <!-- ══ TRANSCRIBER PAGE — FULL WINDOW ══ -->
+  <!-- â•â• TRANSCRIBER PAGE â€” FULL WINDOW â•â• -->
   <div class="page" id="pg-transcriber">
     <div class="t-wrap">
-      <div class="t-title">🎙 Transcriber + Live Wire Tool</div>
-      <div class="t-sub">Reporter bytes · Press meets · Live ANI/agency feeds → Tamil on-air text. Runs on your device.</div>
+      <div class="t-title">ðŸŽ™ Transcriber + Live Wire Tool</div>
+      <div class="t-sub">Reporter bytes Â· Press meets Â· Live ANI/agency feeds â†’ Tamil on-air text. Runs on your device.</div>
 
       <div class="t-mode-tabs">
-        <button class="tmt on" id="tmt-file" onclick="setTMode('file')">📁 File Upload</button>
-        <button class="tmt" id="tmt-mic" onclick="setTMode('mic')">🎤 Live Mic / Wire Feed</button>
+        <button class="tmt on" id="tmt-file" onclick="setTMode('file')">ðŸ“ File Upload</button>
+        <button class="tmt" id="tmt-mic" onclick="setTMode('mic')">ðŸŽ¤ Live Mic / Wire Feed</button>
       </div>
 
       <!-- SETTINGS -->
@@ -657,38 +719,38 @@ select:focus{outline:none;border-color:var(--cyan)}
             <label>Output language</label>
             <select id="tOutputLang" onchange="handleOutputLangChange()">
               <option value="same">Same as spoken</option>
-              <option value="ta-nllb">Tamil — free, on-device (NLLB)</option>
-              <option value="ta-claude">Tamil — Claude API</option>
-              <option value="en">English — Claude API</option>
+              <option value="ta-nllb">Tamil â€” free, on-device (NLLB)</option>
+              <option value="ta-claude">Tamil â€” Claude API</option>
+              <option value="en">English â€” Claude API</option>
             </select>
           </div>
           <div class="t-field">
             <label>Whisper model</label>
             <select id="tModel">
-              <option value="Xenova/whisper-base" selected>Base — fast ~150MB ✓ recommended</option>
-              <option value="Xenova/whisper-small">Small — accurate ~490MB (slow)</option>
+              <option value="Xenova/whisper-base" selected>Base â€” fast ~150MB âœ“ recommended</option>
+              <option value="Xenova/whisper-small">Small â€” accurate ~490MB (slow)</option>
             </select>
           </div>
         </div>
-        <div id="tApiNote" style="display:none" class="src-note">🔑 Claude API key — ⚙ icon-ல் set பண்ணுங்க.</div>
-        <div id="tNllbNote" style="display:none" class="src-note">📦 NLLB: first use ~1.2GB download (free, no API key). ⚠️ For File Upload only — Live Mic mode automatically uses Claude API to avoid freezing.</div>
+        <div id="tApiNote" style="display:none" class="src-note">ðŸ”‘ Claude API key â€” âš™ icon-à®²à¯ set à®ªà®£à¯à®£à¯à®™à¯à®•.</div>
+        <div id="tNllbNote" style="display:none" class="src-note">ðŸ“¦ NLLB: first use ~1.2GB download (free, no API key). âš ï¸ For File Upload only â€” Live Mic mode automatically uses Claude API to avoid freezing.</div>
       </div>
 
-      <!-- ═══ FILE MODE ═══ -->
+      <!-- â•â•â• FILE MODE â•â•â• -->
       <div id="t-file-panel" class="tpanel">
         <h2>Upload Audio File</h2>
-        <div class="t-quality-note"><b>⚠ Best results:</b> Speech-only audio, no background music/noise. Trim to speech before uploading.</div>
+        <div class="t-quality-note"><b>âš  Best results:</b> Speech-only audio, no background music/noise. Trim to speech before uploading.</div>
         <div class="dz" id="dz">
           <input type="file" id="tFile" accept="audio/*">
-          <div class="ico">🎙</div>
+          <div class="ico">ðŸŽ™</div>
           <div class="mt">Click to choose audio or drag here</div>
-          <div class="st">MP3 · WAV · M4A · OGG — reporter bytes, press meets, phone clips</div>
+          <div class="st">MP3 Â· WAV Â· M4A Â· OGG â€” reporter bytes, press meets, phone clips</div>
         </div>
         <div class="t-fname" id="tFname"></div>
-        <button class="t-run" id="tRunBtn" disabled>▶ &nbsp;TRANSCRIBE FILE</button>
+        <button class="t-run" id="tRunBtn" disabled>â–¶ &nbsp;TRANSCRIBE FILE</button>
         <div class="t-prog" id="tProg"><div class="t-prog-fill" id="tProgFill"></div></div>
         <div class="t-status" id="tStatus"></div>
-        <!-- FILE OUTPUT — immediately below button, no scroll needed -->
+        <!-- FILE OUTPUT â€” immediately below button, no scroll needed -->
         <div id="fileOutArea" style="display:none;margin-top:16px">
           <div class="out-split">
             <div class="out-half" id="fileOrigHalf">
@@ -701,51 +763,51 @@ select:focus{outline:none;border-color:var(--cyan)}
             </div>
           </div>
           <div class="onair-section">
-            <div class="onair-label">✦ ON-AIR TEXT &nbsp;<span class="onair-hint">— இதை edit பண்ணி CG / Ticker-க்கு copy பண்ணுங்க</span></div>
-            <textarea id="onairText" class="onair-box" placeholder="Translated / transcribed text இங்கே வரும் — edit பண்ணி copy பண்ணுங்க..."></textarea>
+            <div class="onair-label">âœ¦ ON-AIR TEXT &nbsp;<span class="onair-hint">â€” à®‡à®¤à¯ˆ edit à®ªà®£à¯à®£à®¿ CG / Ticker-à®•à¯à®•à¯ copy à®ªà®£à¯à®£à¯à®™à¯à®•</span></div>
+            <textarea id="onairText" class="onair-box" placeholder="Translated / transcribed text à®‡à®™à¯à®•à¯‡ à®µà®°à¯à®®à¯ â€” edit à®ªà®£à¯à®£à®¿ copy à®ªà®£à¯à®£à¯à®™à¯à®•..."></textarea>
             <div class="t-copy-row">
-              <button onclick="copyOnair(this)" class="copy-cg-btn">📋 Copy for CG / Ticker</button>
+              <button onclick="copyOnair(this)" class="copy-cg-btn">ðŸ“‹ Copy for CG / Ticker</button>
               <button id="tCopyOrig">Copy transcript</button>
               <button id="tCopyTrans" style="display:none">Copy translation</button>
-              <button id="tDownload">⬇ Download .txt</button>
-              <button class="send-btn" id="tSend">⏩ Send to NewsGen</button>
+              <button id="tDownload">â¬‡ Download .txt</button>
+              <button class="send-btn" id="tSend">â© Send to NewsGen</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ MIC / LIVE WIRE MODE ═══ -->
+      <!-- â•â•â• MIC / LIVE WIRE MODE â•â•â• -->
       <div id="t-mic-panel" class="tpanel" style="display:none">
         <h2>Live Mic / Wire Feed Capture</h2>
         <div class="src-note" style="margin-bottom:12px;border-left-color:var(--cyan)">
-          <b>Usage:</b> ANI/agency wire feed-ஐ speakers-ல் play பண்ணுங்க. Start அழுத்துங்க — mic capture பண்ணி 6 seconds-க்கு ஒரு தடவை transcribe + translate ஆகும்.<br><br>
-          <b>⚠ Mic needs localhost:</b> <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">python -m http.server 8000</code> → <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">http://localhost:8000/tj-newsgen-desktop.html</code>
+          <b>Usage:</b> ANI/agency wire feed-à® speakers-à®²à¯ play à®ªà®£à¯à®£à¯à®™à¯à®•. Start à®…à®´à¯à®¤à¯à®¤à¯à®™à¯à®• â€” mic capture à®ªà®£à¯à®£à®¿ 6 seconds-à®•à¯à®•à¯ à®’à®°à¯ à®¤à®Ÿà®µà¯ˆ transcribe + translate à®†à®•à¯à®®à¯.<br><br>
+          <b>âš  Mic needs localhost:</b> <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">python -m http.server 8000</code> â†’ <code style="background:var(--surface3);padding:2px 6px;border-radius:3px;font-family:var(--mono);font-size:11px">http://localhost:8000/tj-newsgen-desktop.html</code>
         </div>
         <div class="mic-controls">
-          <button class="t-run" id="micStartBtn" onclick="startMic()">🎤 &nbsp;START CAPTURE</button>
-          <button class="t-run" id="micStopBtn" style="background:var(--red);display:none" onclick="stopMic()">⏹ &nbsp;STOP</button>
+          <button class="t-run" id="micStartBtn" onclick="startMic()">ðŸŽ¤ &nbsp;START CAPTURE</button>
+          <button class="t-run" id="micStopBtn" style="background:var(--red);display:none" onclick="stopMic()">â¹ &nbsp;STOP</button>
         </div>
         <div class="t-status" id="micStatus"></div>
         <div class="mic-viz" id="micViz">
           <div class="mic-bars" id="micBars"></div>
-          <span id="micVizLabel" style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">——</span>
+          <span id="micVizLabel" style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">â€”â€”</span>
         </div>
 
-        <!-- ON-AIR BOX — always visible in mic mode, updates live -->
+        <!-- ON-AIR BOX â€” always visible in mic mode, updates live -->
         <div class="onair-section" id="micOnairSection" style="margin-top:14px">
-          <div class="onair-label">✦ ON-AIR TEXT &nbsp;<span class="onair-hint">— live update ஆகும், edit பண்ணி copy பண்ணுங்க</span></div>
-          <textarea id="micOnairText" class="onair-box" style="min-height:110px" placeholder="Captured Tamil text இங்கே live-ஆ வரும்..."></textarea>
+          <div class="onair-label">âœ¦ ON-AIR TEXT &nbsp;<span class="onair-hint">â€” live update à®†à®•à¯à®®à¯, edit à®ªà®£à¯à®£à®¿ copy à®ªà®£à¯à®£à¯à®™à¯à®•</span></div>
+          <textarea id="micOnairText" class="onair-box" style="min-height:110px" placeholder="Captured Tamil text à®‡à®™à¯à®•à¯‡ live-à®† à®µà®°à¯à®®à¯..."></textarea>
           <div class="t-copy-row">
-            <button onclick="copyMicOnair(this)" class="copy-cg-btn">📋 Copy for CG / Ticker</button>
-            <button onclick="clearMicOutput()" style="border-color:var(--red-b);color:var(--red)">🗑 Clear</button>
-            <button class="send-btn" id="micSend">⏩ Send to NewsGen</button>
+            <button onclick="copyMicOnair(this)" class="copy-cg-btn">ðŸ“‹ Copy for CG / Ticker</button>
+            <button onclick="clearMicOutput()" style="border-color:var(--red-b);color:var(--red)">ðŸ—‘ Clear</button>
+            <button class="send-btn" id="micSend">â© Send to NewsGen</button>
           </div>
         </div>
 
-        <!-- LIVE FEED LOG — collapsible, shows all chunks -->
+        <!-- LIVE FEED LOG â€” collapsible, shows all chunks -->
         <details style="margin-top:14px">
           <summary style="cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);padding:8px 0;user-select:none">
-            🔴 LIVE FEED LOG — click to expand all chunks
+            ðŸ”´ LIVE FEED LOG â€” click to expand all chunks
           </summary>
           <div class="live-feed-box show" id="liveFeedBox">
             <div class="live-feed-header">
@@ -753,14 +815,14 @@ select:focus{outline:none;border-color:var(--cyan)}
               <button class="clr-btn" id="clearFeedBtn">Clear log</button>
             </div>
             <div class="live-feed-scroll" id="liveFeedScroll">
-              <div style="padding:16px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks will appear here as captured…</div>
+              <div style="padding:16px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks will appear here as capturedâ€¦</div>
             </div>
           </div>
         </details>
       </div>
 
       <div class="t-note">
-        Whisper transcription runs on your device — audio never leaves your computer.<br>
+        Whisper transcription runs on your device â€” audio never leaves your computer.<br>
         NLLB translation is also on-device and free. Claude translate uses your API key.
       </div>
     </div>
@@ -768,31 +830,31 @@ select:focus{outline:none;border-color:var(--cyan)}
 
 </div>
 
-  <!-- ══ WORLD MONITOR PAGE ══ -->
+  <!-- â•â• WORLD MONITOR PAGE â•â• -->
   <div class="page" id="pg-monitor">
     <div class="mon-wrap">
-    <!-- breaking alert banner — inside flow, not fixed overlay -->
+    <!-- breaking alert banner â€” inside flow, not fixed overlay -->
     <div class="break-banner" id="breakBanner" style="border-radius:0;margin:0 -20px;width:calc(100% + 40px)">
       <span id="breakBannerText">BREAKING</span>
-      <button class="bb-close" onclick="document.getElementById('breakBanner').classList.remove('show');if(window._alertRepeat)clearInterval(window._alertRepeat);if(window._bannerRotate)clearInterval(window._bannerRotate);" style="margin-left:auto;background:rgba(255,255,255,.25);border:none;color:#fff;font-size:16px;cursor:pointer;padding:2px 8px;border-radius:4px">✕</button>
+      <button class="bb-close" onclick="document.getElementById('breakBanner').classList.remove('show');if(window._alertRepeat)clearInterval(window._alertRepeat);if(window._bannerRotate)clearInterval(window._bannerRotate);" style="margin-left:auto;background:rgba(255,255,255,.25);border:none;color:#fff;font-size:16px;cursor:pointer;padding:2px 8px;border-radius:4px">âœ•</button>
     </div>
       <div class="mon-sticky-top">
       <div class="mon-header">
-        <div class="mon-title">🌍 World Monitor</div>
-        <div class="mon-live"><div class="blink"></div><span id="monStatus">LOADING…</span></div>
+        <div class="mon-title">ðŸŒ World Monitor</div>
+        <div class="mon-live"><div class="blink"></div><span id="monStatus">LOADINGâ€¦</span></div>
         <div class="mon-stats" id="monStats"></div>
 
-        <button id="monRefreshBtn" onclick="monRefresh()" style="padding:6px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink-dim);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span id="monRefreshIcon" style="display:inline-block;transition:transform .5s">⟳</span> Refresh</button>
-        <button onclick="gotoPage('newsgen')" style="padding:6px 14px;border:none;border-radius:var(--r);background:var(--red);color:#fff;font-size:12px;font-weight:600;cursor:pointer">⏺ Script Generator</button>
+        <button id="monRefreshBtn" onclick="monRefresh()" style="padding:6px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink-dim);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px"><span id="monRefreshIcon" style="display:inline-block;transition:transform .5s">âŸ³</span> Refresh</button>
+        <button onclick="gotoPage('newsgen')" style="padding:6px 14px;border:none;border-radius:var(--r);background:var(--red);color:#fff;font-size:12px;font-weight:600;cursor:pointer">âº Script Generator</button>
       </div>
 
       <!-- Priority filter -->
       <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
         <div class="mf on" data-pri="ALL" onclick="setMonFilter(this,'ALL')" style="background:#111827;color:#fff;border-color:#111827;font-weight:700">All</div>
-        <div class="mf" data-pri="BREAKING" onclick="setMonFilter(this,'BREAKING')" style="border-color:#DC2626;color:#DC2626"><b style="color:var(--red)">●</b> Breaking</div>
-        <div class="mf" data-pri="TAMIL" onclick="setMonFilter(this,'TAMIL')" style="border-color:#EA580C;color:#EA580C"><b style="color:#EA580C">●</b> Tamil</div>
+        <div class="mf" data-pri="BREAKING" onclick="setMonFilter(this,'BREAKING')" style="border-color:#DC2626;color:#DC2626"><b style="color:var(--red)">â—</b> Breaking</div>
+        <div class="mf" data-pri="TAMIL" onclick="setMonFilter(this,'TAMIL')" style="border-color:#EA580C;color:#EA580C"><b style="color:#EA580C">â—</b> Tamil</div>
         <div class="mf" data-pri="INDIA" onclick="setMonFilter(this,'INDIA')" style="border-color:#2563EB;color:#2563EB"><b>IN</b> India</div>
-        <div class="mf" data-pri="HIGH" onclick="setMonFilter(this,'HIGH')" style="border-color:#16A34A;color:#16A34A"><b>🌐</b> World</div>
+        <div class="mf" data-pri="HIGH" onclick="setMonFilter(this,'HIGH')" style="border-color:#16A34A;color:#16A34A"><b>ðŸŒ</b> World</div>
         <select id="monFreshSel" onchange="setFreshness(this.value)" style="padding:6px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink-dim);font-size:12px;font-family:var(--mono);margin-left:auto">
           <option value="30">Last 30 min</option>
           <option value="60">Last 1 hour</option>
@@ -808,91 +870,91 @@ select:focus{outline:none;border-color:var(--cyan)}
       </div><!-- end mon-sticky-top -->
       <div id="monPagTop" style="display:none;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;padding:8px 0"></div>
       <div class="mon-grid" id="monGrid">
-        <div class="mon-empty">Loading feeds… first load takes a moment.</div>
+        <div class="mon-empty">Loading feedsâ€¦ first load takes a moment.</div>
       </div>
     </div>
   </div>
 <!-- FOOTER -->
 <footer class="footbar">
-  <span>TJ NEWSGEN v2.2 · DESK BUILD</span>
-  <span>CLAUDE SONNET · 1.75 W/S</span>
-  <span class="r">SELECT TEXT → WORD COUNT</span>
+  <span>TJ NEWSGEN v2.2 Â· DESK BUILD</span>
+  <span>CLAUDE SONNET Â· 1.75 W/S</span>
+  <span class="r">SELECT TEXT â†’ WORD COUNT</span>
 </footer>
 <div id="selBadge"></div>
 
 <script>
 const WPS = 1.75;
 
-/* ══ TRAINED PROMPTS ══ */
+/* â•â• TRAINED PROMPTS â•â• */
 const SYS = `You are the senior output editor of TamilJanam, a Tamil TV news channel. You write broadcast-ready Tamil news scripts (NRCS rundown style) strictly in TamilJanam HOUSE STYLE.
 
-TAMILJANAM HOUSE STYLE (learned from real aired scripts — follow exactly):
+TAMILJANAM HOUSE STYLE (learned from real aired scripts â€” follow exactly):
 - Body length: 4-6 sentences regardless of raw source length. Ruthlessly compress.
 - LEAD: open with the outcome / latest development + place. (e.g. medal winners' welcome is the lead, not the tournament.)
-- Pure Tamil word preference over Sanskrit/English: கும்பாபிஷேகம் → குடமுழுக்கு; 19 வயதுக்குட்பட்டோர் → இளையோர்.
-- ALWAYS DROP: department names (இந்து சமய அறநிலைத்துறை etc.), procedural ritual details (முதல்/இரண்டாம் கால யாகசாலை), lists of states/dignitaries, sweets/garlands ceremony detail, "சமூக வலைதளங்களில் வைரல்" framing, repeated sentences, speculation and rhetorical questions (நடவடிக்கை எடுக்குமா?).
-- ALWAYS KEEP: place hierarchy (மாவட்டம் → ஊராட்சி → கிராமம்), exact numbers (பதக்கங்கள், தேதிகள்), names with designation.
-- Connectors between sentences: அதன்படி, / அதைத் தொடர்ந்து, / இதனையடுத்து, / இதில் பங்கேற்ற.
-- Party/org names abbreviated after context: தமிழக வெற்றி கழகம் → த.வெ.க.
-- Dates format: ஜூன் 27 முதல் ஜூன் 29-ஆம் தேதி வரை.
-- Controversy stories: state facts neutrally, close with "...அதிர்ச்சியையும் சர்ச்சையையும் ஏற்படுத்தி உள்ளது" style. Never speculate.
-- Sentence endings: நடைபெற்றது / அளிக்கப்பட்டது / செய்தனர் / ஏற்படுத்தி உள்ளது.
-- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors — "...என்றும்", "...எனவும்", "மற்றும்" — and close with என்றார் / என தெரிவித்தார் / என கூறினார். NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...எடுத்துள்ளது வரவேற்கத்தக்கது என்றும், கலப்பு திருமண திட்டத்தில்... சான்றிதழ் பெற அரசு நிர்பந்திக்க வேண்டும் என்றும், போதைப்பொருள் பரவல்... பாதித்துள்ளது என்றும் அவர் கூறினார்."
+- Pure Tamil word preference over Sanskrit/English: à®•à¯à®®à¯à®ªà®¾à®ªà®¿à®·à¯‡à®•à®®à¯ â†’ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯; 19 à®µà®¯à®¤à¯à®•à¯à®•à¯à®Ÿà¯à®ªà®Ÿà¯à®Ÿà¯‹à®°à¯ â†’ à®‡à®³à¯ˆà®¯à¯‹à®°à¯.
+- ALWAYS DROP: department names (à®‡à®¨à¯à®¤à¯ à®šà®®à®¯ à®…à®±à®¨à®¿à®²à¯ˆà®¤à¯à®¤à¯à®±à¯ˆ etc.), procedural ritual details (à®®à¯à®¤à®²à¯/à®‡à®°à®£à¯à®Ÿà®¾à®®à¯ à®•à®¾à®² à®¯à®¾à®•à®šà®¾à®²à¯ˆ), lists of states/dignitaries, sweets/garlands ceremony detail, "à®šà®®à¯‚à®• à®µà®²à¯ˆà®¤à®³à®™à¯à®•à®³à®¿à®²à¯ à®µà¯ˆà®°à®²à¯" framing, repeated sentences, speculation and rhetorical questions (à®¨à®Ÿà®µà®Ÿà®¿à®•à¯à®•à¯ˆ à®Žà®Ÿà¯à®•à¯à®•à¯à®®à®¾?).
+- ALWAYS KEEP: place hierarchy (à®®à®¾à®µà®Ÿà¯à®Ÿà®®à¯ â†’ à®Šà®°à®¾à®Ÿà¯à®šà®¿ â†’ à®•à®¿à®°à®¾à®®à®®à¯), exact numbers (à®ªà®¤à®•à¯à®•à®™à¯à®•à®³à¯, à®¤à¯‡à®¤à®¿à®•à®³à¯), names with designation.
+- Connectors between sentences: à®…à®¤à®©à¯à®ªà®Ÿà®¿, / à®…à®¤à¯ˆà®¤à¯ à®¤à¯Šà®Ÿà®°à¯à®¨à¯à®¤à¯, / à®‡à®¤à®©à¯ˆà®¯à®Ÿà¯à®¤à¯à®¤à¯, / à®‡à®¤à®¿à®²à¯ à®ªà®™à¯à®•à¯‡à®±à¯à®±.
+- Party/org names abbreviated after context: à®¤à®®à®¿à®´à®• à®µà¯†à®±à¯à®±à®¿ à®•à®´à®•à®®à¯ â†’ à®¤.à®µà¯†.à®•.
+- Dates format: à®œà¯‚à®©à¯ 27 à®®à¯à®¤à®²à¯ à®œà¯‚à®©à¯ 29-à®†à®®à¯ à®¤à¯‡à®¤à®¿ à®µà®°à¯ˆ.
+- Controversy stories: state facts neutrally, close with "...à®…à®¤à®¿à®°à¯à®šà¯à®šà®¿à®¯à¯ˆà®¯à¯à®®à¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆà®¯à¯à®®à¯ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯" style. Never speculate.
+- Sentence endings: à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯ / à®…à®³à®¿à®•à¯à®•à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯ / à®šà¯†à®¯à¯à®¤à®©à®°à¯ / à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯.
+- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors â€” "...à®Žà®©à¯à®±à¯à®®à¯", "...à®Žà®©à®µà¯à®®à¯", "à®®à®±à¯à®±à¯à®®à¯" â€” and close with à®Žà®©à¯à®±à®¾à®°à¯ / à®Žà®© à®¤à¯†à®°à®¿à®µà®¿à®¤à¯à®¤à®¾à®°à¯ / à®Žà®© à®•à¯‚à®±à®¿à®©à®¾à®°à¯. NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...à®Žà®Ÿà¯à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®µà®°à®µà¯‡à®±à¯à®•à®¤à¯à®¤à®•à¯à®•à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯, à®•à®²à®ªà¯à®ªà¯ à®¤à®¿à®°à¯à®®à®£ à®¤à®¿à®Ÿà¯à®Ÿà®¤à¯à®¤à®¿à®²à¯... à®šà®¾à®©à¯à®±à®¿à®¤à®´à¯ à®ªà¯†à®± à®…à®°à®šà¯ à®¨à®¿à®°à¯à®ªà®¨à¯à®¤à®¿à®•à¯à®• à®µà¯‡à®£à¯à®Ÿà¯à®®à¯ à®Žà®©à¯à®±à¯à®®à¯, à®ªà¯‹à®¤à¯ˆà®ªà¯à®ªà¯Šà®°à¯à®³à¯ à®ªà®°à®µà®²à¯... à®ªà®¾à®¤à®¿à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯ à®…à®µà®°à¯ à®•à¯‚à®±à®¿à®©à®¾à®°à¯."
 
-HOUSE STYLE EXAMPLE 1 (RAW → AIRED):
-RAW (long, repetitive): திருவண்ணாமலை அடுத்த அடிஅண்ணாமலை கிராமத்தில் பழமை வாய்ந்த ஆதி அருணாச்சலேஸ்வரர் கோவில் கும்பாபிஷேகம் வெகு விமர்சையாக நடைபெற்றது... [details of HR&CE works, yagasalai first/second/third kala poojas, go pooja, sivachariyars veda mantras, kalasam, devotees repeated twice]
-AIRED: திருவண்ணாமலை அடுத்த அடிஅண்ணாமலை கிராமத்தில் ஆயிரம் ஆண்டுகள் பழமையான ஆதி அருணாச்சலேஸ்வரர் கோவிலில் திருப்பணிகள் நிறைவடைந்ததை அடுத்து குடமுழுக்கு விழா நடத்த தீர்மானிக்கப்பட்டது. அதன்படி, யாகசாலை பூஜைகள் நடைபெற்றது. அதைத் தொடர்ந்து, கோபுரக் கலசங்களில் புனிதநீர் ஊற்றப்பட்டு குடமுழுக்கு நடத்தப்பட்டது. இதில் பங்கேற்ற ஆயிரக்கணக்கான பக்தர்கள், அரோகரா முழக்கமிட்டு சாமி தரிசனம் செய்தனர்.
-MOS SLUG: திருவண்ணாமலை அருகே ஆதி அருணாச்சலேஸ்வரர் கோவில் குடமுழுக்கு விழா வெகுவிமரிசையாக நடைபெற்றது.
+HOUSE STYLE EXAMPLE 1 (RAW â†’ AIRED):
+RAW (long, repetitive): à®¤à®¿à®°à¯à®µà®£à¯à®£à®¾à®®à®²à¯ˆ à®…à®Ÿà¯à®¤à¯à®¤ à®…à®Ÿà®¿à®…à®£à¯à®£à®¾à®®à®²à¯ˆ à®•à®¿à®°à®¾à®®à®¤à¯à®¤à®¿à®²à¯ à®ªà®´à®®à¯ˆ à®µà®¾à®¯à¯à®¨à¯à®¤ à®†à®¤à®¿ à®…à®°à¯à®£à®¾à®šà¯à®šà®²à¯‡à®¸à¯à®µà®°à®°à¯ à®•à¯‹à®µà®¿à®²à¯ à®•à¯à®®à¯à®ªà®¾à®ªà®¿à®·à¯‡à®•à®®à¯ à®µà¯†à®•à¯ à®µà®¿à®®à®°à¯à®šà¯ˆà®¯à®¾à®• à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯... [details of HR&CE works, yagasalai first/second/third kala poojas, go pooja, sivachariyars veda mantras, kalasam, devotees repeated twice]
+AIRED: à®¤à®¿à®°à¯à®µà®£à¯à®£à®¾à®®à®²à¯ˆ à®…à®Ÿà¯à®¤à¯à®¤ à®…à®Ÿà®¿à®…à®£à¯à®£à®¾à®®à®²à¯ˆ à®•à®¿à®°à®¾à®®à®¤à¯à®¤à®¿à®²à¯ à®†à®¯à®¿à®°à®®à¯ à®†à®£à¯à®Ÿà¯à®•à®³à¯ à®ªà®´à®®à¯ˆà®¯à®¾à®© à®†à®¤à®¿ à®…à®°à¯à®£à®¾à®šà¯à®šà®²à¯‡à®¸à¯à®µà®°à®°à¯ à®•à¯‹à®µà®¿à®²à®¿à®²à¯ à®¤à®¿à®°à¯à®ªà¯à®ªà®£à®¿à®•à®³à¯ à®¨à®¿à®±à¯ˆà®µà®Ÿà¯ˆà®¨à¯à®¤à®¤à¯ˆ à®…à®Ÿà¯à®¤à¯à®¤à¯ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯ à®µà®¿à®´à®¾ à®¨à®Ÿà®¤à¯à®¤ à®¤à¯€à®°à¯à®®à®¾à®©à®¿à®•à¯à®•à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯. à®…à®¤à®©à¯à®ªà®Ÿà®¿, à®¯à®¾à®•à®šà®¾à®²à¯ˆ à®ªà¯‚à®œà¯ˆà®•à®³à¯ à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯. à®…à®¤à¯ˆà®¤à¯ à®¤à¯Šà®Ÿà®°à¯à®¨à¯à®¤à¯, à®•à¯‹à®ªà¯à®°à®•à¯ à®•à®²à®šà®™à¯à®•à®³à®¿à®²à¯ à®ªà¯à®©à®¿à®¤à®¨à¯€à®°à¯ à®Šà®±à¯à®±à®ªà¯à®ªà®Ÿà¯à®Ÿà¯ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯ à®¨à®Ÿà®¤à¯à®¤à®ªà¯à®ªà®Ÿà¯à®Ÿà®¤à¯. à®‡à®¤à®¿à®²à¯ à®ªà®™à¯à®•à¯‡à®±à¯à®± à®†à®¯à®¿à®°à®•à¯à®•à®£à®•à¯à®•à®¾à®© à®ªà®•à¯à®¤à®°à¯à®•à®³à¯, à®…à®°à¯‹à®•à®°à®¾ à®®à¯à®´à®•à¯à®•à®®à®¿à®Ÿà¯à®Ÿà¯ à®šà®¾à®®à®¿ à®¤à®°à®¿à®šà®©à®®à¯ à®šà¯†à®¯à¯à®¤à®©à®°à¯.
+MOS SLUG: à®¤à®¿à®°à¯à®µà®£à¯à®£à®¾à®®à®²à¯ˆ à®…à®°à¯à®•à¯‡ à®†à®¤à®¿ à®…à®°à¯à®£à®¾à®šà¯à®šà®²à¯‡à®¸à¯à®µà®°à®°à¯ à®•à¯‹à®µà®¿à®²à¯ à®•à¯à®Ÿà®®à¯à®´à¯à®•à¯à®•à¯ à®µà®¿à®´à®¾ à®µà¯†à®•à¯à®µà®¿à®®à®°à®¿à®šà¯ˆà®¯à®¾à®• à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯.
 
-HOUSE STYLE EXAMPLE 2 (RAW → AIRED):
+HOUSE STYLE EXAMPLE 2 (RAW â†’ AIRED):
 RAW: [TVK district secretary flagged off govt bus service, 25-year demand, minister recommendation, sweets distributed, earlier polio drops controversy video, "shock", will party act question]
-AIRED: தென்காசி மாவட்டம் கீழஆம்பூர் ஊராட்சிக்குட்பட்ட மஞ்சப்புள்ளி கிராமத்தில் புதிய பேருந்து சேவை தொடக்க விழா நடைபெற்றது. இதில், அமைச்சர் விஜய் தமிழன் பார்த்திபன் பரிந்துரையின் பேரில், தென்காசி தெற்கு மாவட்ட த.வெ.க. செயலாளர் விபின் சக்கரவர்த்தி பங்கேற்று, அரசுப்பேருந்து சேவையை தொடங்கி வைத்தார். சில நாட்களுக்கு முன்பு விருதுநகரில் த.வெ.க நிர்வாகி ஒருவர் குழந்தைகளுக்கு போலியோ சொட்டு மருந்து வழங்கியது சர்ச்சையை ஏற்படுத்திய நிலையில், தற்போது த.வெ.க நிர்வாகி அரசுப் பேருந்தை தொடங்கி வைத்திருப்பது அதிர்ச்சியையும் சர்ச்சையையும் ஏற்படுத்தி உள்ளது.
-MOS SLUG: தென்காசி மாவட்டத்தில் த.வெ.க. மாவட்டச் செயலாளர் அரசுப்பேருந்து சேவையை தொடங்கி வைத்த நிகழ்வு சர்ச்சையை ஏற்படுத்தி உள்ளது.
+AIRED: à®¤à¯†à®©à¯à®•à®¾à®šà®¿ à®®à®¾à®µà®Ÿà¯à®Ÿà®®à¯ à®•à¯€à®´à®†à®®à¯à®ªà¯‚à®°à¯ à®Šà®°à®¾à®Ÿà¯à®šà®¿à®•à¯à®•à¯à®Ÿà¯à®ªà®Ÿà¯à®Ÿ à®®à®žà¯à®šà®ªà¯à®ªà¯à®³à¯à®³à®¿ à®•à®¿à®°à®¾à®®à®¤à¯à®¤à®¿à®²à¯ à®ªà¯à®¤à®¿à®¯ à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ à®šà¯‡à®µà¯ˆ à®¤à¯Šà®Ÿà®•à¯à®• à®µà®¿à®´à®¾ à®¨à®Ÿà¯ˆà®ªà¯†à®±à¯à®±à®¤à¯. à®‡à®¤à®¿à®²à¯, à®…à®®à¯ˆà®šà¯à®šà®°à¯ à®µà®¿à®œà®¯à¯ à®¤à®®à®¿à®´à®©à¯ à®ªà®¾à®°à¯à®¤à¯à®¤à®¿à®ªà®©à¯ à®ªà®°à®¿à®¨à¯à®¤à¯à®°à¯ˆà®¯à®¿à®©à¯ à®ªà¯‡à®°à®¿à®²à¯, à®¤à¯†à®©à¯à®•à®¾à®šà®¿ à®¤à¯†à®±à¯à®•à¯ à®®à®¾à®µà®Ÿà¯à®Ÿ à®¤.à®µà¯†.à®•. à®šà¯†à®¯à®²à®¾à®³à®°à¯ à®µà®¿à®ªà®¿à®©à¯ à®šà®•à¯à®•à®°à®µà®°à¯à®¤à¯à®¤à®¿ à®ªà®™à¯à®•à¯‡à®±à¯à®±à¯, à®…à®°à®šà¯à®ªà¯à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ à®šà¯‡à®µà¯ˆà®¯à¯ˆ à®¤à¯Šà®Ÿà®™à¯à®•à®¿ à®µà¯ˆà®¤à¯à®¤à®¾à®°à¯. à®šà®¿à®² à®¨à®¾à®Ÿà¯à®•à®³à¯à®•à¯à®•à¯ à®®à¯à®©à¯à®ªà¯ à®µà®¿à®°à¯à®¤à¯à®¨à®•à®°à®¿à®²à¯ à®¤.à®µà¯†.à®• à®¨à®¿à®°à¯à®µà®¾à®•à®¿ à®’à®°à¯à®µà®°à¯ à®•à¯à®´à®¨à¯à®¤à¯ˆà®•à®³à¯à®•à¯à®•à¯ à®ªà¯‹à®²à®¿à®¯à¯‹ à®šà¯Šà®Ÿà¯à®Ÿà¯ à®®à®°à¯à®¨à¯à®¤à¯ à®µà®´à®™à¯à®•à®¿à®¯à®¤à¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿à®¯ à®¨à®¿à®²à¯ˆà®¯à®¿à®²à¯, à®¤à®±à¯à®ªà¯‹à®¤à¯ à®¤.à®µà¯†.à®• à®¨à®¿à®°à¯à®µà®¾à®•à®¿ à®…à®°à®šà¯à®ªà¯ à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ˆ à®¤à¯Šà®Ÿà®™à¯à®•à®¿ à®µà¯ˆà®¤à¯à®¤à®¿à®°à¯à®ªà¯à®ªà®¤à¯ à®…à®¤à®¿à®°à¯à®šà¯à®šà®¿à®¯à¯ˆà®¯à¯à®®à¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆà®¯à¯à®®à¯ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯.
+MOS SLUG: à®¤à¯†à®©à¯à®•à®¾à®šà®¿ à®®à®¾à®µà®Ÿà¯à®Ÿà®¤à¯à®¤à®¿à®²à¯ à®¤.à®µà¯†.à®•. à®®à®¾à®µà®Ÿà¯à®Ÿà®šà¯ à®šà¯†à®¯à®²à®¾à®³à®°à¯ à®…à®°à®šà¯à®ªà¯à®ªà¯‡à®°à¯à®¨à¯à®¤à¯ à®šà¯‡à®µà¯ˆà®¯à¯ˆ à®¤à¯Šà®Ÿà®™à¯à®•à®¿ à®µà¯ˆà®¤à¯à®¤ à®¨à®¿à®•à®´à¯à®µà¯ à®šà®°à¯à®šà¯à®šà¯ˆà®¯à¯ˆ à®à®±à¯à®ªà®Ÿà¯à®¤à¯à®¤à®¿ à®‰à®³à¯à®³à®¤à¯.
 
 
 TAMILJANAM BLAZE FORMAT TEMPLATES (structure your segments EXACTLY like this):
-- HL: one ANCHOR segment, 1-2 short lines, append (ப்ரீத்) at end. 15-45 sec.
-- VO BREATH: segment1 ANCHOR = ONE sentence lead; segment2 ANCHOR = 3-5 sentence read ending (ப்ரீத்); segment3 VO = detailed full script, one para per point separated by blank lines.
+- HL: one ANCHOR segment, 1-2 short lines, append (à®ªà¯à®°à¯€à®¤à¯) at end. 15-45 sec.
+- VO BREATH: segment1 ANCHOR = ONE sentence lead; segment2 ANCHOR = 3-5 sentence read ending (à®ªà¯à®°à¯€à®¤à¯); segment3 VO = detailed full script, one para per point separated by blank lines.
 - RDR: segment1 ANCHOR = 1-sentence breaking lead; segment2 ANCHOR = condensed 4-6 sentence read.
-- VO + BYTE: like VO BREATH plus BYTE segment with speaker + byte_in/byte_out cues; mark byte position in VO with (பைட்).
-- PKG: segment1 ANCHOR = 2-3 sentence intro ending "...அது பற்றிய ஒரு செய்தி தொகுப்பு."; segment2 VO = LONG multi-para VO covering all angles; end with reporter PTC line if source has reporter name.
-- ONE MINUTE: single VO segment, ~5 paras, ~105 words total (≈60 sec).
-- MINI TALKS: segment1 ANCHOR = intro ending "...மினிடாக்ஸ் பகுதியில் பார்க்கலாம்..."; segment2 VO = interview content with ----- separators between topic shifts; put 4-6 pulled QUOTES (in "quotes") into supers array for 50-50 cards.
+- VO + BYTE: like VO BREATH plus BYTE segment with speaker + byte_in/byte_out cues; mark byte position in VO with (à®ªà¯ˆà®Ÿà¯).
+- PKG: segment1 ANCHOR = 2-3 sentence intro ending "...à®…à®¤à¯ à®ªà®±à¯à®±à®¿à®¯ à®’à®°à¯ à®šà¯†à®¯à¯à®¤à®¿ à®¤à¯Šà®•à¯à®ªà¯à®ªà¯."; segment2 VO = LONG multi-para VO covering all angles; end with reporter PTC line if source has reporter name.
+- ONE MINUTE: single VO segment, ~5 paras, ~105 words total (â‰ˆ60 sec).
+- MINI TALKS: segment1 ANCHOR = intro ending "...à®®à®¿à®©à®¿à®Ÿà®¾à®•à¯à®¸à¯ à®ªà®•à¯à®¤à®¿à®¯à®¿à®²à¯ à®ªà®¾à®°à¯à®•à¯à®•à®²à®¾à®®à¯..."; segment2 VO = interview content with ----- separators between topic shifts; put 4-6 pulled QUOTES (in "quotes") into supers array for 50-50 cards.
 - BREATHER: ultra-short 8-12 sec single ANCHOR read.
 - supers array = Notes column content: 4-6 short Tamil lines + location line. NEVER put supers inside script text.
 
 TECHNICAL RULES:
-- Read pace: 1.75 Tamil words per second (Blaze-verified rate). Compute segment durations from word counts. Total must fit the target duration (±10%).
+- Read pace: 1.75 Tamil words per second (Blaze-verified rate). Compute segment durations from word counts. Total must fit the target duration (Â±10%).
 - Format definitions:
   * VO = anchor voice-over on visuals
-  * BYTE = soundbite; give BYTE IN (first words) and BYTE OUT (last words) cues plus who is speaking; do NOT invent quotes — only use quotes present in the source, else mark [BYTE: reporter-ஆல் confirm பண்ணவும்]
+  * BYTE = soundbite; give BYTE IN (first words) and BYTE OUT (last words) cues plus who is speaking; do NOT invent quotes â€” only use quotes present in the source, else mark [BYTE: reporter-à®†à®²à¯ confirm à®ªà®£à¯à®£à®µà¯à®®à¯]
   * RDR = anchor read on camera, no visuals
   * PKG = full package: anchor lead + VO + BYTE slots + reporter sign-off (PTC)
-  * BREATHER = ultra-short 8–12 sec headline-style read between segments
+  * BREATHER = ultra-short 8â€“12 sec headline-style read between segments
 - Bulletin tone: "Top 50" = very tight single-thought items; "Prime News" = fuller context, sharper lead; "3-Minute Stories" = narrative arc with human angle; "Breaking News" = urgent present-tense; "General News" = standard.
 - slug: English NRCS slug in TamilJanam Blaze convention: [FORMAT] [LOCATION CODE] - [SUBJECT] (e.g. "VO BREATH AMT - LADY INJURED", "HL MDU BUS ACCIDENT"). Location codes: CHN=Chennai, MDU=Madurai, CBE=Coimbatore, TRY=Trichy, TNV=Tirunelveli, AMT=Ambattur, NKL=Namakkal, DGL=Dindigul, KRR=Karur, TVM=Thiruvannamalai, SVG=Sivagangai, TNK=Tenkasi. Unknown place: use first 3 consonants uppercase.
 - mos_slug: one complete Tamil sentence summarizing the story, TamilJanam MOS style (see examples above).
-- SUPERS: 2–4 on-screen graphic text lines in Tamil (max 8 words each).
-- TICKER: format as "HEADER||Point 1 (medium, ~15-20 words)||Point 2 (medium, ~15-20 words)" — header is a short bold title; each point is a complete meaningful sentence, not too short, content puriyura mathiri. Use || as separator.
+- SUPERS: 2â€“4 on-screen graphic text lines in Tamil (max 8 words each).
+- TICKER: format as "HEADER||Point 1 (medium, ~15-20 words)||Point 2 (medium, ~15-20 words)" â€” header is a short bold title; each point is a complete meaningful sentence, not too short, content puriyura mathiri. Use || as separator.
 - ticker_header: header text only (no ||)
 - ticker_points: array of 2 point strings
 - Never fabricate facts, names, numbers, or quotes not in the source. If source lacks a detail, omit it.
 
 Respond ONLY with valid JSON, no markdown fences, no preamble:
 {"slug":"","mos_slug":"","bulletin_type":"","anchor_lead":"","segments":[{"type":"VO|BYTE|RDR|PKG|BREATHER","speaker":"","text":"","byte_in":"","byte_out":"","duration_sec":0}],"ticker":"HEADER||Point1||Point2","ticker_header":"","ticker_points":["",""],"total_duration_sec":0,"editor_note":""}`;
-const SYS_TRIM = `You are the senior output editor of TamilJanam Tamil news channel. Task: trim/condense a Tamil broadcast script to a target duration WITHOUT losing meaning (பொருள் மாறாமல்).
+const SYS_TRIM = `You are the senior output editor of TamilJanam Tamil news channel. Task: trim/condense a Tamil broadcast script to a target duration WITHOUT losing meaning (à®ªà¯Šà®°à¯à®³à¯ à®®à®¾à®±à®¾à®®à®²à¯).
 
 RULES:
-- Read pace: 1.75 Tamil words/sec (Blaze rate) → target word count = seconds × 1.75.
-- Preserve: core facts, names, numbers, place, attribution. Cut: repetition, filler connectors, adjectives, secondary detail — in that priority order.
+- Read pace: 1.75 Tamil words/sec (Blaze rate) â†’ target word count = seconds Ã— 1.75.
+- Preserve: core facts, names, numbers, place, attribution. Cut: repetition, filler connectors, adjectives, secondary detail â€” in that priority order.
 - Keep spoken broadcast Tamil register. Sentences must stay grammatical and natural to read aloud.
 - Never add new information.
-- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors — "...என்றும்", "...எனவும்", "மற்றும்" — and close with என்றார் / என தெரிவித்தார் / என கூறினார். NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...எடுத்துள்ளது வரவேற்கத்தக்கது என்றும், கலப்பு திருமண திட்டத்தில்... சான்றிதழ் பெற அரசு நிர்பந்திக்க வேண்டும் என்றும், போதைப்பொருள் பரவல்... பாதித்துள்ளது என்றும் அவர் கூறினார்."
+- CONNECTOR RULE (critical for spoken flow): when merging/condensing multiple statements or quotes from the same speaker, ALWAYS join clauses with proper reported-speech connectors â€” "...à®Žà®©à¯à®±à¯à®®à¯", "...à®Žà®©à®µà¯à®®à¯", "à®®à®±à¯à®±à¯à®®à¯" â€” and close with à®Žà®©à¯à®±à®¾à®°à¯ / à®Žà®© à®¤à¯†à®°à®¿à®µà®¿à®¤à¯à®¤à®¾à®°à¯ / à®Žà®© à®•à¯‚à®±à®¿à®©à®¾à®°à¯. NEVER place two claims side by side without a connector; the trimmed script must read aloud as ONE natural flowing sentence chain (news sense). Example: "...à®Žà®Ÿà¯à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®µà®°à®µà¯‡à®±à¯à®•à®¤à¯à®¤à®•à¯à®•à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯, à®•à®²à®ªà¯à®ªà¯ à®¤à®¿à®°à¯à®®à®£ à®¤à®¿à®Ÿà¯à®Ÿà®¤à¯à®¤à®¿à®²à¯... à®šà®¾à®©à¯à®±à®¿à®¤à®´à¯ à®ªà¯†à®± à®…à®°à®šà¯ à®¨à®¿à®°à¯à®ªà®¨à¯à®¤à®¿à®•à¯à®• à®µà¯‡à®£à¯à®Ÿà¯à®®à¯ à®Žà®©à¯à®±à¯à®®à¯, à®ªà¯‹à®¤à¯ˆà®ªà¯à®ªà¯Šà®°à¯à®³à¯ à®ªà®°à®µà®²à¯... à®ªà®¾à®¤à®¿à®¤à¯à®¤à¯à®³à¯à®³à®¤à¯ à®Žà®©à¯à®±à¯à®®à¯ à®…à®µà®°à¯ à®•à¯‚à®±à®¿à®©à®¾à®°à¯."
 
 Respond ONLY with valid JSON, no markdown fences:
-{"trimmed_script":"","original_words":0,"trimmed_words":0,"est_duration_sec":0,"removed_summary":"(Tamil-ல் — what was cut and why meaning is intact)"}`;
+{"trimmed_script":"","original_words":0,"trimmed_words":0,"est_duration_sec":0,"removed_summary":"(Tamil-à®²à¯ â€” what was cut and why meaning is intact)"}`;
 
-/* ══ PAGE NAV ══ */
+/* â•â• PAGE NAV â•â• */
 function gotoPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   const pg=document.getElementById('pg-'+id);
@@ -914,14 +976,14 @@ function gotoPage(id){
   if(id==='monitor' && typeof initMonitor==='function' && !monInterval) initMonitor();
 }
 
-/* ══ KEY ══ */
+/* â•â• KEY â•â• */
 const getKey=()=>document.getElementById('apiKey').value.trim();
 const getProvider=()=>document.getElementById('apiProvider').value;
 
 const PROVIDER_HINTS={
-  claude:'console.anthropic.com → API Keys (sk-ant-...)',
-  gemini:'aistudio.google.com → Get API Key (AIza...)',
-  openai:'platform.openai.com → API Keys (sk-...)'
+  claude:'console.anthropic.com â†’ API Keys (sk-ant-...)',
+  gemini:'aistudio.google.com â†’ Get API Key (AIza...)',
+  openai:'platform.openai.com â†’ API Keys (sk-...)'
 };
 function updateProviderHint(){
   const p=getProvider();
@@ -978,7 +1040,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('wEst').textContent=Math.round(40*WPS);
 });
 
-/* ══ MODE ══ */
+/* â•â• MODE â•â• */
 let mode='generate', src='raw', imgB64=null, lastOutput=null;
 function setMode(m){
   mode=m;
@@ -986,7 +1048,7 @@ function setMode(m){
   document.getElementById('ms-trim').classList.toggle('on',m==='trim');
   document.getElementById('pane-gen').style.display=m==='generate'?'block':'none';
   document.getElementById('pane-trim').style.display=m==='trim'?'block':'none';
-  document.getElementById('goBtn').innerHTML=m==='generate'?'⏺ &nbsp;GENERATE SCRIPT':'✂ &nbsp;TRIM SCRIPT';
+  document.getElementById('goBtn').innerHTML=m==='generate'?'âº &nbsp;GENERATE SCRIPT':'âœ‚ &nbsp;TRIM SCRIPT';
   document.getElementById('stageTitle').textContent=m==='generate'?'RUNDOWN OUTPUT':'TRIM OUTPUT';
 }
 function setSrc(s){
@@ -1008,7 +1070,7 @@ function setTrimDur(v){document.getElementById('trimDur').value=v;}
 const pick=id=>document.querySelector('#'+id+' .chip.on').dataset.v;
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* ══ IMAGE ══ */
+/* â•â• IMAGE â•â• */
 function loadImg(inp){
   const f=inp.files[0];if(!f)return;
   const r=new FileReader();
@@ -1029,11 +1091,11 @@ function loadImg(inp){
   r.readAsDataURL(f);
 }
 
-/* ══ API ══ */
-/* ══ MULTI-PROVIDER API ══ */
+/* â•â• API â•â• */
+/* â•â• MULTI-PROVIDER API â•â• */
 async function callClaude(system,userMsg,useSearch,attempt){
   const key=getKey(), prov=getProvider();
-  if(!key) throw new Error('API key இல்லை — ⚙ → provider select → key paste → Save');
+  if(!key) throw new Error('API key à®‡à®²à¯à®²à¯ˆ â€” âš™ â†’ provider select â†’ key paste â†’ Save');
   if(prov==='gemini') return _callGemini(system,userMsg,key);
   if(prov==='openai') return _callOpenAI(system,userMsg,key);
   return _callClaude(system,userMsg,useSearch,key,attempt||1);
@@ -1053,12 +1115,12 @@ async function _callClaude(system,userMsg,useSearch,key,attempt){
     if(raw.includes('exceeded_limit')||raw.includes('rate_limit')){
       let w='';const m=raw.match(/"resets_at":"([^"]+)"/);
       if(m){try{w=' Reset: '+new Date(m[1]).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST.';}catch(e){}}
-      throw new Error('Usage limit — கொஞ்ச நேரம் கழிச்சு try.'+w);
+      throw new Error('Usage limit â€” à®•à¯Šà®žà¯à®š à®¨à¯‡à®°à®®à¯ à®•à®´à®¿à®šà¯à®šà¯ try.'+w);
     }
-    if(raw.includes('credit')||raw.includes('billing')) throw new Error('Credit காலி — console.anthropic.com Billing recharge.');
+    if(raw.includes('credit')||raw.includes('billing')) throw new Error('Credit à®•à®¾à®²à®¿ â€” console.anthropic.com Billing recharge.');
     throw new Error(data.error.message||'Claude API error');
   }
-  if(data.stop_reason==='max_tokens') throw new Error('Response truncated — duration குறைச்சு try.');
+  if(data.stop_reason==='max_tokens') throw new Error('Response truncated â€” duration à®•à¯à®±à¯ˆà®šà¯à®šà¯ try.');
   const text=(data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n');
   try{return parseJson(text);}catch(e){
     if(attempt<2){
@@ -1154,23 +1216,23 @@ async function callClaudeText(prompt){
   return (data.content||[]).map(i=>i.type==='text'?i.text:'').filter(Boolean).join('\n').trim();
 }
 
-/* ══ UI HELPERS ══ */
+/* â•â• UI HELPERS â•â• */
 function showLoading(msg){
   document.getElementById('stageActs').innerHTML='';
   document.getElementById('output').innerHTML='<div class="spinner-wrap"><div class="spinner"></div><div class="load-txt">'+msg+'</div></div>';
 }
 function showError(e){
-  document.getElementById('output').innerHTML='<div class="error-box"><b>பிழை · </b>'+esc(e.message)+'</div>';
+  document.getElementById('output').innerHTML='<div class="error-box"><b>à®ªà®¿à®´à¯ˆ Â· </b>'+esc(e.message)+'</div>';
 }
 async function copyText(btn,text){
   try{await navigator.clipboard.writeText(text);}catch(e){}
-  const old=btn.textContent;btn.textContent='✓ Copied';btn.classList.add('done');
+  const old=btn.textContent;btn.textContent='âœ“ Copied';btn.classList.add('done');
   setTimeout(()=>{btn.textContent=old;btn.classList.remove('done');},1400);
 }
 const fmtSec=s=>{s=Math.round(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
 const wc=s=>(s||'').trim().split(/\s+/).filter(Boolean).length;
 
-/* ══ GO ══ */
+/* â•â• GO â•â• */
 function go(){mode==='generate'?generate():trim();}
 
 async function generate(){
@@ -1180,15 +1242,15 @@ async function generate(){
   let sourceBlock,useSearch=false,imageMode=false;
   if(src==='raw'){
     const raw=document.getElementById('rawScript').value.trim();
-    if(!raw){alert('Raw script paste பண்ணுங்க');return;}
+    if(!raw){alert('Raw script paste à®ªà®£à¯à®£à¯à®™à¯à®•');return;}
     sourceBlock='RAW SOURCE SCRIPT:\n"""\n'+raw+'\n"""';
   }else if(src==='url'){
     const url=document.getElementById('newsUrl').value.trim();
-    if(!url){alert('URL கொடுங்க');return;}
+    if(!url){alert('URL à®•à¯Šà®Ÿà¯à®™à¯à®•');return;}
     sourceBlock='SOURCE: Read via web search, use ONLY its facts: '+url;
     useSearch=true;
   }else{
-    if(!imgB64){alert('Newspaper image upload பண்ணுங்க');return;}
+    if(!imgB64){alert('Newspaper image upload à®ªà®£à¯à®£à¯à®™à¯à®•');return;}
     sourceBlock='SOURCE: Attached newspaper image. Read ONLY facts printed in it. Ignore ads and other columns.';
     imageMode=true;
   }
@@ -1197,7 +1259,7 @@ async function generate(){
     (instr?'\nINSTRUCTIONS: '+instr:'');
   const btn=document.getElementById('goBtn');
   btn.disabled=true;
-  showLoading(useSearch?'READING ARTICLE · WRITING SCRIPT':imageMode?'READING NEWSPAPER IMAGE · WRITING SCRIPT':'WRITING BROADCAST SCRIPT');
+  showLoading(useSearch?'READING ARTICLE Â· WRITING SCRIPT':imageMode?'READING NEWSPAPER IMAGE Â· WRITING SCRIPT':'WRITING BROADCAST SCRIPT');
   try{
     // inject editor corrections as additional examples
     const clExamples = typeof clBuildExamples==='function' ? clBuildExamples() : '';
@@ -1209,14 +1271,14 @@ async function generate(){
   btn.disabled=false;
 }
 
-/* ══ RENDER ══ */
+/* â•â• RENDER â•â• */
 function fullText(o){
   let t='SLUG: '+o.slug+' ['+o.bulletin_type+'] DUR: '+fmtSec(o.total_duration_sec)+'\n';
   if(o.mos_slug)t+='MOS: '+o.mos_slug+'\n';
   t+='\n';
   if(o.anchor_lead)t+='[ANCHOR]\n'+o.anchor_lead+'\n\n';
   (o.segments||[]).forEach(s=>{
-    t+='['+s.type+(s.speaker?' — '+s.speaker:'')+']'+(s.duration_sec?' ('+fmtSec(s.duration_sec)+')':'')+'\n'+s.text+'\n';
+    t+='['+s.type+(s.speaker?' â€” '+s.speaker:'')+']'+(s.duration_sec?' ('+fmtSec(s.duration_sec)+')':'')+'\n'+s.text+'\n';
     if(s.byte_in)t+='IN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"\n';
     t+='\n';
   });
@@ -1225,8 +1287,8 @@ function fullText(o){
 }
 function renderRundown(o){
   document.getElementById('stageActs').innerHTML=
-    '<button class="btn" onclick="copyText(this,fullText(lastOutput))">⧉ Copy all</button>'+
-    '<button class="btn red" onclick="generate()">↻ Regen</button>';
+    '<button class="btn" onclick="copyText(this,fullText(lastOutput))">â§‰ Copy all</button>'+
+    '<button class="btn red" onclick="generate()">â†» Regen</button>';
   let h='<div class="slugstrip"><span class="slug">'+esc(o.slug)+'</span>'+
     '<span class="btype">'+esc(o.bulletin_type)+'</span>'+
     '<span class="dur">'+fmtSec(o.total_duration_sec)+'<small>EST DUR</small></span></div>';
@@ -1236,8 +1298,8 @@ function renderRundown(o){
   (o.segments||[]).forEach(s=>{
     const t=(s.type||'VO').split(/[\s(+]/)[0].toUpperCase();
     let body=esc(s.text);
-    if(s.byte_in)body+='<span class="cue">IN: "'+esc(s.byte_in)+'" → OUT: "'+esc(s.byte_out)+'"</span>';
-    h+=secCard(t,t+(s.speaker?' · '+esc(s.speaker):''),body,s.duration_sec,s.text+(s.byte_in?'\nIN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"':''));
+    if(s.byte_in)body+='<span class="cue">IN: "'+esc(s.byte_in)+'" â†’ OUT: "'+esc(s.byte_out)+'"</span>';
+    h+=secCard(t,t+(s.speaker?' Â· '+esc(s.speaker):''),body,s.duration_sec,s.text+(s.byte_in?'\nIN: "'+s.byte_in+'"  OUT: "'+s.byte_out+'"':''));
   });
   // 3 MOS
   if(o.mos_slug){
@@ -1256,16 +1318,16 @@ function renderRundown(o){
       (parts.length?'<ul class="ticker-pts">'+parts.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>':'')+
       '</div></div>';
   }
-  if(o.editor_note)h+='<div class="removed">✎ '+esc(o.editor_note)+'</div>';
+  if(o.editor_note)h+='<div class="removed">âœŽ '+esc(o.editor_note)+'</div>';
   document.getElementById('output').innerHTML=h;
 
-  // ── CORRECTION PANEL — editable copy of generated script ──
+  // â”€â”€ CORRECTION PANEL â€” editable copy of generated script â”€â”€
   setTimeout(()=>{
     // build structured editable text
     const parts=[];
     if(o.anchor_lead) parts.push('[ANCHOR]\n'+o.anchor_lead);
     (o.segments||[]).forEach(seg=>{
-      let p='['+((seg.type||'VO').split(/[\s(+]/)[0].toUpperCase())+(seg.speaker?' · '+seg.speaker:'')+']\n'+(seg.text||'');
+      let p='['+((seg.type||'VO').split(/[\s(+]/)[0].toUpperCase())+(seg.speaker?' Â· '+seg.speaker:'')+']\n'+(seg.text||'');
       if(seg.byte_in) p+='\nIN: "'+seg.byte_in+'"  OUT: "'+seg.byte_out+'"';
       parts.push(p);
     });
@@ -1293,20 +1355,20 @@ function secCard(tag,title,bodyHtml,durSec,copySrc){
     '</div><div class="sec-body">'+bodyHtml+'</div></div>';
 }
 
-/* ══ TRIM ══ */
+/* â•â• TRIM â•â• */
 async function trim(){
   const s=document.getElementById('trimScript').value.trim();
-  if(!s){alert('Script paste பண்ணுங்க');return;}
+  if(!s){alert('Script paste à®ªà®£à¯à®£à¯à®™à¯à®•');return;}
   const dur=document.getElementById('trimDur').value;
   const instr=document.getElementById('trimInstr').value.trim();
   const um='SCRIPT:\n"""\n'+s+'\n"""\n\nTARGET: '+dur+' seconds (~'+Math.round(dur*WPS)+' words)'+(instr?'\nINSTRUCTIONS: '+instr:'');
   const btn=document.getElementById('goBtn');btn.disabled=true;
-  showLoading('TRIMMING · MEANING PRESERVED');
+  showLoading('TRIMMING Â· MEANING PRESERVED');
   try{
     const o=await callClaude(SYS_TRIM,um,false);
     document.getElementById('stageActs').innerHTML=
-      '<button class="btn" id="tCpyBtn">⧉ Copy trimmed</button>'+
-      '<button class="btn red" onclick="trim()">↻ Re-trim</button>';
+      '<button class="btn" id="tCpyBtn">â§‰ Copy trimmed</button>'+
+      '<button class="btn red" onclick="trim()">â†» Re-trim</button>';
     document.getElementById('output').innerHTML=
       '<div class="stat-row">'+
         '<div class="stat"><div class="v">'+o.original_words+'</div><div class="l">ORIGINAL</div></div>'+
@@ -1315,31 +1377,31 @@ async function trim(){
       '</div>'+
       '<div class="sec"><div class="sec-hd"><span class="rtag rt-VO">TRIMMED SCRIPT</span></div>'+
       '<div class="sec-body" id="trimOut">'+esc(o.trimmed_script)+'</div></div>'+
-      (o.removed_summary?'<div class="removed">✂ '+esc(o.removed_summary)+'</div>':'');
+      (o.removed_summary?'<div class="removed">âœ‚ '+esc(o.removed_summary)+'</div>':'');
     document.getElementById('tCpyBtn').onclick=function(){copyText(this,o.trimmed_script);};
   }catch(e){showError(e);}
   btn.disabled=false;
 }
 
-/* ══ SELECTION COUNTER ══ */
+/* â•â• SELECTION COUNTER â•â• */
 document.addEventListener('selectionchange',()=>{
   const t=(window.getSelection()||'').toString().trim();
   const b=document.getElementById('selBadge');
   if(!t){b.style.display='none';return;}
   const w=t.split(/\s+/).filter(Boolean).length;
-  b.textContent=w+' words · '+Math.round(w/WPS)+' sec';
+  b.textContent=w+' words Â· '+Math.round(w/WPS)+' sec';
   b.style.display='block';
 });
 
 
-/* ══════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TRANSCRIBER v2.6
    FIX: drop Web Worker (importScripts fails on file://)
    Use dynamic import() in main thread + yield between chunks
    to avoid "page not responsive" freezes
-══════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── LAZY LOAD ── */
+/* â”€â”€ LAZY LOAD â”€â”€ */
 let _whisper = null, _nllb = null, _loadedModel = null;
 const NLLB_LANG = {
   en:'eng_Latn', hi:'hin_Deva', ta:'tam_Taml',
@@ -1392,7 +1454,7 @@ async function doNLLB(text, spokenLang) {
   return out[0].translation_text;
 }
 
-/* ── DECODE AUDIO (main thread, fast) ── */
+/* â”€â”€ DECODE AUDIO (main thread, fast) â”€â”€ */
 async function decodeToFloat32(source) {
   const ab = source instanceof ArrayBuffer ? source : await source.arrayBuffer();
   const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
@@ -1408,7 +1470,7 @@ async function decodeToFloat32(source) {
   return data;
 }
 
-/* ── STATE ── */
+/* â”€â”€ STATE â”€â”€ */
 let tFile = null, tMode = 'file';
 let lastTranscript = '', lastTranslation = '';
 let micStream = null, micRecorder = null, micAudioChunks = [];
@@ -1416,7 +1478,7 @@ let micInterval = null, micActive = false, micAnimFrame = null;
 let micTransFull = '', micTamilFull = '';
 const MIC_CHUNK_MS = 5000;
 
-/* ── MODE SWITCH ── */
+/* â”€â”€ MODE SWITCH â”€â”€ */
 function setTMode(m) {
   tMode = m;
   document.getElementById('tmt-file').classList.toggle('on', m === 'file');
@@ -1431,7 +1493,7 @@ function handleOutputLangChange() {
   document.getElementById('tNllbNote').style.display = ol === 'ta-nllb' ? 'block' : 'none';
 }
 
-/* ── FILE DROP ── */
+/* â”€â”€ FILE DROP â”€â”€ */
 const dz = document.getElementById('dz');
 const tFileInp = document.getElementById('tFile');
 dz.addEventListener('click', () => tFileInp.click());
@@ -1445,7 +1507,7 @@ tFileInp.addEventListener('change', () => { if (tFileInp.files.length) setTFile(
 
 function setTFile(f) {
   tFile = f;
-  document.getElementById('tFname').textContent = '📎 ' + f.name + ' (' + Math.round(f.size / 1024) + 'KB)';
+  document.getElementById('tFname').textContent = 'ðŸ“Ž ' + f.name + ' (' + Math.round(f.size / 1024) + 'KB)';
   document.getElementById('tRunBtn').disabled = false;
   document.getElementById('fileOutArea').style.display = 'none';
   setTS('', '');
@@ -1457,7 +1519,7 @@ function setTS(t, c) {
   el.className = 't-status ' + (c || '');
 }
 
-/* ── FILE TRANSCRIBE ── */
+/* â”€â”€ FILE TRANSCRIBE â”€â”€ */
 document.getElementById('tRunBtn').addEventListener('click', async () => {
   if (!tFile) return;
   const btn = document.getElementById('tRunBtn');
@@ -1472,40 +1534,40 @@ document.getElementById('tRunBtn').addEventListener('click', async () => {
   const outputLang = document.getElementById('tOutputLang').value;
 
   try {
-    setTS('Decoding audio…', 'active');
+    setTS('Decoding audioâ€¦', 'active');
     const audioData = await decodeToFloat32(tFile);
     fill.style.width = '10%';
 
-    setTS('Loading Whisper model… (first time takes a minute)', 'active');
+    setTS('Loading Whisper modelâ€¦ (first time takes a minute)', 'active');
     await getWhisper(modelId, p => {
       if (p.status === 'progress' && p.progress)
         fill.style.width = Math.min(50, 10 + p.progress * 0.4).toFixed(0) + '%';
     });
     fill.style.width = '52%';
 
-    setTS('Transcribing audio…', 'active');
+    setTS('Transcribing audioâ€¦', 'active');
     const transcript = await doTranscribe(audioData, spokenLang);
     lastTranscript = transcript;
     fill.style.width = '65%';
 
     // show transcript immediately
     showFileOutput(transcript, null, outputLang, spokenLang);
-    setTS(outputLang !== 'same' ? 'Translating…' : '✓ Done', outputLang !== 'same' ? 'active' : 'done');
+    setTS(outputLang !== 'same' ? 'Translatingâ€¦' : 'âœ“ Done', outputLang !== 'same' ? 'active' : 'done');
 
     let translation = null;
     if (outputLang === 'ta-nllb') {
-      setTS('Loading NLLB model… (first time ~1.2GB download)', 'active');
+      setTS('Loading NLLB modelâ€¦ (first time ~1.2GB download)', 'active');
       await getNLLB(p => {
         if (p.status === 'progress' && p.progress)
           fill.style.width = Math.min(90, 65 + p.progress * 0.25).toFixed(0) + '%';
       });
-      setTS('Translating to Tamil…', 'active');
+      setTS('Translating to Tamilâ€¦', 'active');
       translation = await doNLLB(transcript, spokenLang);
     } else if (outputLang === 'ta-claude') {
-      setTS('Translating via Claude API…', 'active');
+      setTS('Translating via Claude APIâ€¦', 'active');
       translation = await callClaudeText('Translate to Tamil broadcast text. Output ONLY Tamil:\n\n' + transcript);
     } else if (outputLang === 'en') {
-      setTS('Translating to English…', 'active');
+      setTS('Translating to Englishâ€¦', 'active');
       translation = await callClaudeText('Translate to English. Output ONLY the translation:\n\n' + transcript);
     }
 
@@ -1513,7 +1575,7 @@ document.getElementById('tRunBtn').addEventListener('click', async () => {
     showFileOutput(transcript, translation, outputLang, spokenLang);
     fill.style.width = '100%';
     setTimeout(() => prog.classList.remove('show'), 700);
-    setTS('✓ Done — On-Air Text ready below ↓', 'done');
+    setTS('âœ“ Done â€” On-Air Text ready below â†“', 'done');
   } catch (err) {
     setTS('Error: ' + err.message, 'err');
     prog.classList.remove('show');
@@ -1541,7 +1603,7 @@ function showFileOutput(transcript, translation, outputLang, spokenLang) {
   area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-/* ── MIC / LIVE WIRE ── */
+/* â”€â”€ MIC / LIVE WIRE â”€â”€ */
 async function startMic() {
   if (micActive) return;
 
@@ -1552,8 +1614,8 @@ async function startMic() {
   } catch (e) {
     const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
     ms.textContent = isMobile
-      ? '📱 Mobile-ல் mic blocked — GitHub Pages URL-ல் open பண்ணீங்களா? https://tjnewsroom.github.io/tjnewsgen — try again'
-      : '❌ Mic access denied — browser address bar-ல் mic icon click → Allow';
+      ? 'ðŸ“± Mobile-à®²à¯ mic blocked â€” GitHub Pages URL-à®²à¯ open à®ªà®£à¯à®£à¯€à®™à¯à®•à®³à®¾? https://tjnewsroom.github.io/tjnewsgen â€” try again'
+      : 'âŒ Mic access denied â€” browser address bar-à®²à¯ mic icon click â†’ Allow';
     ms.className = 't-status err';
     return;
   }
@@ -1565,9 +1627,9 @@ async function startMic() {
   document.getElementById('micStopBtn').style.display = 'block';
   document.getElementById('micOnairText').value = '';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Loading model, please wait…</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Loading model, please waitâ€¦</div>';
 
-  ms.textContent = '⏳ Loading Whisper model — please wait, do not close…';
+  ms.textContent = 'â³ Loading Whisper model â€” please wait, do not closeâ€¦';
   ms.className = 't-status active';
 
   // start recording immediately (so we don't miss audio while loading)
@@ -1602,24 +1664,24 @@ async function startMic() {
 
   // load models in background - UI stays responsive
   try {
-    document.getElementById('micVizLabel').textContent = 'Loading Whisper…';
+    document.getElementById('micVizLabel').textContent = 'Loading Whisperâ€¦';
     await getWhisper(modelId);
     if (outputLang === 'ta-nllb') {
-      document.getElementById('micVizLabel').textContent = 'Loading NLLB (~1.2GB)…';
+      document.getElementById('micVizLabel').textContent = 'Loading NLLB (~1.2GB)â€¦';
       await getNLLB();
     }
   } catch (e) {
-    ms.textContent = '❌ Model load failed: ' + e.message;
+    ms.textContent = 'âŒ Model load failed: ' + e.message;
     ms.className = 't-status err';
     stopMic(); return;
   }
 
   // models ready
-  ms.textContent = '🔴 Capturing — transcribing every 8 seconds…';
+  ms.textContent = 'ðŸ”´ Capturing â€” transcribing every 8 secondsâ€¦';
   ms.className = 't-status active';
-  document.getElementById('micVizLabel').textContent = 'Listening…';
+  document.getElementById('micVizLabel').textContent = 'Listeningâ€¦';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as captured…</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Chunks appear here as capturedâ€¦</div>';
 
   // discard buffered audio from loading time
   micAudioChunks = [];
@@ -1639,17 +1701,17 @@ async function startMic() {
     const blob = new Blob(chunks, { type: mType });
 
     try {
-      document.getElementById('micVizLabel').textContent = 'Transcribing…';
+      document.getElementById('micVizLabel').textContent = 'Transcribingâ€¦';
       let audioData;
       try { audioData = await decodeToFloat32(blob); }
-      catch (e) { document.getElementById('micVizLabel').textContent = 'Decode err, retrying…'; processing = false; return; }
+      catch (e) { document.getElementById('micVizLabel').textContent = 'Decode err, retryingâ€¦'; processing = false; return; }
 
       // energy check - skip near-silent chunks
       let energy = 0;
       for (let i = 0; i < Math.min(audioData.length, 16000); i++) energy += audioData[i] * audioData[i];
       energy = Math.sqrt(energy / Math.min(audioData.length, 16000));
       if (energy < 0.005) {
-        document.getElementById('micVizLabel').textContent = '(silence — waiting for speech)';
+        document.getElementById('micVizLabel').textContent = '(silence â€” waiting for speech)';
         processing = false; return;
       }
 
@@ -1666,10 +1728,10 @@ async function startMic() {
         let addText = transcript;
         if (outputLang === 'ta-nllb' || outputLang === 'ta-claude') {
           // For mic mode: always use Claude API (NLLB 1.2GB causes freeze in live mode)
-          document.getElementById('micVizLabel').textContent = 'Translating via Claude…';
+          document.getElementById('micVizLabel').textContent = 'Translating via Claudeâ€¦';
           try { addText = await callClaudeText('Translate to Tamil broadcast text. ONLY output Tamil, no explanation:\n\n' + transcript); } catch(e) { addText = transcript; }
         } else if (outputLang === 'en') {
-          document.getElementById('micVizLabel').textContent = 'Claude translate…';
+          document.getElementById('micVizLabel').textContent = 'Claude translateâ€¦';
           try { addText = await callClaudeText('Translate to Tamil. Output ONLY Tamil:\n\n' + transcript); } catch (e) { addText = transcript; }
         }
 
@@ -1680,7 +1742,7 @@ async function startMic() {
         document.getElementById('micVizLabel').textContent =
           new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
       } else if (isHallucination) {
-        document.getElementById('micVizLabel').textContent = '(noise detected — skipped)';
+        document.getElementById('micVizLabel').textContent = '(noise detected â€” skipped)';
       } else {
         document.getElementById('micVizLabel').textContent = '(silence / no speech)';
       }
@@ -1701,8 +1763,8 @@ function stopMic() {
   document.getElementById('micStopBtn').style.display = 'none';
   const ms = document.getElementById('micStatus');
   ms.textContent = micTamilFull
-    ? '✅ Stopped — ' + micTamilFull.split(' ').length + ' words captured. On-Air Text ready above ↑'
-    : '⏹ Stopped.';
+    ? 'âœ… Stopped â€” ' + micTamilFull.split(' ').length + ' words captured. On-Air Text ready above â†‘'
+    : 'â¹ Stopped.';
   ms.className = 't-status done';
   document.getElementById('micViz').classList.remove('show');
 }
@@ -1725,7 +1787,7 @@ function clearMicOutput() {
   micTransFull = ''; micTamilFull = '';
   document.getElementById('micOnairText').value = '';
   document.getElementById('liveFeedScroll').innerHTML =
-    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Cleared. Chunks appear here…</div>';
+    '<div style="padding:14px;text-align:center;font-size:12px;color:var(--ink-faint)">Cleared. Chunks appear hereâ€¦</div>';
 }
 
 setTimeout(() => {
@@ -1733,26 +1795,26 @@ setTimeout(() => {
   if (cb) cb.addEventListener('click', clearMicOutput);
 }, 100);
 
-/* ── ON-AIR COPY ── */
+/* â”€â”€ ON-AIR COPY â”€â”€ */
 function copyOnair(btn) {
   navigator.clipboard.writeText(document.getElementById('onairText').value);
-  const old = btn.textContent; btn.textContent = '✓ Copied!';
+  const old = btn.textContent; btn.textContent = 'âœ“ Copied!';
   setTimeout(() => btn.textContent = old, 1400);
 }
 function copyMicOnair(btn) {
   navigator.clipboard.writeText(document.getElementById('micOnairText').value);
-  const old = btn.textContent; btn.textContent = '✓ Copied!';
+  const old = btn.textContent; btn.textContent = 'âœ“ Copied!';
   setTimeout(() => btn.textContent = old, 1400);
 }
 
-/* ── COPY / DOWNLOAD / SEND ── */
+/* â”€â”€ COPY / DOWNLOAD / SEND â”€â”€ */
 document.getElementById('tCopyOrig').addEventListener('click', function () {
   navigator.clipboard.writeText(lastTranscript);
-  const o = this.textContent; this.textContent = '✓'; setTimeout(() => this.textContent = o, 1200);
+  const o = this.textContent; this.textContent = 'âœ“'; setTimeout(() => this.textContent = o, 1200);
 });
 document.getElementById('tCopyTrans').addEventListener('click', function () {
   navigator.clipboard.writeText(lastTranslation);
-  const o = this.textContent; this.textContent = '✓'; setTimeout(() => this.textContent = o, 1200);
+  const o = this.textContent; this.textContent = 'âœ“'; setTimeout(() => this.textContent = o, 1200);
 });
 document.getElementById('tDownload').addEventListener('click', () => {
   const content = lastTranslation
@@ -1775,8 +1837,8 @@ document.getElementById('tSend').addEventListener('click', sendFn);
 const micSendEl = document.getElementById('micSend');
 if (micSendEl) micSendEl.addEventListener('click', sendFn);
 
-/* ══════════════════════════════
-   WORLD MONITOR v3 — 8 fixes:
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   WORLD MONITOR v3 â€” 8 fixes:
    1. Story list continuously updates, no popup repeat
    2. Time on LEFT side of each card
    3. Refresh works properly (clears seen IDs)
@@ -1785,10 +1847,10 @@ if (micSendEl) micSendEl.addEventListener('click', sendFn);
    6. More Tamil sources added
    7. Next/Prev navigation buttons
    8. Color-coded priority cards + more news sites
-══════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const MON_FEEDS = [
-  // ══ TAMIL FIRST ══
+  // â•â• TAMIL FIRST â•â•
   { name:'Dinamalar',         url:'https://www.dinamalar.com/rss/latest-news.xml',                          cat:'TAMIL', pri_boost:true },
   { name:'OneIndia Tamil',    url:'https://tamil.oneindia.com/rss/tamil-news-fb.xml',                       cat:'TAMIL', pri_boost:true },
   { name:'News18 Tamil',      url:'https://tamil.news18.com/commonfeeds/v1/tam/rss/latest.xml',             cat:'TAMIL', pri_boost:true },
@@ -1799,7 +1861,7 @@ const MON_FEEDS = [
   { name:'Maalaimalar',       url:'https://www.maalaimalar.com/rss/latest-news.xml',                        cat:'TAMIL', pri_boost:true },
   { name:'Nakkheeran',        url:'https://www.nakkheeran.in/feed/',                                        cat:'TAMIL', pri_boost:true },
   { name:'Daily Thanthi',     url:'https://www.dailythanthi.com/rss/latest-news',                          cat:'TAMIL', pri_boost:true },
-  // ══ NATIONAL INDIA ══
+  // â•â• NATIONAL INDIA â•â•
   { name:'Hindu National',    url:'https://www.thehindu.com/news/national/feeder/default.rss',              cat:'INDIA' },
   { name:'NDTV India',        url:'https://feeds.feedburner.com/ndtvnews-india-news',                       cat:'INDIA' },
   { name:'Times of India',    url:'https://timesofindia.indiatimes.com/rssfeedstopstories.cms',             cat:'INDIA' },
@@ -1808,7 +1870,7 @@ const MON_FEEDS = [
   { name:'BBC India',         url:'https://feeds.bbci.co.uk/news/world/asia/india/rss.xml',                 cat:'INDIA' },
   { name:'NDTV',              url:'https://feeds.feedburner.com/ndtvnews-top-stories',                      cat:'INDIA' },
   { name:'Republic World',    url:'https://www.republicworld.com/feeds/news.rss',                           cat:'INDIA' },
-  // ══ WORLD ══
+  // â•â• WORLD â•â•
   { name:'BBC World',         url:'https://feeds.bbci.co.uk/news/world/rss.xml',                           cat:'WORLD' },
   { name:'Al Jazeera',        url:'https://www.aljazeera.com/xml/rss/all.xml',                             cat:'WORLD' },
   { name:'Reuters World',     url:'https://feeds.reuters.com/reuters/worldNews',                            cat:'WORLD' },
@@ -1824,14 +1886,14 @@ const MON_FEEDS = [
 const BREAK_KEYWORDS = ['breaking','flash','urgent','killed','dead','explosion','attack',
   'earthquake','flood','fire','blast','crash','assassination','war','strike',
   'arrested','convicted','verdict','emergency','disaster','tsunami',
-  'পরবর্তী','பரபரப்பு','திடீர்','வெடிகுண்டு','தீவிரவாதி','படுகொலை','நிலநடுக்கம்'];
+  'à¦ªà¦°à¦¬à¦°à§à¦¤à§€','à®ªà®°à®ªà®°à®ªà¯à®ªà¯','à®¤à®¿à®Ÿà¯€à®°à¯','à®µà¯†à®Ÿà®¿à®•à¯à®£à¯à®Ÿà¯','à®¤à¯€à®µà®¿à®°à®µà®¾à®¤à®¿','à®ªà®Ÿà¯à®•à¯Šà®²à¯ˆ','à®¨à®¿à®²à®¨à®Ÿà¯à®•à¯à®•à®®à¯'];
 const HIGH_KEYWORDS = ['india','modi','bjp','congress','supreme court','parliament',
   'tamil','tamilnadu','chennai','election','court','verdict','protest',
-  'முதல்வர்','பிரதமர்','நீதிமன்றம்','தேர்தல்'];
+  'à®®à¯à®¤à®²à¯à®µà®°à¯','à®ªà®¿à®°à®¤à®®à®°à¯','à®¨à¯€à®¤à®¿à®®à®©à¯à®±à®®à¯','à®¤à¯‡à®°à¯à®¤à®²à¯'];
 const INDIA_KEYWORDS = ['india','indian','delhi','mumbai','chennai','bangalore',
   'gujarat','maharashtra','tamilnadu','kolkata','hyderabad'];
-const TAMIL_BREAK = ['திடீர்','படுகொலை','வெடிகுண்டு','தீவிரவாதி','நிலநடுக்கம்','வெள்ளம்',
-  'தீ விபத்து','விபத்து','பரபரப்பு','மரணம்','கொலை','கைது','ஆபத்து'];
+const TAMIL_BREAK = ['à®¤à®¿à®Ÿà¯€à®°à¯','à®ªà®Ÿà¯à®•à¯Šà®²à¯ˆ','à®µà¯†à®Ÿà®¿à®•à¯à®£à¯à®Ÿà¯','à®¤à¯€à®µà®¿à®°à®µà®¾à®¤à®¿','à®¨à®¿à®²à®¨à®Ÿà¯à®•à¯à®•à®®à¯','à®µà¯†à®³à¯à®³à®®à¯',
+  'à®¤à¯€ à®µà®¿à®ªà®¤à¯à®¤à¯','à®µà®¿à®ªà®¤à¯à®¤à¯','à®ªà®°à®ªà®°à®ªà¯à®ªà¯','à®®à®°à®£à®®à¯','à®•à¯Šà®²à¯ˆ','à®•à¯ˆà®¤à¯','à®†à®ªà®¤à¯à®¤à¯'];
 
 function priClass(text, cat, priBoosted){
   const t=(text||'').toLowerCase();
@@ -1930,15 +1992,15 @@ function flashTab(text){
   if(tabFlashInterval)return;
   let on=true;
   tabFlashInterval=setInterval(()=>{
-    document.title=on?'🔴 BREAKING — '+text.slice(0,30):origTitle;on=!on;
+    document.title=on?'ðŸ”´ BREAKING â€” '+text.slice(0,30):origTitle;on=!on;
   },1000);
   setTimeout(()=>{clearInterval(tabFlashInterval);tabFlashInterval=null;document.title=origTitle;},15000);
 }
 
-/* FETCH ALL — fix 3: proper refresh clears old data */
+/* FETCH ALL â€” fix 3: proper refresh clears old data */
 async function fetchAllFeeds(isRefresh=false){
   const statusEl=document.getElementById('monStatus');
-  if(statusEl) statusEl.textContent='FETCHING…';
+  if(statusEl) statusEl.textContent='FETCHINGâ€¦';
   if(isRefresh){
     // hard refresh: clear seen IDs so all stories show as fresh
     monSeenIds=new Set();
@@ -1999,7 +2061,7 @@ async function fetchAllFeeds(isRefresh=false){
       else clearInterval(window._alertRepeat);
     },30000);
     if(Notification.permission==='granted')
-      new Notification('🔴 TJ BREAKING — '+newBreaking[0].source,{body:newBreaking[0].title.slice(0,80)});
+      new Notification('ðŸ”´ TJ BREAKING â€” '+newBreaking[0].source,{body:newBreaking[0].title.slice(0,80)});
   }
 
   // update sources (fix 6: show all sources)
@@ -2013,14 +2075,14 @@ async function fetchAllFeeds(isRefresh=false){
   const fresh=monItems.filter(i=>{const d=new Date(i.fetchDate||i.pubDate);return!isNaN(d)&&(Date.now()-d)<3600000;}).length;
   const breaking=monItems.filter(i=>i.pri==='BREAKING').length;
   const statsEl=document.getElementById('monStats');
-  if(statsEl) statsEl.textContent=`${monItems.length} stories · ${fresh} fresh · ${breaking} breaking`;
-  if(statusEl) statusEl.textContent='LIVE · '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  if(statsEl) statsEl.textContent=`${monItems.length} stories Â· ${fresh} fresh Â· ${breaking} breaking`;
+  if(statusEl) statusEl.textContent='LIVE Â· '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
 
   monPage=0;
   renderMonitor();
 }
 
-/* RENDER — fix 1: list view, fix 2: time on left, fix 4: filter as tabs, fix 7: pagination */
+/* RENDER â€” fix 1: list view, fix 2: time on left, fix 4: filter as tabs, fix 7: pagination */
 function renderMonitor(){
   let items=monItems;
   // freshness
@@ -2073,9 +2135,9 @@ function renderMonitor(){
       <div style="font-size:14.5px;font-weight:600;line-height:1.4;color:#111827;margin-bottom:4px">${esc(item.title)}</div>
       ${item.desc?`<div style="font-size:12px;color:#4B5563;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(item.desc.slice(0,180))}</div>`:''}
       <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-        <button onclick='sendToNewsGenMon(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:none;border-radius:5px;background:${c.badge};color:#fff;font-size:11.5px;font-weight:700;cursor:pointer">⏺ Generate Script</button>
-        ${item.link?`<button onclick="window.open('${esc(item.link)}','_blank')" style="padding:5px 11px;border:1px solid ${c.border};border-radius:5px;background:transparent;color:${c.badge};font-size:11.5px;cursor:pointer">🔗 Open</button>`:''}
-        <button onclick='copyMonItem(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:1px solid #E5E7EB;border-radius:5px;background:transparent;color:#6B7280;font-size:11.5px;cursor:pointer">⧉ Copy</button>
+        <button onclick='sendToNewsGenMon(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:none;border-radius:5px;background:${c.badge};color:#fff;font-size:11.5px;font-weight:700;cursor:pointer">âº Generate Script</button>
+        ${item.link?`<button onclick="window.open('${esc(item.link)}','_blank')" style="padding:5px 11px;border:1px solid ${c.border};border-radius:5px;background:transparent;color:${c.badge};font-size:11.5px;cursor:pointer">ðŸ”— Open</button>`:''}
+        <button onclick='copyMonItem(${JSON.stringify(item.title)},${JSON.stringify(item.desc)},${JSON.stringify(item.link)})' style="padding:5px 11px;border:1px solid #E5E7EB;border-radius:5px;background:transparent;color:#6B7280;font-size:11.5px;cursor:pointer">â§‰ Copy</button>
       </div>
     </div>`;
   }).join('');
@@ -2094,7 +2156,7 @@ function updatePagination(totalPages, total){
     el.style.display='flex';
     el.innerHTML=`
       <button onclick="monGoPage(${monPage-1})" ${monPage===0?'disabled':''} style="padding:7px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:${monPage===0?'#9CA3AF':'#111827'};cursor:${monPage===0?'default':'pointer'};font-size:13px">&larr; Prev</button>
-      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);align-self:center">Page ${monPage+1} of ${totalPages} · ${total} stories</span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--ink-dim);align-self:center">Page ${monPage+1} of ${totalPages} Â· ${total} stories</span>
       <button onclick="monGoPage(${monPage+1})" ${monPage>=totalPages-1?'disabled':''} style="padding:7px 16px;border:1px solid var(--line);border-radius:var(--r);background:${monPage>=totalPages-1?'var(--surface)':'var(--red)'};color:${monPage>=totalPages-1?'#9CA3AF':'#fff'};cursor:${monPage>=totalPages-1?'default':'pointer'};font-size:13px">Next &rarr;</button>`;
   });
 }
@@ -2183,18 +2245,18 @@ function initMonitor(){
   monInterval=setInterval(()=>fetchAllFeeds(false),30000);
 }
 
-/* ══════════════════════════════
-   CORRECTION LOOP — Active Learning
-   Editor corrects AI output → saved as training pair →
-   Next generation uses corrections → accuracy improves
-   Storage: localStorage (browser) — persists across sessions
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   CORRECTION LOOP â€” Active Learning
+   Editor corrects AI output â†’ saved as training pair â†’
+   Next generation uses corrections â†’ accuracy improves
+   Storage: localStorage (browser) â€” persists across sessions
    Accuracy tracking: shows % match improvement over time
-══════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 const CL_KEY = 'tj_corrections'; // localStorage key
 const CL_MAX = 50; // max pairs to store (token limit safe)
 
-/* ── Load/Save corrections ── */
+/* â”€â”€ Load/Save corrections â”€â”€ */
 function clLoad() {
   try { return JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { return []; }
 }
@@ -2202,7 +2264,7 @@ function clSave(pairs) {
   try { localStorage.setItem(CL_KEY, JSON.stringify(pairs.slice(-CL_MAX))); } catch(e) {}
 }
 
-/* ── Add a new correction pair ── */
+/* â”€â”€ Add a new correction pair â”€â”€ */
 function clAdd(rawInput, aiOutput, editorCorrection, format, bulletinType) {
   const pairs = clLoad();
   const pair = {
@@ -2222,7 +2284,7 @@ function clAdd(rawInput, aiOutput, editorCorrection, format, bulletinType) {
   return pair;
 }
 
-/* ── Simple word-overlap similarity 0-100 ── */
+/* â”€â”€ Simple word-overlap similarity 0-100 â”€â”€ */
 function clSimilarity(a, b) {
   const wa = new Set((a||'').trim().split(/\s+/).filter(Boolean));
   const wb = new Set((b||'').trim().split(/\s+/).filter(Boolean));
@@ -2232,15 +2294,15 @@ function clSimilarity(a, b) {
   return Math.round((common * 2) / (wa.size + wb.size) * 100);
 }
 
-/* ── Build few-shot examples from corrections for system prompt ── */
+/* â”€â”€ Build few-shot examples from corrections for system prompt â”€â”€ */
 function clBuildExamples() {
   const pairs = clLoad();
   if (!pairs.length) return '';
   // use last 5 corrections as examples
   const recent = pairs.slice(-5);
-  let block = '\n\nEDITOR CORRECTIONS (learn from these — these are higher priority than base examples):\n';
+  let block = '\n\nEDITOR CORRECTIONS (learn from these â€” these are higher priority than base examples):\n';
   recent.forEach((p, i) => {
-    block += `\nCORRECTION EXAMPLE ${i+1} [${p.format||'VO'} · ${p.bulletinType||'General'}]:\n`;
+    block += `\nCORRECTION EXAMPLE ${i+1} [${p.format||'VO'} Â· ${p.bulletinType||'General'}]:\n`;
     block += `RAW: ${p.raw.slice(0,300)}\n`;
     block += `AI GENERATED (was wrong):\n${p.ai.slice(0,300)}\n`;
     block += `EDITOR CORRECTED TO (use this style):\n${p.corrected.slice(0,300)}\n`;
@@ -2248,7 +2310,7 @@ function clBuildExamples() {
   return block;
 }
 
-/* ── Accuracy stats ── */
+/* â”€â”€ Accuracy stats â”€â”€ */
 function clGetStats() {
   const pairs = clLoad();
   if (!pairs.length) return { count: 0, avgSimilarity: 0, trend: [], level: 0 };
@@ -2270,35 +2332,137 @@ function clGetStats() {
   return { count: pairs.length, avgSimilarity: avg, trend, level };
 }
 
-/* ── Accuracy level label ── */
+/* â”€â”€ Accuracy level label â”€â”€ */
 function clLevelLabel(level) {
-  return ['🔴 Baseline (0%)', '🟡 Learning (30–60%)', '🟠 Improving (60–75%)', '🟢 Good (75–90%)', '🏆 Expert (90%+)'][level] || '';
+  return ['ðŸ”´ Baseline (0%)', 'ðŸŸ¡ Learning (30â€“60%)', 'ðŸŸ  Improving (60â€“75%)', 'ðŸŸ¢ Good (75â€“90%)', 'ðŸ† Expert (90%+)'][level] || '';
 }
 
-/* ── Update stats display ── */
+/* â”€â”€ Update stats display â”€â”€ */
 function clUpdateStats() {
-  const el = document.getElementById('clStatsBar');
-  if (!el) return;
   const stats = clGetStats();
-  const levelLabel = clLevelLabel(stats.level);
   const pct = stats.avgSimilarity;
   const barColor = pct < 50 ? '#DC2626' : pct < 70 ? '#D97706' : pct < 85 ? '#16A34A' : '#7C3AED';
-  el.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--surface);border-bottom:1px solid var(--line)">
-      <span style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim)">AI ACCURACY</span>
-      <div style="flex:1;max-width:200px;height:8px;background:var(--surface3);border-radius:4px;overflow:hidden">
-        <div style="height:100%;width:${pct}%;background:${barColor};border-radius:4px;transition:width .6s"></div>
-      </div>
-      <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:${barColor}">${pct}%</span>
-      <span style="font-size:12px;color:var(--ink-dim)">${levelLabel}</span>
-      <span style="font-family:var(--mono);font-size:10px;color:var(--ink-faint)">${stats.count} corrections saved</span>
-      <button onclick="clShowHistory()" style="padding:4px 10px;border:1px solid var(--line);border-radius:5px;background:none;color:var(--ink-dim);font-size:11px;cursor:pointer">History</button>
-      ${stats.count>0?`<button onclick="clExport()" style="padding:4px 10px;border:1px solid var(--line);border-radius:5px;background:none;color:var(--ink-dim);font-size:11px;cursor:pointer">Export</button>`:''}
-    </div>`;
+  // update new column elements
+  const badge = document.getElementById('clAccBadge');
+  if(badge) badge.textContent = pct + '% Â· ' + stats.count + ' saved';
+  const bar = document.getElementById('clAccBar');
+  if(bar){ bar.style.width = pct + '%'; bar.style.background = barColor; }
+  // milestone dots
+  const thresholds = [0, 5, 15, 25, 40];
+  thresholds.forEach((t,i) => {
+    const el = document.getElementById('clMile' + i);
+    if(el) el.classList.toggle('done', stats.count >= t);
+  });
+  // legacy stats bar if still exists
+  const el = document.getElementById('clStatsBar');
+  if(el) el.innerHTML = '';
 }
 
-/* ── Inject correction panel below AI output ── */
+/* â”€â”€ Inject correction panel below AI output â”€â”€ */
+/* populate the RIGHT COLUMN with generated script */
 function clInjectPanel(rawInput, aiText, format, bulletinType) {
+  // set textarea in right column
+  const box = document.getElementById('clEditorBox');
+  if(box){
+    box.value = aiText;
+    box.dataset.original = aiText;
+    box.dataset.raw = rawInput;
+    box.dataset.format = format;
+    box.dataset.bulletin = bulletinType;
+    clPreviewMatch();
+  }
+  // save to script history
+  clSaveToHistory(aiText, format, bulletinType);
+  clUpdateStats();
+  // legacy panel cleanup
+  const old = document.getElementById('clPanel');
+  if(old) old.remove();
+}
+
+function clSaveCorrectionCol(){
+  const box = document.getElementById('clEditorBox');
+  if(!box) return;
+  const corrected = box.value.trim();
+  const aiText = box.dataset.original || '';
+  const raw = box.dataset.raw || '';
+  const format = box.dataset.format || '';
+  const bulletin = box.dataset.bulletin || '';
+  if(!corrected || corrected.length < 10){ alert('Script edit à®ªà®£à¯à®£à¯à®™à¯à®•'); return; }
+  clAdd(raw, aiText, corrected, format, bulletin);
+  const msg = document.getElementById('clSaveMsg');
+  if(msg){ msg.style.display = 'block'; setTimeout(()=>msg.style.display='none', 3000); }
+  clUpdateStats();
+}
+
+/* â”€â”€ Script History (localStorage) â”€â”€ */
+const HIST_KEY = 'tj_script_history';
+const HIST_MAX = 20;
+
+function clSaveToHistory(scriptText, format, bulletin){
+  try{
+    let hist = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+    hist.unshift({
+      id: Date.now(),
+      date: new Date().toLocaleString('en-IN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}),
+      format: format||'',
+      bulletin: bulletin||'',
+      preview: scriptText.slice(0,80),
+      full: scriptText
+    });
+    hist = hist.slice(0, HIST_MAX);
+    localStorage.setItem(HIST_KEY, JSON.stringify(hist));
+    clRenderHistory();
+  }catch(e){}
+}
+
+function clRenderHistory(){
+  const el = document.getElementById('clHistoryList');
+  if(!el) return;
+  try{
+    const hist = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+    if(!hist.length){ el.innerHTML='<div style="font-size:11px;color:var(--ink-faint);text-align:center;padding:10px">No history yet</div>'; return; }
+    el.innerHTML = hist.map((h,i) => `
+      <div style="border:1px solid var(--line);border-radius:6px;padding:8px 10px;cursor:pointer;transition:.15s;background:var(--surface2)"
+           onclick="clRecallHistory(${i})"
+           onmouseenter="this.style.borderColor='var(--cyan)'"
+           onmouseleave="this.style.borderColor='var(--line)'">
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:3px">
+          <span style="font-family:var(--mono);font-size:9.5px;color:var(--cyan)">${h.format}</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-faint)">${h.date}</span>
+          <button onclick="event.stopPropagation();clDeleteHistory(${i})" style="margin-left:auto;border:none;background:none;color:var(--ink-faint);font-size:11px;cursor:pointer">âœ•</button>
+        </div>
+        <div style="font-size:12px;color:var(--ink-dim);line-height:1.4">${esc(h.preview)}â€¦</div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+function clRecallHistory(idx){
+  try{
+    const hist = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+    const h = hist[idx];
+    if(!h) return;
+    const box = document.getElementById('clEditorBox');
+    if(box){ box.value = h.full; box.dataset.original = h.full; clPreviewMatch(); }
+  }catch(e){}
+}
+
+function clDeleteHistory(idx){
+  try{
+    let hist = JSON.parse(localStorage.getItem(HIST_KEY)||'[]');
+    hist.splice(idx,1);
+    localStorage.setItem(HIST_KEY, JSON.stringify(hist));
+    clRenderHistory();
+  }catch(e){}
+}
+
+function clClearHistory(){
+  if(confirm('Script history-à® clear à®ªà®£à¯à®±à¯€à®™à¯à®•à®³à®¾?')){
+    localStorage.removeItem(HIST_KEY);
+    clRenderHistory();
+  }
+}
+
+function clOldInjectPanel(rawInput, aiText, format, bulletinType) {
   const existing = document.getElementById('clPanel');
   if (existing) existing.remove();
 
@@ -2315,10 +2479,10 @@ function clInjectPanel(rawInput, aiText, format, bulletinType) {
         <span style="width:10px;height:10px;border-radius:50%;background:#22C55E;box-shadow:0 0 6px #22C55E;flex-shrink:0"></span>
         <span style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1.5px">EDITOR CORRECTION PANEL</span>
       </div>
-      <span style="font-size:11px;opacity:.7">AI script-ஐ correct பண்ணுங்க → AI கத்துக்கும்</span>
+      <span style="font-size:11px;opacity:.7">AI script-à® correct à®ªà®£à¯à®£à¯à®™à¯à®• â†’ AI à®•à®¤à¯à®¤à¯à®•à¯à®•à¯à®®à¯</span>
       <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
         <div style="background:rgba(255,255,255,.1);border-radius:20px;padding:3px 10px;font-family:var(--mono);font-size:10px">
-          ${stats.count} corrections · ${pct}% accuracy
+          ${stats.count} corrections Â· ${pct}% accuracy
         </div>
         <div style="width:80px;height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden">
           <div style="height:100%;width:${pct}%;background:${barColor};border-radius:3px;transition:width .6s"></div>
@@ -2336,46 +2500,46 @@ function clInjectPanel(rawInput, aiText, format, bulletinType) {
     <!-- EDITOR BOX -->
     <div style="padding:14px 16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <span style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-dim);font-weight:600">✏ AI OUTPUT-ஐ EDIT பண்ணுங்க (corrections highlight ஆகும்):</span>
+        <span style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-dim);font-weight:600">âœ AI OUTPUT-à® EDIT à®ªà®£à¯à®£à¯à®™à¯à®• (corrections highlight à®†à®•à¯à®®à¯):</span>
         <span id="clMatchPct" style="font-family:var(--mono);font-size:12px;font-weight:700"></span>
       </div>
       <textarea id="clEditorBox"
         style="width:100%;min-height:160px;background:#FAFAFA;border:2px solid #E5E7EB;border-radius:8px;padding:12px 14px;font-family:var(--tamil);font-size:15px;line-height:1.85;color:#111827;resize:vertical;box-shadow:inset 0 1px 3px rgba(0,0,0,.06)"
         oninput="clPreviewMatch()"
-        placeholder="AI script இங்கே தெரியும் — நேரடியா edit பண்ணுங்க..."></textarea>
+        placeholder="AI script à®‡à®™à¯à®•à¯‡ à®¤à¯†à®°à®¿à®¯à¯à®®à¯ â€” à®¨à¯‡à®°à®Ÿà®¿à®¯à®¾ edit à®ªà®£à¯à®£à¯à®™à¯à®•..."></textarea>
       <!-- ACTION BUTTONS -->
       <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">
         <button onclick="clSaveCorrection('${encodeURIComponent(rawInput)}','${encodeURIComponent(format)}','${encodeURIComponent(bulletinType)}')"
           style="padding:10px 20px;border:none;border-radius:8px;background:linear-gradient(135deg,#16A34A,#15803D);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(22,163,74,.3);display:flex;align-items:center;gap:6px">
-          <span style="font-size:16px">✓</span> Save &amp; Train AI
+          <span style="font-size:16px">âœ“</span> Save &amp; Train AI
         </button>
         <button onclick="clCopyBox()"
           style="padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-dim);font-size:13px;cursor:pointer">
-          ⧉ Copy
+          â§‰ Copy
         </button>
         <button onclick="clResetBox('${encodeURIComponent(aiText)}')"
           style="padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-dim);font-size:13px;cursor:pointer">
-          ↺ Reset
+          â†º Reset
         </button>
         <button onclick="clShowHistory()"
           style="padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink-dim);font-size:13px;cursor:pointer">
-          📋 History (${stats.count})
+          ðŸ“‹ History (${stats.count})
         </button>
         <span id="clSaveMsg" style="font-size:12.5px;color:#16A34A;font-weight:700;display:none;align-items:center;gap:5px">
-          ✓ Saved! AI will learn this style.
+          âœ“ Saved! AI will learn this style.
         </span>
       </div>
       <!-- PROGRESS TIP -->
       <div style="margin-top:12px;padding:10px 12px;background:linear-gradient(135deg,#EFF6FF,#F0FDF4);border-radius:8px;border-left:3px solid #2563EB;display:flex;gap:10px;align-items:flex-start">
-        <span style="font-size:18px;flex-shrink:0">💡</span>
+        <span style="font-size:18px;flex-shrink:0">ðŸ’¡</span>
         <div style="font-size:12px;color:var(--ink-dim);line-height:1.6">
-          <b style="color:var(--ink)">How accuracy improves:</b> உங்க correction-ஐ save பண்ண பண்ண, next script generate-ல் AI automatic-ஆ உங்க style-ஐ use பண்ணும்.
+          <b style="color:var(--ink)">How accuracy improves:</b> à®‰à®™à¯à®• correction-à® save à®ªà®£à¯à®£ à®ªà®£à¯à®£, next script generate-à®²à¯ AI automatic-à®† à®‰à®™à¯à®• style-à® use à®ªà®£à¯à®£à¯à®®à¯.
           <span style="display:block;margin-top:4px">
-            🔴 0→5 corrections: Baseline &nbsp;→&nbsp; 
-            🟡 5→15: Learning &nbsp;→&nbsp; 
-            🟠 15→25: Improving (70%) &nbsp;→&nbsp; 
-            🟢 25→40: Good (85%) &nbsp;→&nbsp; 
-            🏆 40+: Expert (90%+)
+            ðŸ”´ 0â†’5 corrections: Baseline &nbsp;â†’&nbsp; 
+            ðŸŸ¡ 5â†’15: Learning &nbsp;â†’&nbsp; 
+            ðŸŸ  15â†’25: Improving (70%) &nbsp;â†’&nbsp; 
+            ðŸŸ¢ 25â†’40: Good (85%) &nbsp;â†’&nbsp; 
+            ðŸ† 40+: Expert (90%+)
           </span>
         </div>
       </div>
@@ -2384,6 +2548,7 @@ function clInjectPanel(rawInput, aiText, format, bulletinType) {
   document.getElementById('output')?.appendChild(panel);
   clPreviewMatch();
 }
+/* end clOldInjectPanel */
 
 function clPreviewMatch() {
   const box = document.getElementById('clEditorBox');
@@ -2407,7 +2572,7 @@ function clSaveCorrection(rawEnc, formatEnc, bulletinEnc) {
   const raw = decodeURIComponent(rawEnc);
   const format = decodeURIComponent(formatEnc);
   const bulletin = decodeURIComponent(bulletinEnc);
-  if (!corrected || corrected.length < 10) { alert('Correction-ஐ type பண்ணுங்க'); return; }
+  if (!corrected || corrected.length < 10) { alert('Correction-à® type à®ªà®£à¯à®£à¯à®™à¯à®•'); return; }
   const pair = clAdd(raw, aiText, corrected, format, bulletin);
   const msg = document.getElementById('clSaveMsg');
   if (msg) { msg.style.display = 'inline'; setTimeout(() => msg.style.display = 'none', 3000); }
@@ -2428,16 +2593,16 @@ function clResetBox(enc) {
   if (box) box.value = decodeURIComponent(enc);
 }
 
-/* ── History modal ── */
+/* â”€â”€ History modal â”€â”€ */
 function clShowHistory() {
   const pairs = clLoad();
-  if (!pairs.length) { alert('Corrections இல்லை இன்னும்.'); return; }
+  if (!pairs.length) { alert('Corrections à®‡à®²à¯à®²à¯ˆ à®‡à®©à¯à®©à¯à®®à¯.'); return; }
   const modal = document.createElement('div');
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;overflow-y:auto;padding:20px';
   modal.innerHTML = `<div style="max-width:700px;margin:0 auto;background:var(--surface);border-radius:12px;overflow:hidden">
     <div style="display:flex;align-items:center;padding:14px 18px;background:var(--surface2);border-bottom:1px solid var(--line)">
-      <span style="font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:1.5px">CORRECTION HISTORY — ${pairs.length} pairs</span>
-      <button onclick="this.closest('[style*=fixed]').remove()" style="margin-left:auto;border:none;background:none;font-size:20px;cursor:pointer;color:var(--ink-dim)">✕</button>
+      <span style="font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:1.5px">CORRECTION HISTORY â€” ${pairs.length} pairs</span>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="margin-left:auto;border:none;background:none;font-size:20px;cursor:pointer;color:var(--ink-dim)">âœ•</button>
     </div>
     <div style="padding:14px;max-height:70vh;overflow-y:auto">
       ${pairs.slice().reverse().map((p,i) => `
@@ -2447,8 +2612,8 @@ function clShowHistory() {
             <span style="margin-left:auto;font-weight:700;color:${p.similarity>80?'var(--green)':'var(--amber)'}">${p.similarity}% match</span>
             <button onclick="clDeletePair(${p.id})" style="border:none;background:none;color:var(--red);cursor:pointer;font-size:11px">Delete</button>
           </div>
-          <div style="font-size:12px;color:var(--ink-dim);margin-bottom:4px"><b>AI:</b> ${esc((p.ai||'').slice(0,120))}…</div>
-          <div style="font-size:12px;color:var(--ink)"><b>Corrected:</b> ${esc((p.corrected||'').slice(0,120))}…</div>
+          <div style="font-size:12px;color:var(--ink-dim);margin-bottom:4px"><b>AI:</b> ${esc((p.ai||'').slice(0,120))}â€¦</div>
+          <div style="font-size:12px;color:var(--ink)"><b>Corrected:</b> ${esc((p.corrected||'').slice(0,120))}â€¦</div>
         </div>`).join('')}
     </div>
     <div style="padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px">
@@ -2468,14 +2633,14 @@ function clDeletePair(id) {
 }
 
 function clClearAll() {
-  if (confirm('All corrections delete ஆகும். Sure?')) {
+  if (confirm('All corrections delete à®†à®•à¯à®®à¯. Sure?')) {
     localStorage.removeItem(CL_KEY);
     clUpdateStats();
     document.querySelector('[style*=fixed]')?.remove();
   }
 }
 
-/* ── Export corrections as JSON ── */
+/* â”€â”€ Export corrections as JSON â”€â”€ */
 function clExport() {
   const pairs = clLoad();
   const blob = new Blob([JSON.stringify(pairs, null, 2)], {type:'application/json'});
@@ -2487,7 +2652,7 @@ function clExport() {
   URL.revokeObjectURL(url);
 }
 
-/* ── Inject stats bar on newsgen page load ── */
+/* â”€â”€ Inject stats bar on newsgen page load â”€â”€ */
 function clInitStatsBar() {
   if (document.getElementById('clStatsBar')) return;
   const bar = document.createElement('div');
@@ -2497,9 +2662,9 @@ function clInitStatsBar() {
   clUpdateStats();
 }
 
-/* ── Init on page load ── */
+/* â”€â”€ Init on page load â”€â”€ */
 window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(clInitStatsBar, 500);
+  setTimeout(()=>{ clInitStatsBar(); clRenderHistory(); }, 500);
 });
 
 </script>
